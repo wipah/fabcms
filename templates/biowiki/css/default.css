@@ -1,0 +1,380 @@
+.mainBody {
+    background-color: #f5fdfd;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.mainBody {
+    margin: 0 auto;
+    max-width: 1585px;
+    position: relative;
+    background-color: white;
+    padding: 14px;
+    box-shadow: -2px 0px 23px -4px rgba(0, 0, 0, 0.75);
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1585px;
+    }
+}
+
+.breadcrumb-item {
+    color: #626262;
+}
+
+.fabTemplateSimpleBlock {
+    padding: 8px;
+}
+
+.fabTemplateSimpleBlock > .h3 {
+    padding: 8px;
+    /*
+    border-top: 1px solid #0a5d5e;
+    border-left: 1px solid #0a5d5e;
+
+    */
+
+    border-bottom: 1px solid #2563ce;
+
+    border-right: 8px solid #2563ce;
+    background-color: #4484ce;
+    color: white;
+    font-size: 18px;
+}
+
+.mainArticle {
+    margin-top: 36px;
+    margin-bottom: 36px;
+    line-height: 185%;
+}
+
+footer {
+    padding: 14px;
+    background-color: #4484ce;
+}
+
+aside {
+    border-left: 2px solid #cfddee;
+    padding-left: 14px;
+    padding-right: 14px;
+    /* background-color: #cfddee;*/
+}
+
+header {
+
+}
+
+.topBar {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #4484ce;
+    box-shadow: 1px 4px 4px -2px rgb(129, 147, 255);
+}
+
+.topBar nav {
+    background-color: #d9d9d9 !important;
+}
+
+.topBar nav .nav-link {
+    color: #5f5f5f !important;
+    /* font-weight: bolder; */
+    font-weight: bold !important;
+}
+
+.dropdown-submenu > .nav-link {
+    color: #212529 !important;
+    background-color: #dfdfdf;
+}
+
+.dropdown-menu {
+    border: 1px solid #707070 !important;
+    background-color: #dfdfdf;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu a::after {
+    transform: rotate(-90deg);
+    position: absolute !important;
+    right: 6px !important;
+    top: .8em !important;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100% !important;
+    margin-left: .1rem;
+    margin-right: .1rem;
+}
+
+.sectionSeparator {
+    height: 10px;
+    background: repeating-linear-gradient(
+            90deg,
+            #e3e2e8,
+            #e2e2e2 40px,
+            #e3e2e8 40px,
+            #e5e4ea 40px
+    );
+}
+
+.fabCmsLogin {
+    background-color: #d9d9d9 !important;
+    padding-top:12px;
+    padding-bottom:12px;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    min-height: 100%;
+}
+
+.fabCmsLogin a {
+    color: #8B8B8B;
+}
+
+/* Wiki */
+.btn-outline-primary-search {
+    background-color: #2563ce;
+    border: 1px solid #0a0861;
+    color: white;
+}
+
+article{
+    text-align: justify !important;
+}
+
+.FabCms-Wiki-item {
+    position:relative;
+    padding-top:20px;
+}
+
+.FabCms-Wiki-notify-badge{
+    position: absolute;
+    background: #444;
+    text-align: center;
+    box-shadow: -1px 1px 0px 9px white;
+    color:white;
+    padding:8px 15px;
+    font-size:18px;
+}
+
+.FabCms-Wiki-articleSmallText{
+    margin-top: 12px;
+    vertical-align: inherit;
+}
+
+.FabCms-Wiki-articleSmallText:before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    background: #444;
+}
+
+
+/*
+ * Forum
+ */
+
+.fabForum-citeInfo{
+    display: block;
+}
+
+.fabForum-icon32{
+    width: 32px;
+    height: 32px;
+}
+
+.fabForum-icon48{
+    width: 48px;
+    height: 48px;
+}
+.fabForum-TopicTitle{
+    padding: 4px;
+    border-top: 1px solid #AAA;
+    border-bottom: 1px solid #AAA;
+}
+
+.fabForum-TopicInfo{
+    padding :6px;
+    border-bottom: 1px solid #AAA;
+    border-left: 1px solid #AAA;
+    background-color: #EAEAEA;
+}
+
+.topicNoReply {
+    border: 1.5px solid #ABA;
+    padding: 12px;
+    background-color: #EEE;
+    margin-top: 24px;
+}
+
+cite {
+    padding: 4px;
+    border: 1px solid #555299;
+}
+
+
+.fabForum-topicHeader{
+    padding: 4px;
+    border: 1px solid #A8A7A7;;
+    background-color: #CCC;
+    margin-top: 32px;
+}
+.fabForum-actionBar{
+    border-bottom:1px solid #4c81e5;
+    padding: 12px;
+}
+
+.fabForum-topicPinned{
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    padding: 4px;
+    background-color: #efecce;
+}
+
+.fabForum-actionBar .btn-success{
+    color: white;
+}
+.fabForum-topicEntries{
+    border-bottom: 1px solid darkslategray;
+    padding: 4px;
+}
+
+.fabForum-topic{
+    padding: 12px;
+    border:1.5px solid #00acd6;
+    margin-top: 24px;
+
+}
+
+.fabForum-reply{
+    padding: 12px;
+    border:1px solid gray;
+    margin-top: 24px;
+}
+
+.fabForum-category{
+    border:1px solid #2E2E2E;
+    padding:24px;
+    font-size: 16px;
+}
+
+.replyForm{
+    background-color: #DDD;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.replyHeader{
+    padding: 4px;
+    border-bottom: 1px solid #AAA;
+}
+
+.topicModBar{
+    border-bottom: 1px solid #2E2E2E;
+    padding: 4px;
+}
+
+.pagination{
+    border: 1px solid #4AF;
+    padding: 12px;
+}
+
+.topicBanInfo{
+    padding: 23px;
+    margin-bottom: 12px;
+    border: 1px solid red;
+    background-color: #ff2828;
+    color: white;
+}
+
+.topicHeader {
+    border-bottom: 1px solid #b8cad6;
+    padding: 4px;
+}
+
+.topicBody {
+    padding: 4px;
+}
+
+.fabForum-topic{
+    padding: 12px;
+    border:1px solid gray;
+    margin-top: 24px;
+
+}
+
+.fabForum-reply{
+    padding: 12px;
+    border: 1px solid gray;
+    margin-top: 24px;
+}
+
+.fabForum-category{
+    border: 1px solid #2E2E2E;
+    padding: 24px;
+    font-size: 16px;
+    background-color: #BBB;
+}
+
+.fabForum-threads-list{
+    border-bottom: 1px solid gray;
+    padding: 4px;
+}
+
+.fabForum-threadsFieldDesc{
+    padding: 4px;
+    border:  1px solid gray;
+    background-color: #DDD;
+    font-weight: bolder;
+}
+
+/*
+ Fabmediamanager
+ */
+.fabcms-FabMedia-ButtonBox{
+    padding: 4px;
+    border-top: 1px solid darkslategray;
+    border-bottom: 1px solid darkslategray;
+    background-color: #fac789;
+}
+
+.fabmediaShowImageGalleryBar{
+    border-top: 1px solid #1c1c1c;
+    border-bottom: 1px solid #1c1c1c;
+    padding: 4px;
+    margin-top: 12px;
+}
+
+/*
+ * Wiki
+ */
+
+.fabcms-Wiki-CommentContainer {
+    background-color:#F2F2F2; margin-top:12px; padding: 8px; border-top: 1px solid #555
+}
+
+.fabcms-Wiki-CommentBox{
+    background-color:#ddd; padding: 12px;
+}
+
+/*
+ * Shop
+ */
+
+article .fabcms-shop-defaultArticleBlockArticleDescription {
+    color: #2c3035 !important;
+    text-align: left !important;
+}
+.fabcms-shop-defaultArticleBlockArticleDescription a{
+    color: #2c3035 !important;
+}

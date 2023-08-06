@@ -1,0 +1,31 @@
+.formFieldName {
+    width: 180px;
+    float: left;
+    padding: 4px;
+}
+
+.formFieldInput {
+    margin-left: 190px;
+    padding: 4px;
+}
+
+.formFieldInput>input:focus {
+    background-color: #e0f2be;
+}
+
+.userClearFix {
+    border-bottom: 1px dashed gray;
+    height: 2px;
+    width: 100%;
+    clear: left;
+}
+
+#divSubmit {
+    padding: 4px;
+}
+
+#loginBox {
+    float: right;
+    border: 1px solid green;
+    padding: 2px;
+}

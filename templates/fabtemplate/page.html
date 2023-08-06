@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!--FabCMS:head-->
+</head>
+
+<body>
+
+
+<div class="mainBody">
+    <section class="topBar">
+        <div class="row">
+            <div class="col-md-8">
+                <!--FabCMS:menu-->
+            </div>
+            <div class="col-md-3">
+                <div class="fabCmsLogin" id="fabCmsLoginPlace">
+                    <a href="<!--FabCMS:path-->user/">
+                        <i class="ti-user"></i>Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <header>
+        <div class="row">
+            <div class="col-md-12">
+                <!--FabCMS-hook:beforeContent-->
+                <!--spot:beforeContent-->
+                <!--FabCMS:navBar-->
+                <!--FabCMS-hook:afterContent-->
+                <!--spot:afterContent-->
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+
+                <!--FabCMS:moduleH1-->
+                <article>
+                    <h1><!--FabCMS:pageTitle--></h1>
+                    <div class="post-entry">
+                        <!--FabCMS:mainContent-->
+                    </div>
+                </article>
+
+            </div>
+            <div class="col-lg-4">
+                <aside>
+                    <!--FabCMS:sidebar-->
+                </aside>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <footer>
+                    <!--FabCMS-hook:beforeFooter-->
+                    <!--spot:beforeFooter-->
+                    <!--FabCMS-hook:afterFooter-->
+                    <!--spot:afterFooter-->
+                </footer>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Bootstrap core JavaScript -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+
+<script>
+    $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+        if (!$(this).next().hasClass('show')) {
+            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+        }
+        var $subMenu = $(this).next(".dropdown-menu");
+        $subMenu.toggleClass('show');
+
+        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+            $('.dropdown-submenu .show').removeClass("show");
+        });
+
+        return false;
+    });
+
+    if (typeof fabcms_isFullPage === 'undefined') {
+        fabcms_isFullPage = false;
+    }
+
+    $(function () {
+        if (fabcms_userLogged == true) {
+            $("#fabCmsLoginPlace").html("Bentornato " + fabcms_userUsername + ". <a href=\'/user/cp/\'>Pannello di controllo</a>");
+        }
+    });
+</script>
+
+</body>
+<!--FabCMS:tracker-->
+<!--FabCMS:scripts-->
+<!--FabCMS:debug-->
+</html>

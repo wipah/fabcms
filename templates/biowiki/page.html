@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="<!--FabCMS:lang-->">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css" rel="stylesheet"
+          type="text/css">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!--FabCMS:head-->
+</head>
+
+<body>
+<div class="container wrapper">
+    <div class="mainBody">
+
+        <section class="topBar">
+            <div class="row">
+                <div class="col-md-8">
+                    <!--FabCMS:menu-->
+                </div>
+                <div class="col-md-4">
+                    <div class="fabCmsLogin" id="fabCmsLoginPlace">
+                        <a href="<!--FabCMS:path-->user/">
+                            <i class="ti-user"></i>Login</a></div>
+                </div>
+
+            </div>
+        </section>
+
+        <header>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!--FabCMS-hook:beforeContent-->
+                    <!--spot:beforeContent-->
+                    <!--FabCMS:navBar-->
+                    <!--FabCMS-hook:afterContent-->
+                    <!--spot:afterContent-->
+                </div>
+            </div>
+        </header>
+
+        <div class="row mainArticle">
+
+            <div id="fabCMSMainContent" class="col-md-9">
+                <!--FabCMS:moduleH1-->
+                <article>
+                    <h1><!--FabCMS:pageTitle--></h1>
+                    <div class="post-entry">
+                        <!--FabCMS:mainContent-->
+                    </div>
+                </article>
+            </div>
+
+            <div id="fabCmsSidebar" class="col-md-3">
+                <aside>
+                    <!--FabCMS:sidebar-->
+                </aside>
+            </div>
+
+        </div>
+
+        <div class="sectionSeparator"></div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <footer>
+                    <!--FabCMS-hook:beforeFooter-->
+                    <!--spot:beforeFooter-->
+                    <!--FabCMS-hook:afterFooter-->
+                    <!--spot:afterFooter-->
+                </footer>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--FabCMS:debug-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+
+<script>
+    $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+        if (!$(this).next().hasClass('show')) {
+            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+        }
+        var $subMenu = $(this).next(".dropdown-menu");
+        $subMenu.toggleClass('show');
+
+        $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+            $('.dropdown-submenu .show').removeClass("show");
+        });
+
+        return false;
+    });
+
+    if (typeof fabcms_isFullPage === 'undefined') {
+        fabcms_isFullPage = false;
+    }
+
+    $(function () {
+        if (fabcms_userLogged == true) {
+            $("#fabCmsLoginPlace").html("Bentornato " + fabcms_userUsername + ". <a href=\'/user/cp/\'>Pannello di controllo</a> | <a href='/user/lgout/'>Logout</a>");
+        }
+        if (fabcms_isFullPage == true) {
+            $("#fabCMSMainContent").removeClass("col-md-9 col-sm-9 col-xs-12").addClass("col-md-12 col-xs-12 col-sm-12");
+            $("#fabCmsSidebar").remove();
+        }
+    });
+</script>
+</body>
+<!--FabCMS:tracker-->
+<!--FabCMS:scripts-->
+</html>

@@ -1,0 +1,30 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Fabrizio
+ * Date: 30/11/2017
+ * Time: 12:34
+ */
+
+
+$query = 'SELECT * 
+          FROM ' . $db->prefix . 'shop_items
+          WHERE enabled = 1';
+
+$db->setQuery($query);
+
+if (!$result = $db->executeQuery('select'))
+    return false;
+
+
+if (!$db->numRows)
+    return false;
+
+while ($row = mysqli_fetch_assoc($result)) {
+
+    $this->result .= '<url>
+                        <loc>' .
+        $URI->getBaseUri() . $core->router->getRewriteAlias('shop') . '/item/' . $row['ID'] . '-' . $row['trackback'] . '/</loc>
+                      </url>' . PHP_EOL;
+
+}

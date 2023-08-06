@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="<!--FabCMS:lang-->">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link href="<!--FabCMS:basePath-->admin/templates/fabadmin/css/full.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet"
+          type="text/css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/elegant.css" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/codemirror.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/mode/xml/xml.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/mode/javascript/javascript.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/addon/edit/matchtags.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/addon/edit/matchbrackets.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/addon/fold/xml-fold.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.55.0/addon/display/autorefresh.min.js"></script>
+
+
+    <style type="text/css">
+        .CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
+            padding-left: 35px
+        }
+     </style>
+
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" type="text/css" >
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" type="text/css" >
+    <link href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css" type="text/css" >
+
+    <!--FabCMS:head-->
+</head>
+
+<body>
+    <div class="container wrapper">
+        <div class="mainBody">
+
+            <section class="topBar">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--FabCMS:menu-->
+                        <button class="pull-right btn btn-full-round btn-default" onclick="toggleSideBar();">Toggle</button>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <header>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--FabCMS-hook:beforeContent-->
+                        <!--spot:beforeContent-->
+                        <!--FabCMS:navBar-->
+                        <!--FabCMS-hook:afterContent-->
+                        <!--spot:afterContent-->
+                    </div>
+                </div>
+            </header>
+
+            <div class="headerSeparator"></div>
+
+            <div class="row mainArticle">
+                <div id="mainDiv" class="col-md-9">
+                    <article>
+                        <h1><!--FabCMS:pageTitle--></h1>
+                        <div class="post-entry">
+                            <!--FabCMS:mainContent-->
+                        </div>
+                    </article>
+                </div>
+                <div id="sidebar" class="col-md-3">
+                    <aside>
+                        <!--spot:sidebar-->
+                        <!--FabCMS:sidebar-->
+                    </aside>
+                </div>
+
+            </div>
+
+            <style>
+                .hiddenSideBar{
+                    visibility: hidden;
+                }
+                .visibleSidebar{
+                    visibility: visible;
+                }
+            </style>
+
+            <script>
+
+            function toggleSideBar() {
+                if  ($("#sidebar").hasClass("col-md-3") ) {
+                    $("#sidebar").removeClass("col-md-3").addClass("hiddenSideBar");
+                    $("#mainDiv").removeClass("col-md-9").addClass("col-md-12");
+                } else {
+                    $("#sidebar").removeClass("hiddenSidebar").addClass("col-md-3 visibleSidebar");
+                    $("#mainDiv").removeClass("col-md-12").addClass("col-md-9");
+                }
+            }
+
+            </script>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <footer>
+                        <!--FabCMS-hook:beforeFooter-->
+                        <!--spot:beforeFooter-->
+                        <!--FabCMS-hook:afterFooter-->
+                        <!--spot:afterFooter-->
+                    </footer>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--FabCMS:debug-->
+
+
+    <script>
+        $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+            if (!$(this).next().hasClass('show')) {
+                $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+            }
+            var $subMenu = $(this).next(".dropdown-menu");
+            $subMenu.toggleClass('show');
+
+            $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+                $('.dropdown-submenu .show').removeClass("show");
+            });
+
+            return false;
+        });
+
+
+        $(function () {
+            if (fabcms_userLogged == true) {
+                $("#fabCmsLoginPlace").html("Bentornato " + fabcms_userUsername + ". <a href=\'/user/cp/\'>Pannello di controllo</a>");
+            }
+            if (fabcms_isFullPage == true) {
+                $("#FabCMSMainContent").removeClass("col-md-9 col-sm-9 col-xs-12").addClass("col-md-12 col-xs-12 col-sm-12");
+                $("#fabCmsSidebar").remove();
+            }
+        });
+    </script>
+</body>
+<!--FabCMS:tracker-->
+<!--FabCMS:scripts-->
+</html>
