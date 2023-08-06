@@ -44,7 +44,7 @@ $query = 'SELECT * FROM ' . $db->prefix . 'quiz_logs WHERE ID = \'' . $ID . '\' 
 $db->setQuery($query);
 $result = $db->executeQuery();
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'Non risulta nessuna scheda.';
     return;
 }

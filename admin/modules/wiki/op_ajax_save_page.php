@@ -93,7 +93,7 @@ if (($_POST['crudType']) === 'update') {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         echo '{"status": 504, "description": "Past content was not found! ' . $db->lastError . '"}';
 
         return;

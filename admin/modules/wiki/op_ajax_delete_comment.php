@@ -14,9 +14,7 @@ $ID = (int) $_POST['ID'];
 
 $query = 'DELETE FROM ' . $db->prefix . 'wiki_comments WHERE ID = ' . $ID . ' LIMIT 1';
 
-$db->setQuery($query);
-
-if (!$db->executeQuery('delete')){
+if (!$db->query($query)){
     echo 'Failed. ' . $query;
 } else {
     echo 'OK';

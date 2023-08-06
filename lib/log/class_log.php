@@ -41,8 +41,8 @@ class log{
         )
         ';
 
-        $db->setQuery($query);
-        if ($db->executeQuery('insert')){
+
+        if ($db->query($query)){
             return true;
         } else{
             return false;

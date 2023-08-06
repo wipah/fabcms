@@ -48,7 +48,7 @@ if (!$result = $db->executeQuery('select')){
     echo '<pre>Query error: ' . $query . '</pre>';
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No orders were completed.';
 } else {
     echo '<h2>Latest orders</h2>

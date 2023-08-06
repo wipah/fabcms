@@ -24,8 +24,8 @@ $this->noTemplateParse = TRUE;
 
 // Gets alla categoryes
 $query = 'SELECT * FROM ' . $db->prefix .'quiz_categories';
-$db->setQuery($query);
-$db->executeQuery();
+
+$db->query($query);
 $arrayCat = array();
 while ($row = mysqli_fetch_array($db->getResultAsObject())){
     $arrayCat[$row['ID']] = $row['nome'];
@@ -41,19 +41,17 @@ $where = substr($where, 0, -4);
 
 $query = 'SELECT * FROM ' . $db->prefix . 'quiz_questions ' . $where . ';';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }
 
-echo '<i>' . $db->numRows . '</i> founds.<br />';
+echo '<i>' . $db->affected_rows . '</i> founds.<br />';
 
-if (!$db->numRows)
+if (!$db->affected_rows)
     return;
 
-$db->executeQuery();
+$db->query($query);
 echo '
 	<table cellpadding="0" cellspacing="0" border="0" class="dataTable" id="tableItems' . (isset($_POST['appendIDToTable']) ? '_' . $ID : '') . '" width="100%">
 	<thead>

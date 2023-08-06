@@ -165,7 +165,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo '<div class="alert alert-warning" role="alert">No page</div>';
 
     return;

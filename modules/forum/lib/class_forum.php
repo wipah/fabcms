@@ -75,7 +75,7 @@ class forum
 
             die("Query error while loading config.");
         }
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return;
 
         while ($row = mysqli_fetch_assoc($result)) {
@@ -114,7 +114,7 @@ class forum
                 return;
             }
 
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 $this->userBanned = false;
 
                 return;
@@ -156,7 +156,7 @@ class forum
             return;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $total = 0;
         } else {
             $row = mysqli_fetch_assoc($result);
@@ -211,7 +211,7 @@ class forum
             return true;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return true;
 
         $row = mysqli_fetch_assoc($result);
@@ -345,7 +345,7 @@ class forum
 
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             return -2;
         }
 
@@ -377,7 +377,7 @@ class forum
         $db->setQuery($query);
         $result = $db->executeQuery('select');
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'forum_is_topic_visible_query_errror',
@@ -433,7 +433,7 @@ class forum
             return;
         }
 
-        if ($db->numRows) {
+        if ($db->affected_rows) {
             $row = mysqli_fetch_assoc($result);
 
             $row_ID = $row['ID'];
@@ -500,7 +500,7 @@ class forum
             return -1;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return 0;
 
         $row = mysqli_fetch_assoc($result);
@@ -538,7 +538,7 @@ class forum
             return -1;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $relog->write(['module'    => 'FORUM',
                            'operation' => 'post_reply_update_topics_no_topic',
                            'details'   => 'No topic',
@@ -604,7 +604,7 @@ class forum
                     ]);
                     return 'Query error!';
                 } else {
-                    if (!$db->numRows) {
+                    if (!$db->affected_rows) {
                         return 'File not exists';
                     } else {
                         if ($user->logged) {
@@ -647,7 +647,7 @@ class forum
             echo 'Query error while updating topic stats.';
         }
 
-        if ($db->numRows) {
+        if ($db->affected_rows) {
             $row = mysqli_fetch_assoc($result);
             $count = $row['replies'];
 
@@ -700,7 +700,7 @@ class forum
             return;
         }
 
-        if (!$db->numRows && $mustBeAlreadySubscribed === false) {
+        if (!$db->affected_rows && $mustBeAlreadySubscribed === false) {
             $query = 'INSERT INTO ' . $db->prefix . 'forum_subscriptions 
             (
                 user_ID,
@@ -757,7 +757,7 @@ class forum
         }
 
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $relog->write(['type'      => '3',
                            'module'    => 'FORUM',
                            'operation' => 'delete_topic_no_topic',
@@ -787,7 +787,7 @@ class forum
 
 
         // Delete replies
-        if ($db->numRows) {
+        if ($db->affected_rows) {
 
             while ($rowReplies = mysqli_fetch_assoc($resultReplies)) {
                 $usersReplies .= $rowReplies['user_ID'] . ', ';
@@ -871,7 +871,7 @@ class forum
             return;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
 
             $query = 'UPDATE ' . $db->prefix . 'forum_threads 
                       SET latest_topic_ID = NULL,
@@ -986,7 +986,7 @@ class forum
             die("Query error while checking lock status");
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             return true;
         } else {
             $row = mysqli_fetch_assoc($result);

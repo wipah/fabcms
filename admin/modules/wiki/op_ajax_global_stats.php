@@ -90,10 +90,9 @@ if (!empty($globalStats)) {
    )
    ORDER BY difference ASC';
 
-    $db->setQuery($query);
     mysqli_query($db->linkID, 'SET @week := WEEK(NOW());');
 
-    if (!$resultStats = $db->executeQuery('select')) {
+    if (!$resultStats = $db->query($query)) {
         echo 'Query error in stats. ' . $db->lastError . '<pre>' . $query . '</pre>';
         return;
     }

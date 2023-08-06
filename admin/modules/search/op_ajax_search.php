@@ -25,8 +25,7 @@ $query = 'SELECT * FROM ' .
     'ORDER BY ID desc ' .
     (isset($limit) ? $limit : '');
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery()) {
+if (!$result = $db->query($query)) {
     echo 'Error. ' . $query;
 } else {
     echo '

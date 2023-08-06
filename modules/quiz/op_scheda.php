@@ -95,12 +95,12 @@ LIMIT 1;
 ';
 $db->setQuery($query);
 $db->executeQuery('SELECT');
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'Errore interno in fase di selezione';
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'La categoria non esiste oppure non &egrave;, visibile.';
     return;
 }
@@ -405,7 +405,7 @@ $this->addScript($theScript);
     $db->setQuery($query);
     $db->executeQuery('select');
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         echo 'Errore in selezione categoria';
         return;
     }

@@ -50,13 +50,12 @@ $query = 'SELECT * FROM
           ' . $db->prefix . 'wiki_comments 
           WHERE ID = ' . $ID . ' LIMIT 1; ';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error: ' . $query;
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No comment with the passed ID: ' . $ID;
     return;
 }

@@ -63,7 +63,7 @@ $db->setQuery($query);
 if (!$result = $db->executeQuery('select')) {
     $latestPages = '<pre>' . $query . '</pre>';
 } else{
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         $latestPages = 'No latest pages';
     } else {
         while ($row = mysqli_fetch_assoc($result)){
@@ -87,7 +87,7 @@ $allowableExtensions =
     '{title : "Image files", extensions : "jpeg,jpg,gif,png"},
 	 {title : "Zip files"  , extensions : "zip"}';
 
-if ($db->numRows){
+if ($db->affected_rows){
     $allowableExtensions .= ',' . "\r";
     while ($row = mysqli_fetch_array($result)){
         $customFiles .= '{title : "' . $row['extension'] .' files", extensions : "' . $row['extension'] . '"}, ' . "\r";
@@ -150,7 +150,7 @@ if (isset($_GET['ID'])) {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         echo 'No page';
         return;
     }
@@ -249,7 +249,7 @@ if (isset($_GET['ID'])) {
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         $googleLast = 'No hit';
     } else {
         $rowGoogle = mysqli_fetch_assoc($resultGoogle);
@@ -292,7 +292,7 @@ if (!$resultLicenses = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'Please set licenses first.';
     return;
 }
@@ -332,7 +332,7 @@ if (!$resultCategory = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No row. Please configure categories first.';
     return;
 }
@@ -361,7 +361,7 @@ if (!$resultStatus = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No rows on status';
     return;
 }
@@ -397,7 +397,7 @@ GROUP BY DAILY.IDX,
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         $tabStats .= 'No statistics';
     } else {
         $statsMax = 0;

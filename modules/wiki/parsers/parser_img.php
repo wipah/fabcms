@@ -121,10 +121,8 @@ $content = preg_replace_callback($theRegex,
                   WHERE ID = ' . $ID ;
 
 
-        $db->setQuery($query);
-
         try {
-            $resultPatch = $db->executeQuery('select');
+            $resultPatch = $db->query($query);
         } catch (Exception $e) {
 
             $relog->write(['type'      => '4',
@@ -137,7 +135,7 @@ $content = preg_replace_callback($theRegex,
             return;
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             echo 'No rows. ' . $query;
             return;
         }
@@ -165,9 +163,7 @@ $content = preg_replace_callback($theRegex,
                       WHERE ID = \'' . $ID .'\'
                       LIMIT 1';
 
-            $db->setQuery($query);
-
-            if (!$db->executeQuery('update')){
+            if (!$db->query($query)){
                 echo 'Query error.';
             }
         }
@@ -188,14 +184,12 @@ $content = preg_replace_callback($theRegex,
                           WHERE ID = ' . $ID . ' 
                           LIMIT 1';
 
-                $db->setQuery($query);
-
-                if (!$result = $db->executeQuery('select')){
+                if (!$result = $db->query($query)){
                     echo 'Query error';
                     return;
                 }
 
-                if ($db->numRows) {
+                if ($db->affected_rows) {
                     $row = mysqli_fetch_assoc($result);
 
                     $fragment .= '

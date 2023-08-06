@@ -66,7 +66,7 @@ function plugin_ipb4($dataArray)
     if (!$result = $db->executeQuery()) {
         return 'Query error. ' . $query;
     } else {
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $return .= 'Nel forum non esistono ancora discussioni simili all\'argomento di questa pagina. Se vuoi puoi <a href="' . $conf['ipb4']['path'] . '">iniziarne una</a>, ad esempio richiedere aiuto per comprendere qualche argomento.';
         } else {
             while ($row = mysqli_fetch_array($result)) {

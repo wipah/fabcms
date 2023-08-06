@@ -43,16 +43,15 @@ class plugin
         global $debug;
         global $template;
         global $language;
+
         $query = "SELECT * FROM {$db->prefix}plugins_chain WHERE visible = 1;";
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery()) {
+        if (!$db->query($query)) {
             $debug->write('error', 'Query error while attempt "plugins chain" ' . $query . 'PLUGIN');
             return $page;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $debug->write('Info', 'No plugin chain detected', 'PLUGIN');
             return $page;
         }

@@ -46,13 +46,10 @@ $query = 'SELECT type,
           GROUP BY type
           ORDER BY type DESC';
 
-
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     $resultRelog = 'Query error. ' . $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $resultRelog = 'No log';
     } else {
         $resultRelog = '
@@ -86,12 +83,11 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'relog 
           ORDER BY ID DESC 
           LIMIT 5';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     $relogLatest = 'Query error. ' . $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $relogLatest = 'No log.';
     } else {
         $relogLatest .= '
@@ -132,7 +128,7 @@ $db->setQuery($query);
 if (!$result = $db->executeQuery('select')) {
     $latestUsers = $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $latestUsers = 'No users.';
     } else {
 
@@ -177,7 +173,7 @@ $db->setQuery($query);
 if (!$result = $db->executeQuery('select')) {
     $latestTopic = $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $latestTopic = 'No topics.';
     } else {
 
@@ -234,7 +230,7 @@ if (!$result = $db->executeQuery()) {
 
     return;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $latestOrders = 'No orders';
     } else {
         $latestOrders = '<table class="table table-bordered table-condensed table-striped">
@@ -270,7 +266,7 @@ if (!$result = $db->executeQuery()) {
     $latestWikiPages = 'Query error.' . $query;
 
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $latestWikiPages = 'No pages';
     } else {
         $latestWikiPages = '<table class="table table-bordered table-condensed table-striped">
@@ -321,7 +317,7 @@ $db->setQuery($query);
 if (!$result = $db->executeQuery()) {
     $latestComments = 'Query error.' . $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $latestComments = 'No row';
     } else {
         $latestComments = '<table class="table table-bordered table-condensed table-striped">
@@ -367,7 +363,7 @@ $db->setQuery($query);
 if (!$resultYesterdayTopPages = $db->executeQuery('select')) {
     echo $yesterdayTopPages = 'Query error. ' . $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $yesterdayTopPages = 'No data. ';
     } else {
         $yesterdayTopPages = '<table class="table">
@@ -410,7 +406,7 @@ $db->setQuery($query);
 if (!$resultTodayTopPages = $db->executeQuery('select')) {
     echo $todayTopPages = 'Query error. ' . $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $todayTopPages = 'No data';
     } else {
         $todayTopPages = '<table class="table">

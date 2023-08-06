@@ -99,8 +99,8 @@ switch ($_GET['op']) {
         \'' . $pagine . '\'
     );
     ';
-            $db->setQuery($query);
-            if (!$db->executeQuery('insert')) {
+
+            if (!$db->query($query)) {
                 $log->write('quiz_new_question_save_error','quiz', 'Query: ' . $query );
                 echo 'Errore ' . $db->lastError . '<br/>' . $query;
                 return;
@@ -125,8 +125,8 @@ switch ($_GET['op']) {
 
         // Categoria nuova
         $query = 'SELECT * FROM ' . $db->prefix . 'quiz_categories ORDER BY nome ASC';
-        $db->setQuery($query);
-        $db->executeQuery('select');
+
+        $db->query($query);
         $cat = '';
         while ($linea = mysqli_fetch_array($db->getResultAsObject())) {
             $cat .= ' <input name="categorie[]" id="cat_' . $linea['ID'] . '" type="checkbox" value="' . $linea['ID'] . '"/>' . '<span onclick="check(\'' . $linea['ID'] . '\');">' . $linea['nome'] . '</span> ';
@@ -219,7 +219,7 @@ switch ($_GET['op']) {
             return;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'La domanda non esiste';
             return;
         }
@@ -303,7 +303,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     $linkDirettoPagine = '<ul class="side-menu layout-options"><li>Non ci sono, ancora, pagine!</li></ul>';
 } else {
     $linkDirettoPagine = '<ul class="side-menu layout-options">';

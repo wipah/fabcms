@@ -42,7 +42,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'Gentile utente, non risultano quiz completati. <a href="' . $URI->getBaseUri() . $this->routed . '/scheda/">Prova a fare una scheda adesso</a>.';
     return;
 }

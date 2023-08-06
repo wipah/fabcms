@@ -60,7 +60,7 @@ if (isset($_GET['gallery_ID']))
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No image found';
         return;
     }
@@ -102,7 +102,7 @@ if (isset($_GET['gallery_ID']))
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         $previous = '---';
     } else {
         $result = mysqli_fetch_assoc($result);
@@ -150,7 +150,7 @@ if (isset($_GET['gallery_ID']))
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         $next = '---';
     } else {
         $result = mysqli_fetch_assoc($result);
@@ -199,7 +199,7 @@ if (!$db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No image found.';
     return;
 }
@@ -259,7 +259,7 @@ if (!$resultGalleries = $db->executeQuery($query)) {
     return;
 }
 
-if ($db->numRows) {
+if ($db->affected_rows) {
 
     $galleries = '<div class="row">';
     while ($rowGalleries = mysqli_fetch_assoc($resultGalleries)) {
@@ -312,7 +312,7 @@ if (!$result = $db->executeQuery('select')) {
     echo 'Query error.' . $query;
     return;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $similarPhoto = $language->get('media', 'showimageNoOtherSimilarPhotos');
     } else {
         $similarPhoto .= '<div class="row">';
@@ -400,7 +400,7 @@ $db->setQuery($query);
 if (!$resultWikiPages = $db->executeQuery('select')) {
     echo 'Query error while selecting pages from wiki!';
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $pagesFromWiki = $language->get('media', 'showImageWikiHasNoPage');
     } else {
         $pagesFromWiki = '';

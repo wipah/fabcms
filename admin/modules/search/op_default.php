@@ -30,8 +30,8 @@ $query = 'SELECT (
         SELECT count(ID) FROM `' . $db->prefix . 'search_logs` WHERE `date` BETWEEN DATE_ADD(CURDATE(), INTERVAL -1 day) AND CURDATE()
 
     ) AS yesterday';
-$db->setQuery($query);
-$db->executeQuery('select');
+
+$db->executeQuery($query);
 $row = $db->getResultAsArray();
 $totalSearchYesterday = $row['yesterday'];
 $totalSearchToday = $row['today'];

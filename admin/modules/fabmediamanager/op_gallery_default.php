@@ -30,7 +30,7 @@ if (!$result = $db->executeQuery('select')) {
 }
 echo '<h2>Galleries created</h2>';
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No galleries were created.';
 } else {
     $i = 0;

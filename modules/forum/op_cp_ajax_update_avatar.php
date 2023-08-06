@@ -54,7 +54,7 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $query = 'INSERT INTO ' . $db->prefix . 'forum_user_config (user_ID, user_avatar, user_avatar_type)
             VALUES
             (
@@ -72,7 +72,7 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
             return;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'Internal error. Code: for-23';
 
             return;

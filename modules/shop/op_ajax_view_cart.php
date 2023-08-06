@@ -85,7 +85,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'Non hai ancora articoli nel carrello. [CA-123]';
     return;
 }

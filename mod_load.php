@@ -344,7 +344,7 @@ $template->parse();
 
 echo $template->page;
 
-mysqli_close($db->linkID);
+$db->close();
 
 function shutDownFunction()
 {

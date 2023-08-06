@@ -102,7 +102,7 @@ function plugin_latest_pages($dataArray)
     }
 
 
-    $numResult = $db->numRows;
+    $numResult = $db->affected_rows;
 
     $output = PHP_EOL . PHP_EOL . '<!-- Start of latest page-->';
 

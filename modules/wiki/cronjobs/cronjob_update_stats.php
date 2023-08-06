@@ -34,7 +34,7 @@ if (!$resultSelect = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     $cronjobs->status = 2;
     $cronjobs->writeLog( 'No pages.');
     return;
@@ -57,7 +57,7 @@ while ($row = mysqli_fetch_array($resultSelect)) {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $hit = 0;
     } else {
         $rowHit = mysqli_fetch_assoc($resultHit);

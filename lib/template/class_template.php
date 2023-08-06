@@ -86,9 +86,7 @@ class templateBase implements iFabTemplate
         WHERE H.enabled = 1 AND H.lang = \'' . $core->shortCodeLang . '\'
         AND ' . $hooks;
 
-        $db->setQuery($query);
-
-        if ($result = $db->executeQuery('select')) {
+        if ($result = $db->query($query)) {
             while ($rowHooks = mysqli_fetch_array($result)) {
 
                 $query = '
@@ -108,12 +106,11 @@ class templateBase implements iFabTemplate
                 ORDER BY computed_prob ASC
                 LIMIT 1';
 
-                $db->setQuery($query);
-                if (!$resultBanner = $db->executeQuery('select')) {
+                if (!$resultBanner = $db->query($query)) {
                     echo '<pre>' . $query . '</pre>';
                 } else {
 
-                    if ($db->numRows) {
+                    if ($db->affected_rows) {
 
                         $rowBanner = mysqli_fetch_array($resultBanner);
 
@@ -125,9 +122,7 @@ class templateBase implements iFabTemplate
                                   WHERE ID = ' . $rowBanner['ID'] . ' 
                                   LIMIT 1';
 
-                        $db->setQuery($query);
-
-                        if (!$db->executeQuery('update')){
+                        if (!$db->query($query)){
                             die ($query);
                         }
 
@@ -151,16 +146,14 @@ class templateBase implements iFabTemplate
                   FROM ' . $db->prefix . 'hooks 
                   WHERE enabled = 1';
 
-        $db->setQuery($query);
 
         $debug->write('info', 'Called fillHooks', 'TEMPLATE');
 
-
-        if (!$db->executeQuery('select')) {
+        if (!$data = $db->query($query)) {
             $debug->write('error', 'Query error while selecting templates', 'TEMPLATE');
             $log->write('template_hook_query_error', 'template', 'Query error: ' . $query);
         } else {
-            $data = $db->getResultAsObject();
+
 
             while ($row = mysqli_fetch_array($data)) {
                 $preData = json_decode($row['html'], true);
@@ -269,14 +262,12 @@ class templateBase implements iFabTemplate
         WHERE parent_ID = ' . $parent_ID . ' 
         ORDER BY `order` ASC';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             echo '<pre>' . $query . '</pre>';
             return;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return;
 
 
@@ -486,39 +477,6 @@ class templateBase implements iFabTemplate
         // Prebody
         $this->page = str_ireplace('</body>', $this->prebody . '</body>', $this->page);
         $this->page = preg_replace('/<\/body>/i', $this->prebody . '</body>', $this->page);
-
-        if (!$module->noTemplateParse && $conf['debug']['enabled'] === true)
-        {
-            // Query debug
-            $dbDebug =
-                '<table class="table table-striped table-condensed">' .
-                '  <tr>' .
-                '     <th>ID</th>' .
-                '     <th>Status</th>' .
-                '     <th>Time</th>' .
-                '     <th>Rows</th>' .
-                '     <th>Query</th>' .
-                '     <th>Backtrace</th>' .
-                '  </tr>' .
-                '  <tbody>';
-
-            for ($i = 0; $i < count($db->debugQuery); $i++) {
-                $dbDebug .=
-                    '<tr> ' .
-                    '    <td>' . $i . '</td> ' .
-                    '    <td><span class="label ' . ($db->debugStatus[$i] === 'OK' ? 'label-success' : 'label-danger') . '">' . $db->debugStatus[$i] . '</span></td> ' .
-                    '    <td>' .
-                    '       <span class="label ' . ($db->debugTime[$i] > 0.125 ? 'label-danger' : 'label-success') . '">' . $db->debugTime[$i] . '</span></td> ' .
-                    '    <td>' . $db->debugRows[$i] . '</td> ' .
-                    '    <td>' . $db->debugQuery[$i] . '</td> ' .
-                    '    <td>' . $db->debugBackTrace[$i] . '</td> ' .
-                    '</tr>';
-            }
-
-            $dbDebug .=
-                '</tbody>' .
-                '</table>';
-        }
 
         if ($conf['debug']['enabled'] === true) {
             if ($user->isAdmin === true || $conf['debug']['showDebugToGuest'] === true)

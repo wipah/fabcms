@@ -25,7 +25,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No media. <a href="' . $URI->getBaseUri() . $this->routed . '/admin-cp/viedo/editor/"></a>';
 } else {
     echo '

@@ -28,7 +28,7 @@ if (!$result = $db->executeQuery()) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     $query = 'INSERT INTO ' . $db->prefix . 'forum_user_config (user_ID, email_notify)
             VALUES
             (
@@ -46,7 +46,7 @@ if (!$db->numRows) {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         echo 'Internal error. Code: for-23';
 
         return;

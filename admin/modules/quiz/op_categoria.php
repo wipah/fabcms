@@ -93,8 +93,7 @@ switch ($_GET['command']) {
             WHERE ID = \'' . $ID . '\'
             LIMIT 1';
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('update')) {
+            if (!$db->query($query)) {
                 echo 'Query error. <br>' . $db->lastError . ' ' . $query;
                 return;
             }
@@ -121,8 +120,7 @@ switch ($_GET['command']) {
         );
         ';
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('insert')) {
+            if (!$db->query($query)) {
                 $log->write('quiz_new_category_insert_error', 'quiz', 'Query: ' . $query);
                 echo '<div class="ui-corner-all" style="border:1px solid red; background-color: #FFC0C0; padding:4px;">Errore nella query.<br/>' . $query . '</div>';
             } else {
@@ -138,13 +136,13 @@ switch ($_GET['command']) {
             $action = 'admin.php?module=quiz&op=categoria&command=modifica&save=true&ID=' . $ID;
 
             $query = 'SELECT * FROM ' . $db->prefix . 'quiz_categories WHERE ID = \'' . $ID . '\' LIMIT 1;';
-            $db->setQuery($query);
-            if (!$db->executeQuery('select')) {
+
+            if (!$db->query($query)) {
                 echo 'Query error. ' . $query;
                 return;
             }
 
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 echo 'No category found, using the ID ' . $ID;
                 return;
             }
@@ -273,10 +271,9 @@ SELECT *
 FROM ' . $db->prefix . 'quiz_categories
 ';
 
-$db->setQuery($query);
-$db->executeQuery('select');
+$db->query($query);
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'Nessuna categoria ancora creata';
 } else {
     while ($linea = mysqli_fetch_array($db->getResultAsObject())) {

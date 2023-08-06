@@ -15,9 +15,8 @@ $this->noTemplateParse = true;
 set_time_limit(1200);
 
 $query = 'SELECT * FROM ' . $db->prefix . 'wiki_pages';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;

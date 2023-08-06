@@ -43,15 +43,13 @@ WHERE (
         
       AND P.language = \'' . $language . '\'';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo '<pre>' . $query . '</pre>';
 
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No unlinked pages';
 
     return;

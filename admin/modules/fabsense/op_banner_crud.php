@@ -66,7 +66,7 @@ if ($_GET['command'] === 'edit') {
         echo 'Query error.';
         return;
     }
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No rows';
         return;
     }

@@ -73,7 +73,7 @@ function plugin_latest_topics($dataArray)
         return 'Query error.';
     }
 
-    if (!$db->numRows)
+    if (!$db->affected_rows)
         return $language->get('forum', 'pluginLatestTopicNoTopic', null);
 
     $return = '';

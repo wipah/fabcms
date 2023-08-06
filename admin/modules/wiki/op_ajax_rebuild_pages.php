@@ -16,8 +16,8 @@ $log->write('INFO','WIKI:RebuildPages', 'Start rebuilding pages');
 $query = 'SELECT P.ID 
           FROM ' . $db->prefix . 'wiki_pages AS P';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $log->write('INFO','WIKI:RebuildPages', 'Unable to select pages');
     echo 'Unable to select pages. ' . $query;
     return false;
@@ -25,8 +25,8 @@ if (!$result = $db->executeQuery('select')){
 
 // Truncate table
 $query = 'TRUNCATE `' . $db->prefix . 'wiki_outbound_trackback`;';
-$db->setQuery($query);
-if (!$db->executeQuery('truncate')){
+
+if (!$db->query($query)){
     $log->write('ERROR','Wiki:TruncateOutboundLinks', 'Unable to truncate outbound links.');
 } else {
     $log->write('Info','Wiki:TruncateOutboundLinks', 'Outbound links table has been truncated.');
@@ -34,8 +34,8 @@ if (!$db->executeQuery('truncate')){
 
 // Truncate table
 $query = 'TRUNCATE `' . $db->prefix . 'wiki_pages_files`;';
-$db->setQuery($query);
-if (!$db->executeQuery('truncate')){
+
+if (!$db->query($query)){
     $log->write('ERROR','Wiki:TruncateOutboundLinks', 'Unable to truncate outbound links.');
 } else {
     $log->write('Info','Wiki:TruncateOutboundLinks', 'Outbound links table has been truncated.');

@@ -25,9 +25,7 @@ if (isset($_GET['create']) ){
     ON P.ID = T.page_ID
     WHERE T.tag = \'' . $tag .'\';';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
         echo '<pre>' . $query . '</pre>';
         return;
     }

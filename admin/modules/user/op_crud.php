@@ -214,9 +214,7 @@ if ($_GET['op'] === 'edit') {
             ' . $newsletter . '
         )';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             echo 'Query error. ' . $query;
         } else {
 
@@ -247,7 +245,7 @@ if (!$resultGroups = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No groups';
 
     return;

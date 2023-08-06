@@ -40,7 +40,7 @@ if (!$result = $db->executeQuery('select')){
     echo 'Query error';
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No items';
 }
 

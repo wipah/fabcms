@@ -41,7 +41,7 @@ ON C.ID = S.course_ID
             return false;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return false;
 
         $return = array();
@@ -74,7 +74,7 @@ ON C.ID = S.course_ID
             die ("Query error in trackback reverse");
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             return false;
         } else {
             $row = mysqli_fetch_array($result);
@@ -96,7 +96,7 @@ ON C.ID = S.course_ID
             die ("Query error in trackback reverse");
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             return false;
         } else {
             $row = mysqli_fetch_array($result);
@@ -122,7 +122,7 @@ ON C.ID = S.course_ID
             die ("Query error in userHasAccess subroutine. " . $query);
         }
 
-        if ($db->numRows) {
+        if ($db->affected_rows) {
             return true;
         } else {
             return false;
@@ -166,7 +166,7 @@ ON C.ID = S.course_ID
             die ("Query error. " . $query);
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             return false;
         } else {
             return true;
@@ -207,7 +207,7 @@ ON C.ID = S.course_ID
             die ($query);
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return false;
 
         $return = array();
@@ -236,7 +236,7 @@ ON C.ID = S.course_ID
             die ($query);
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             return false;
         } else {
             return mysqli_fetch_array($result);

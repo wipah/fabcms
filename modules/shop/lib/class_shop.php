@@ -56,7 +56,7 @@ class shop
                 return;
             }
 
-            if ($db->numRows){
+            if ($db->affected_rows){
                 $row = mysqli_fetch_assoc($result);
 
                 $this->config['customHeader']       = $row['custom_header'];
@@ -118,7 +118,7 @@ class shop
             die ('Unable to load Shop config. Aborting.');
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $relog->write(['type'      => '3',
                            'module'    => 'SHOP',
                            'operation' => 'shop_load_config_missing',
@@ -158,7 +158,7 @@ class shop
             return -1;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return 0;
 
         $row = mysqli_fetch_assoc($result);
@@ -224,7 +224,7 @@ class shop
                 return -1;
             }
 
-            if (!$db->numRows)
+            if (!$db->affected_rows)
                 return -2;
 
 
@@ -268,7 +268,7 @@ class shop
             return false;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
                            'operation' => 'shop_ipn_triggers_select_cart_no_cart',
@@ -307,7 +307,7 @@ class shop
             return -1;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return -2;
 
         $fileList = [];
@@ -386,7 +386,7 @@ class shop
 
             $log->write('shop', 'update_cart_error', 'Unable to update cart. ' . $query);
         } else {
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 $log->write('shop', 'update_cart_no_rows', 'Unable to update cart. No rows.  ' . $query);
             } else {
                 $log->write('shop', 'update_cart_success', 'Cart was updated. ' . $query);
@@ -428,7 +428,7 @@ class shop
             return false;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return false;
 
         $row = mysqli_fetch_assoc($result);
@@ -473,7 +473,7 @@ class shop
             return -1;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'Item was not found. Query is  ' . $query;
 
             return -2;
@@ -524,7 +524,7 @@ class shop
                     return false;
                 }
 
-                if (!$db->numRows) {
+                if (!$db->affected_rows) {
 
                     $relog->write(['type'      => '3',
                                    'module'    => 'SHOP',
@@ -756,7 +756,7 @@ class shop
             return -1;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return -2;
 
         $row = mysqli_fetch_assoc($result);
@@ -794,7 +794,7 @@ class shop
             }
 
 
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 // Cart doesn't exists so we have to remove the cookies
                 setcookie('cart_ID', '0', time() - 60 * 24);
                 setcookie('cart_secure_hash', '0', time() - 60 * 24);
@@ -844,7 +844,7 @@ class shop
         }
 
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return -2;
 
         $row = mysqli_fetch_assoc($result);
@@ -943,7 +943,7 @@ class shop
 
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return ['error' => 2];
 
         $totalTaxable = 0;
@@ -1038,7 +1038,7 @@ class shop
             return -1;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             return -2;
         }
 
@@ -1094,7 +1094,7 @@ class shop
             return -1;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'Cart is empty. ' . PHP_EOL;
             return -2;
         }

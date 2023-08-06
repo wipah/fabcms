@@ -48,7 +48,7 @@ if (isset($_GET['ID'])) {
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No licenses found.';
         return;
     }
@@ -100,7 +100,7 @@ if (isset($_GET['saveNew'])) {
             return;
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             echo 'Master ID not exists.';
             return;
         } else {
@@ -121,7 +121,7 @@ if (isset($_GET['saveNew'])) {
             return;
         }
 
-        if ($db->numRows){
+        if ($db->affected_rows){
             echo '&bull; Language ' . $language . ' already exists.';
             return;
         } else {

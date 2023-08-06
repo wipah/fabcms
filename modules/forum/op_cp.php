@@ -44,7 +44,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo '<div class="alert alert-info">
             <strong>Info.</strong> ' . $language->get('forum', 'cpPreferencesAreNotPresent') . '.
           </div>';

@@ -59,7 +59,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No image found! Aborting.: ' . $query;
     return;
 }
@@ -76,7 +76,7 @@ if (!$resultLicenses = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No license found.' . $query;
     return;
 }
@@ -377,7 +377,7 @@ switch ($fabMedia->module) {
         if (!$resultWikiPages = $db->executeQuery('select')) {
             echo 'Query error while selecting pages from wiki!';
         } else {
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 $pagesFromWiki = $language->get('media', 'showImageWikiHasNoPage');
             } else {
                 $pagesFromWiki = '';

@@ -58,7 +58,7 @@ class user
         $db->setQuery($query);
         $result = $db->executeQuery('select');
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $this->logged = false;
             $log->write('login_failed', 'LOGIN', 'email:' . $email);
             return false;
@@ -214,7 +214,7 @@ class user
             $db->setQuery($query);
             $result = $db->executeQuery();
 
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 $this->logged = false;
                 $log->write('login_failed_with_hack', 'LOGIN', 'cookieID: ' . $cookie_ID . ', cookieHash: ' . $cookie_hash . ', cookieSecureHash: ' . $cookie_secureHash);
 
@@ -259,7 +259,7 @@ class user
 
         $db->setQuery($query);
         $db->executeQuery();
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             return false;
         } else {
             return true;
@@ -285,7 +285,7 @@ class user
 
         $db->setQuery($query);
         $db->executeQuery();
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             return false;
         } else {
             return true;
@@ -429,7 +429,7 @@ class user
             return false;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'Internal error. No match with database. Please contact our staff';
 
             $relog->write(['type' => '4', 'module' => 'USER', 'operation' => 'send_confermation_email_no_rows', 'details' => 'SELECT error. ' . $query]);

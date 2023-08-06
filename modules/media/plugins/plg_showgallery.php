@@ -62,7 +62,7 @@ function plugin_showgallery($options)
         return 'Query error. ' . $query;
 
 
-    if (!$db->numRows)
+    if (!$db->affected_rows)
         return 'No gallery';
 
     return showRowsGallery($result, $options);

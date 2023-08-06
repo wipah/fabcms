@@ -77,7 +77,7 @@ foreach ($period as $singleDay) {
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         $cronjobs->status = 0;
         $cronjobs->writeLog('No data on . ' . $singleDay );
 

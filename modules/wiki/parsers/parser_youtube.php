@@ -32,7 +32,7 @@ $content = preg_replace_callback($theRegex,
                             <div class="panel-body">Unfortunately the video was not ready. Please try again later.</div>
                         </div>';
 
-                if (!$db->numRows) {
+                if (!$db->affected_rows) {
                     return '
                         <div class="panel panel-primary">
                             <div class="panel-heading">

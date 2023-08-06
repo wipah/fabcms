@@ -77,9 +77,7 @@ class relog
                   )
                   ';
 
-        $db->setQuery($query);
-
-        $db->executeQuery('insert');
+        $db->query($query);
 
     }
 

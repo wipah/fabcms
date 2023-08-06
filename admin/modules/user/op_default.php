@@ -87,7 +87,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No user.';
     return;
 }
@@ -135,7 +135,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No group!';
     return;
 }

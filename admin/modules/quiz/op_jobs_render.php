@@ -77,8 +77,7 @@ ORDER BY RAND()
 ' . ($maxQuestions > 0 ? 'LIMIT ' . (int) $maxQuestions : '') .'
 ';
 
-$db->setQuery($query);
-if (!$db->executeQuery('select')) {
+if (!$db->query($query)) {
     echo 'Errore nella query';
     return;
 }
@@ -236,9 +235,7 @@ foreach ($correctArray as $page => $questions ){
 
             $query = substr($query, 0, -3);
 
-
-            $db->setQuery($query);
-            if (!$result = $db->executeQuery('select')){
+            if (!$result = $db->query($query)){
                 echo 'Query error: ' . $query;
             }else{
                 while ($row = mysqli_fetch_array($db->getResultAsObject())){

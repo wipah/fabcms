@@ -45,7 +45,7 @@ if (!$db->executeQuery('select')) {
     die ($query);
 }
 
-if ($db->numRows)
+if ($db->affected_rows)
 {
     $query = '
         UPDATE ' . $db->prefix . 'fabmedia
@@ -117,7 +117,7 @@ if ($db->numRows)
     if (!$db->executeQuery('insert')){
         echo 'Error: ' . $query;
     } else {
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             echo 'No update. ' . $query;
         }
         echo '[' . date('d-m-Y h:i:s') . '] File created (lang: ' . $lang . ').';

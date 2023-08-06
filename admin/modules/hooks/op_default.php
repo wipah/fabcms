@@ -12,13 +12,12 @@ echo '<h1>Hooks editor</h1>';
 $template->sidebar .= $template->simpleBlock('Quick links', '<a href="admin.php?module=hooks&op=new">New hook</a><br />');
 
 $query = "SELECT * FROM {$db->prefix}hooks";
-$db->setQuery($query);
 
-if (!$db->executeQuery('select')) {
+if (!$db->query($query)) {
     echo 'Query error. ' . $query;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No records. Would you like to <a href="admin.php?module=hooks&op=add">add one block</a>?';
 }
 else {

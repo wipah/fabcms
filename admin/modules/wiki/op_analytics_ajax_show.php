@@ -211,14 +211,12 @@ AND period_compare_1.language = FWPM.language
 $query .= $mainJoin . ' ' . ( empty($mainWhere) ? '' : ' WHERE ') . $mainWhere . $orderBy;
 
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $db->lastError . '<pre>' . $query . '</pre>';
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No rows';
     return;
 }

@@ -24,8 +24,8 @@ $template->navBar[] = '<a href="admin.php?module=user&op=config">Configuration</
 
 // Count number of users
 $query = 'SELECT count(ID) as total from ' . $db->prefix . 'users';
-$db->setQuery($query);
-$result = $db->executeQuery('select');
+
+$result = $db->query($query);
 $row = $db->getResultAsArray();
 $template->sidebar .= $template->simpleBlock('Statistic', 'Total user: ' . $row['total']);
 
@@ -123,7 +123,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'Please configure groups first.' . $query;
     return;
 }

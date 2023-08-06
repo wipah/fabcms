@@ -37,7 +37,7 @@ if (!$result = $db->executeQuery()) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     header("HTTP/1.0 404 Not Found");
     echo '<h1>Media not found</h1>
     <!--FabCMS-hook:media-showMedia404NotFound-->';

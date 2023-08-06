@@ -15,13 +15,12 @@ $template->navBarAddItem('Tag editor', 'admin.php?module=wiki&op=tag');
 $query = 'SELECT * 
 FROM ' . $db->prefix . 'wiki_tags_menu AS T';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo '<pre>' . $query . '</pre>';
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No menu.';
 }
 

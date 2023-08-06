@@ -56,7 +56,7 @@ if (!$result = $db->executeQuery('select')) {
 
 echo '<h2>' . $language->get('forum', 'searchTopicSearch', null ) . '</h2>';
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo $language->get('forum', 'searchNoTopicResult', null );
 }
 
@@ -136,7 +136,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo $language->get('forum', 'searchNoReplyFound', null);
 } else {
 

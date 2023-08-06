@@ -64,7 +64,7 @@ $rowCourse = mysqli_fetch_assoc($resultCourse);
 $template->navBarAddItem($rowCourse['name'], $URI->getBaseUri() . $core->router->getRewriteAlias('formazione') . '/admin-cp/course/3/');
 $template->navBarAddItem('Video order', $URI->getBaseUri() . $core->router->getRewriteAlias('formazione') . '/admin-cp/course/3/video-order/');
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No course';
     return;
 }
@@ -85,7 +85,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'Course has no media. ';
     return;
 }

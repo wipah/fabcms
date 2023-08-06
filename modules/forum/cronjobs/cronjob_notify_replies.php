@@ -40,7 +40,7 @@ if (!$result = $db->executeQuery($query)) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     $cronjobs->writeLog('Now row. ' . $query);
     return;
 }
@@ -58,7 +58,7 @@ while ($row = mysqli_fetch_array($result)) {
         $cronjobs->status = 2;
         $cronjobs->writeLog('Unable to change the status of the subscription. ' . $query);
     } else {
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $cronjobs->writeLog("No affected rows while changing status. $query");
 
         } else {

@@ -20,9 +20,7 @@ SELECT M.ID AS master_ID, D.name, D.ID, D.lang
 LEFT JOIN ' . $db->prefix . 'wiki_categories_details AS D
 ON D.master_ID = M.ID';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery()){
+if (!$result = $db->query($query)){
     echo 'Query error.';
     return;
 }
@@ -30,7 +28,7 @@ if (!$result = $db->executeQuery()){
 
 echo '<h1>Categories</h1>';
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No categories has been saved. <a href="admin.php?module=wiki&op=categories&command=new">Click here</a> to add a category.';
     return;
 }

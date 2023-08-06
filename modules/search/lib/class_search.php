@@ -84,9 +84,8 @@ class search
                     \'' . $interface . '\'
                     )';
 
-        $db->setQuery($query);
-        echo $query;
-        if (!$db->executeQuery('insert')) {
+
+        if (!$db->query($query)) {
             $debug->write('error', 'Query error while inserting the search in the %_search_logs database.', 'search');
         }
     }

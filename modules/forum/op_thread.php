@@ -41,7 +41,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo $language->get('forum', 'threadThreadNotFound', null);
     return;
 }
@@ -101,7 +101,7 @@ if (!$result = $db->executeQuery('select')){
     echo 'Query error';
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo $language->get('forum', 'threadNoTopic', null);
     return;
 }

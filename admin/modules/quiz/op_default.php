@@ -32,9 +32,8 @@ ORDER BY ID desc
 LIMIT 5
 ';
 
-$db->setQuery($query);
 $ultimeDomande = '<ul class="side-menu layout-options">';
-if (!$db->executeQuery()){
+if (!$db->query($query)){
     $ultimeDomande .= 'Errore nella query';
 }
 while ($linea = mysqli_fetch_array($db->getResultAsObject())){
@@ -47,8 +46,8 @@ $query = '
 SELECT COUNT(ID) AS ricorrenze
 FROM ' . $db->prefix . 'quiz_questions
 ';
-$db->setQuery($query);
-$db->executeQuery('select');
+
+$db->query($query);
 $linea = $db->getResultAsArray();
 
 $statistiche = 'Ci sono <i>' . $linea['ricorrenze'] . '</i> domande inserite nel database.';
@@ -82,8 +81,8 @@ echo '
 ';
 
 $query = 'SELECT * FROM ' . $db->prefix . 'quiz_categories';
-$db->setQuery($query);
-$result = $db->executeQuery('select');
+
+$result = $db->query($query);
 
 echo '
 <h2>Quality test</h2>
@@ -109,8 +108,9 @@ while ($row = mysqli_fetch_array($result)){
        OR categorie LIKE \'' . $ID . '|%\'
        OR categorie LIKE \'%|' . $ID . '|%\'
        OR categorie LIKE \'%|'. $ID . '\'';
-    $db->setQuery($query);
-    if (!$result_subquery = $db->executeQuery('select')){
+
+
+    if (!$result_subquery = $db->query($query)){
         echo 'Subquery error';
     }else{
         $row_subquery = $db->getResultAsArray();
@@ -143,11 +143,10 @@ SELECT(
     WHERE user_ID > 0) AS total_user
     ';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error. ' . $query;
 }else{
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No record!';
     }else{
         $row = mysqli_fetch_array($result);

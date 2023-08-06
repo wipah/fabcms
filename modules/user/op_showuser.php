@@ -46,7 +46,7 @@ if (!$db->executeQuery())
     return;
 }
 
-if (!$db->numRows)
+if (!$db->affected_rows)
 {
     echo $language->get('user','userCannotFindUser');
     return;

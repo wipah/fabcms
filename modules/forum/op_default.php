@@ -48,7 +48,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     $latestTopicSidebar = $language->get('forum', 'defaultNoTopic', null);
 } else {
     while ($row = mysqli_fetch_assoc($result)){
@@ -79,7 +79,7 @@ if (!$resultCategory = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo $language->get('forum', 'defaultNoCategories', null );
     return;
 }
@@ -122,7 +122,7 @@ while ($rowCategories = mysqli_fetch_assoc($resultCategory)){
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         echo $language->get('forum', 'defaultNoForun', null );;
     } else {
 

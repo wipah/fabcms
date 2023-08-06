@@ -44,8 +44,7 @@ class wiki
                   FROM ' . $db->prefix . 'wiki_tags_menu
                   WHERE language = \'' . $core->shortCodeLang . '\' ORDER BY ID ASC;';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
@@ -77,9 +76,7 @@ class wiki
         )
         ';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             return false;
         } else {
             return true;
@@ -96,9 +93,7 @@ class wiki
                   FROM ' . $db->prefix . 'wiki_parsers 
                   WHERE enabled = 1 ORDER BY `order`';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             echo '<pre>Query error while loading parsers</pre>';
             $relog->write(['details'   => $query,
                            'type'      => 4,
@@ -151,8 +146,7 @@ class wiki
                   FROM ' . $db->prefix . 'wiki_pages AS P
                   WHERE ID = ' . $ID . ' LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
 
             $relog->write(['type'      => '4',
@@ -166,7 +160,7 @@ class wiki
         }
 
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
 
             $relog->write(['type'      => '3',
                            'module'    => 'WIKI',
@@ -187,9 +181,8 @@ class wiki
          **********/
         if ($options['noDelete'] !== true) {
             $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_files WHERE page_ID = ' . $ID . ';';
-            $db->setQuery($query);
 
-            if (!$db->executeQuery('delete')) {
+            if (!$db->query($query)) {
 
 
                 $relog->write(['type'      => '4',
@@ -244,8 +237,7 @@ class wiki
         if ($hasData === true) {
             $query = substr($query, 0, -1);
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('insert')) {
+            if (!$db->query($query)) {
 
 
                 $relog->write(['type'      => '4',
@@ -271,9 +263,7 @@ class wiki
                   FROM ' . $db->prefix . 'wiki_config 
                   WHERE lang = \'' . $core->shortCodeLang . '\';';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery()) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
@@ -307,9 +297,7 @@ class wiki
                   ON P.master_ID = M.ID
                   WHERE M.ID = ' . (int)$master_ID . ';';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery($query)) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
@@ -373,9 +361,7 @@ class wiki
                   ON P.master_ID = M.ID
                   WHERE P.ID = ' . $ID . ';';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
 
             $relog->write(['type'      => '4',
@@ -388,7 +374,7 @@ class wiki
             return false;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
 
             $relog->write(['type'      => '3',
                            'module'    => 'WIKI',
@@ -432,8 +418,7 @@ class wiki
                   WHERE page_ID = ' . $ID . ' AND 
                   master_ID = ' . $master_ID . ';';
 
-            $db->setQuery($query);
-            $db->executeQuery('delete');
+            $db->query($query);
         }
 
         // We have no outbound links here
@@ -454,9 +439,7 @@ class wiki
 
         $query = substr($query, 0, -2);
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
 
 
             $relog->write(['type'      => '4',
@@ -489,9 +472,7 @@ class wiki
                   AND P.service_page = 0
                   ;';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
@@ -721,12 +702,11 @@ class wiki
 
             $query = substr($query, 0, -15) . ';';
 
-            $db->setQuery($query);
-            if (!$result = $db->executeQuery('select')) {
+            if (!$result = $db->query($query)) {
                 echo '<pre>Query error ' . $query . '</pre>';
             }
 
-            if ($db->numRows) {
+            if ($db->affected_rows) {
                 while ($row = mysqli_fetch_array($result)) {
                     $this->existingPages[] = $row['trackback'];
                 }
@@ -848,9 +828,7 @@ class wiki
             ' AND visible = 1' .
             ' LIMIT 1';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
@@ -861,7 +839,7 @@ class wiki
             return 'Query error with page selection. Name was ' . $page;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             if ($user->isAdmin)
                 return '--- Admin message: box ' . $page . ' was not found ---';
 
@@ -1036,9 +1014,7 @@ class wiki
                   WHERE page_ID = ' . $page_ID . ' 
                   ORDER BY ID ASC';
 
-            $db->setQuery($query);
-
-            $result = $db->executeQuery('select');
+            $result = $db->query($query);
 
             $return = [];
             while ($row = mysqli_fetch_assoc($result)) {
@@ -1069,8 +1045,7 @@ class wiki
                       FROM ' . $db->prefix . 'wiki_pages_keywords 
                       WHERE page_ID = ' . $page_ID;
 
-            $db->setQuery($query);
-            $result = $db->executeQuery('select');
+            $result = $db->query($query);
 
             $return = [];
             while ($row = mysqli_fetch_assoc($result)) {
@@ -1093,14 +1068,12 @@ class wiki
                   WHERE page_ID = ' . $page_ID . ' 
                   LIMIT 1';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             echo 'Query error. ' . $query;
             return false;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'No row';
             return false;
         }
@@ -1112,9 +1085,7 @@ class wiki
                   WHERE ID = ' . $page_ID . '
                   LIMIT 1';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery($query)){
+        if (!$db->query($query)){
             echo 'Query error ' . $query;
             return false;
         }
@@ -1130,14 +1101,13 @@ class wiki
                   WHERE page_ID = ' . $page_ID . ' 
                   LIMIT 1';
 
-        $db->setQuery($query);
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             echo 'Query error. ' . $query;
             return false;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'No row';
             return false;
         }
@@ -1149,9 +1119,7 @@ class wiki
                   WHERE ID = ' . $page_ID . '
                   LIMIT 1';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery($query)){
+        if (!$db->query($query)){
             echo 'Query error ' . $query;
             return false;
         }
@@ -1167,9 +1135,9 @@ class wiki
 
         // Delete old references
         $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_tags WHERE page_ID = ' . $page_ID;
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('delete')) {
+
+        if (!$db->query($query)) {
             echo 'Query error: ' . $query;
             return;
         }
@@ -1182,7 +1150,7 @@ class wiki
 
         $query = substr($query, 0, -2);
 
-        $db->setQuery($query);
+        $db->query($query);
         if (!$db->executeQuery('insert')) {
             echo 'Query error. ' . $query;
         }
@@ -1198,9 +1166,8 @@ class wiki
 
         // Delete old references
         $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_internal_tags WHERE page_ID = ' . $page_ID;
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('delete')) {
+        if (!$db->query($query)) {
             echo 'Query error: ' . $query;
             return;
         }
@@ -1213,8 +1180,7 @@ class wiki
 
         $query = substr($query, 0, -2);
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             die ('Query error. ' . $query);
         }
 
@@ -1233,9 +1199,8 @@ class wiki
         $query = 'DELETE 
                   FROM ' . $db->prefix . 'wiki_pages_keywords 
                   WHERE page_ID = ' . $page_ID;
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('delete')) {
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
                            'operation' => 'wiki_update_keywords_delete_query_error',
@@ -1253,8 +1218,7 @@ class wiki
 
         $query = substr($query, 0, -2);
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
                            'operation' => 'wiki_update_keywords_query_error',
@@ -1276,9 +1240,8 @@ class wiki
                   FROM ' . $db->prefix . 'wiki_pages_seo 
                   WHERE page_ID = ' . $page_ID;
 
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('delete')) {
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',
                 'operation' => 'wiki_update_keywords_delete_query_error',
@@ -1302,8 +1265,7 @@ class wiki
 
         $query = substr($query, 0, -2);
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',
                 'operation' => 'wiki_update_keywords_query_error',
@@ -1330,8 +1292,7 @@ class wiki
                   ORDER BY `order` ASC
                   LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',
                 'operation' => 'wiki_update_seo_first_keywords_query_error',
@@ -1341,7 +1302,7 @@ class wiki
             return -3;
         }
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             return -4;
 
         $row = mysqli_fetch_assoc($result);
@@ -1351,8 +1312,7 @@ class wiki
         WHERE ID = ' . $page_ID . '
         LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('insert')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',
                 'operation' => 'wiki_update_seo_first_keywords_query_error',
@@ -1379,9 +1339,7 @@ class wiki
                     AND keyword = \'' . $keyword . '\' 
                   LIMIT 1;';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('update')) {
+        if (!$db->query($query)) {
             echo 'Query error. ' . $query;
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',
@@ -1392,7 +1350,7 @@ class wiki
             return -2;
         }
 
-        // echo 'Done updating. Result rowset is  ' . $db->numRows. PHP_EOL;
+        // echo 'Done updating. Result rowset is  ' . $db->affected_rows. PHP_EOL;
     }
 
     public function computeSeo($page_ID, $keyword)
@@ -1415,9 +1373,8 @@ class wiki
                   WHERE PAGES.ID = ' . $page_ID . ' 
                   LIMIT 1';
 
-        $db->setQuery($query);
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',
                 'operation' => 'wiki_compute_seo_query_error',
@@ -1427,7 +1384,7 @@ class wiki
             return -2;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo $query;
             return -3;
         }
@@ -1536,9 +1493,7 @@ class wiki
                   WHERE ID = ' . $page_ID . ' 
                   LIMIT 1';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
                            'operation' => 'wiki_update_stats_select_query_error',
@@ -1548,7 +1503,7 @@ class wiki
             return -2;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo $query;
 
             return -2;
@@ -1558,9 +1513,8 @@ class wiki
 
         $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_statistics 
                   WHERE page_ID = ' . $page_ID . ' LIMIT 1';
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('delete')) {
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
                            'operation' => 'wiki_update_stats_keywords_delete_query_error',
@@ -1594,8 +1548,7 @@ class wiki
                   WHERE page_ID = ' . $page_ID . '
                   GROUP BY page_ID';
 
-        $db->setQuery($query);
-        if (!$resultLinks = $db->executeQuery('select')) {
+        if (!$resultLinks = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',
@@ -1606,7 +1559,7 @@ class wiki
             return -3;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $links = 0;
         } else {
             $rowLinks = mysqli_fetch_assoc($resultLinks);
@@ -1640,9 +1593,7 @@ class wiki
         )
         ';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert'))
+        if (!$db->query($query))
         {
             $relog->write(['type'      => '4',
                            'module'    => 'WIKI',

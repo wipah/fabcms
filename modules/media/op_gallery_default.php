@@ -47,7 +47,7 @@ $template->sidebar .= $template->simpleBlock($language->get('media', 'lateralSea
 $template->navBarAddItem('MediaManager',$URI->getBaseUri() . 'media/' );
 $template->navBarAddItem($language->get('media', 'galleryShowImagesMenuGallery', null), $URI->getBaseUri() . 'media/gallery/');
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No galleries were found';
     return;
 }

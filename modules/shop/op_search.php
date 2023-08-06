@@ -31,7 +31,7 @@ if (!$result = $db->executeQuery('SELECT')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No rows';
 
     return;

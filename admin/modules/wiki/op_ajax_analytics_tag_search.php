@@ -35,7 +35,7 @@ if (!$resultStats = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo '<script>alert("No data");</script>';
     return;
 } else {

@@ -17,7 +17,7 @@ if (!$result = $db->executeQuery('select'))
     return false;
 
 
-if (!$db->numRows)
+if (!$db->affected_rows)
     return false;
 
 while ($row = mysqli_fetch_assoc($result)) {

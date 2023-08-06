@@ -43,7 +43,7 @@ if ($path[3] === 'send') {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         echo '<div class="ui-state-error">Email not found</div>';
         return;
     }

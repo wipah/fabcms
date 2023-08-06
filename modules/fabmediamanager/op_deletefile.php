@@ -37,7 +37,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo '
         <div class="panel panel-primary">
             <div class="panel-heading">

@@ -34,7 +34,7 @@ if (!$result = $db->executeQuery()) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'File not found';
     return;
 }

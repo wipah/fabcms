@@ -45,7 +45,7 @@ if (!$result = $db->executeQuery('select')){
 
 $this->addJsFile('https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js', false, false);
 $this->addCSSLink('https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css', false, 'all', true);
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No orders were completed.';
 } else {
     echo '<h2>All orders/carts</h2>

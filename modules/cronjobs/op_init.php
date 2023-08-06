@@ -29,7 +29,7 @@ if (!$resultJobs = $db->executeQuery($query)) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No row';
     return;
 }

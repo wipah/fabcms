@@ -27,7 +27,7 @@ if (!$result = $db->executeQuery()){
 echo '<h2>Group list</h2>';
 
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No row';
 } else {
     echo '

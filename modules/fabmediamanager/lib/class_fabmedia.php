@@ -62,14 +62,13 @@ class FabMedia
           )
           LIMIT 20;';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $data = ['status' => 500];
 
             return json_encode($data);
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             // Status:404
             $data = ['status' => 404];
 
@@ -124,9 +123,7 @@ class FabMedia
                   AND MEDIA.user_ID = ' . $user->ID . ' 
                   LIMIT 1';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             echo 'Error. Query error while selecting. ' . $query;
 
             $relog->write(['type'      => '3',
@@ -138,7 +135,7 @@ class FabMedia
             return false;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             echo 'Error. No file found.';
 
             $relog->write(['type'      => '3',
@@ -215,8 +212,8 @@ class FabMedia
                   SET filename = \'' . $newName . '\' 
                   WHERE ID = ' . $row['ID'] . ' 
                   LIMIT 1';
-        $db->setQuery($query);
-        if (!$db->executeQuery('select')) {
+
+            if (!$db->query($query)) {
             echo 'Query error while updating.' . $query;
 
             $relog->write(['type'      => '3',
@@ -671,9 +668,7 @@ class FabMedia
             \'' . $user->ID . '\' 
         )';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'FABMEDIAMANAGER',
                            'operation' => 'fabmedia_manager_insert_image_db_error',
@@ -743,8 +738,7 @@ class FabMedia
             \'1\'   /* Enabled */
         )';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery($query, 'insert')) {
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FABMEDIAMANAGER',
@@ -781,9 +775,8 @@ class FabMedia
                 \'' . $core->in($height) . '\',
                 \'' . $core->in($location) . '\'
             );';
-            $db->setQuery($query);
 
-            if (!$db->executeQuery($query, 'insert')) {
+            if (!$db->query($query)) {
 
                 $relog->write(['type'      => '3',
                                'module'    => 'FABMEDIAMANAGER',
@@ -813,9 +806,7 @@ class FabMedia
                   VALUES (NOW());
                   ';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             $relog->write(['type'      => '3',
                            'module'    => 'FABMEDIAMANAGER',
                            'operation' => 'fabmedia_manager_insert_image_master_db_error',
@@ -878,9 +869,7 @@ class FabMedia
             \'' . $user->ID . '\'
         )';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             $relog->write(['type'      => '4',
                            'module'    => 'FABMEDIAMANAGER',
                            'operation' => 'fabmedia_manager_insert_master_generic_db_error',
@@ -939,8 +928,8 @@ class FabMedia
 	        \'1\'
         );';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')) {
+
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '3',
                            'module'    => 'FABMEDIAMANAGER',
@@ -977,9 +966,7 @@ class FabMedia
                     module = \'' . $this->module . '\'
                     AND extension = \'' . $extension . '\'';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '3',
                            'module'    => 'FABMEDIAMANAGER',
@@ -990,7 +977,7 @@ class FabMedia
             return ['error' => true];
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $relog->write(['type'      => '2',
                            'module'    => 'FABMEDIAMANAGER',
                            'operation' => 'fabmedia_select_custom_file_no_match_info',

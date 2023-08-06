@@ -32,13 +32,12 @@ AND LENGTH(PAGES.internal_redirect) = 0
 AND STATS.words < 300
 ORDER BY STATS.words ASC';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     $output .= 'Query error. ' . $query;
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     $output .= 'No result';
 } else {
     $output .= '<div class="table-responsive">
@@ -97,7 +96,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     $output .= 'No result';
 } else {
     $output .= '<div class="table-responsive"><table class="table table-bordered table-striped" id="zeroVisit">
@@ -171,7 +170,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     $output .= 'No result';
 } else {
     $output .= '<div class="table-responsive">

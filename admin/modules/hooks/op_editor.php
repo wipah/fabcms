@@ -47,7 +47,7 @@ switch ($_GET['op']) {
       return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         echo 'No hook found with ID ' . $ID;
       return;
     }

@@ -30,14 +30,12 @@ WHERE M.ID = ' . $master_ID .'
 AND language != \'' . $language . '\'
 ';
 
-$db->setQuery($query);
-
-if(!$result = $db->executeQuery('select')){
+if(!$result = $db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No pages. <br/>';
 } else {
     while ($row = mysqli_fetch_array($result)){

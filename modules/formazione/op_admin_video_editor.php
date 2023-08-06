@@ -61,7 +61,7 @@ if (isset($_GET['ID'])) {
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No row';
         return;
     }

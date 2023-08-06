@@ -90,7 +90,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
 
     $relog->write(['type'      => '3',
                    'module'    => 'FORUM',
@@ -304,7 +304,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if ($db->numRows) {
+if ($db->affected_rows) {
 
     while ($row = mysqli_fetch_assoc($result)) {
 

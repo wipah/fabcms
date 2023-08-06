@@ -12,13 +12,12 @@ $query = 'SELECT * FROM
 ' . $db->prefix . 'wiki_pages AS P
 WHERE (nullif(P.image_ID, \' \') IS NULL) OR (nullif(P.image, \' \') IS NULL)';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error: ' . $query;
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No page found!';
     return;
 }
@@ -34,14 +33,13 @@ while ($row = mysqli_fetch_assoc($result)){
               ORDER BY ID DESC
               LIMIT 1';
 
-    $db->setQuery($query);
-    if (!$resultPage = $db->executeQuery('select')){
+    if (!$resultPage = $db->query($query)){
         echo 'Query error ' . $query;
         return;
     }
 
 
-    if ($db->numRows){
+    if ($db->affected_rows){
         $rowImage = mysqli_fetch_assoc($resultPage);
         $image_ID = $rowImage['fabmedia_ID'];
         $filename = $rowImage['filename'];
@@ -52,9 +50,8 @@ while ($row = mysqli_fetch_assoc($result)){
                   WHERE ID = ' . $page_ID . '
                   LIMIT 1;  
                  ';
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('update')){
+        if (!$db->query($query)){
             echo 'Query error: ' . $query;
             return;
         }

@@ -25,13 +25,12 @@ $query = '
 SELECT * FROM ' . $db->prefix  . 'quiz_jobs
 ';
 
-$db->setQuery($query);
-if (!$db->executeQuery('select')){
+if (!$db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }
 
-if ($result = !$db->numRows){
+if ($result = !$db->affected_rows){
     echo 'No jobs already set.';
 }else{
     echo '

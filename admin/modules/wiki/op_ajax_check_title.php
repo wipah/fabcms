@@ -19,15 +19,13 @@ $query = 'SELECT *
           AND language = \'' . $language . '\'
           LIMIT 1;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error';
 }
 
 $row = mysqli_fetch_array($result);
 
-if ($db->numRows) {
+if ($db->affected_rows) {
     echo $row['ID'];
 } else {
     echo '0';

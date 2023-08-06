@@ -41,7 +41,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'La categoria richiesta non &egrave; disponibile';
     return;
 }
@@ -95,7 +95,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No items are present.';
 } else {
 

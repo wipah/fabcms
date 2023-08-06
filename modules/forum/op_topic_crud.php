@@ -66,7 +66,7 @@ if ($path[2] == 'new-topic') {
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         $relog->write(['type'      => '3',
                        'module'    => 'FORUM',
                        'operation' => 'forum_categories_search_thread_not_exists',
@@ -250,7 +250,7 @@ if ($path[2] == 'new-topic') {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $relog->write(['type'      => '3',
                        'module'    => 'FORUM',
                        'operation' => 'forum_topic_select_no_topic',

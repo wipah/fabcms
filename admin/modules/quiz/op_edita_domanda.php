@@ -87,9 +87,8 @@ if (isset($_GET['salva'])){
     appunti = \''.$appunti.'\'
     WHERE ID = \''.$ID.'\'
     LIMIT 1;';
-    
-    $db->setQuery($query);
-    if (!$db->executeQuery('insert')){
+
+    if (!$db->query($query)){
         echo 'errore' . $query;
         return;
     }
@@ -108,10 +107,10 @@ FROM cellula_appunti
 ORDER BY ID DESC
 LIMIT 5;
 ';
-$db->setQuery($query);
-$db->executeQuery('select');
 
-if (!$db->numRows){
+$db->query($query);
+
+if (!$db->affected_rows){
     $linkDirettoAppunti = '<ul class="side-menu layout-options"><li>Non ci sono, ancora appunti...</li></ul>';
 }else{
     $linkDirettoAppunti = '<ul class="side-menu layout-options">';
@@ -123,8 +122,8 @@ $linkDirettoAppunti .= '</ul>';
 
 $query = '
 SELECT * FROM ' . $db->prefix . 'quiz_categories ORDER BY nome ASC';
-$db->setQuery($query);
-$db->executeQuery('select');
+
+$db->query($query);
 $cat = '';
 while ($linea = mysqli_fetch_array($db->getResultAsObject())){
     $cat .= ' <input name="categorie[]" id="cat_'.$linea['ID'].'" type="checkbox" value="'.$linea['ID'].'"/>' . '<span onclick="check(\''.$linea['ID'].'\');">'.$linea['nome'] .'</span> ';
@@ -148,9 +147,9 @@ FROM ' . $db->prefix . 'quiz_questions
 ORDER BY ID desc
 LIMIT 5
 ';
-$db->setQuery($query);
+
 $ultimeDomande = '<ul class="side-menu layout-options">';
-if (!$db->executeQuery('select')){
+if (!$db->query($query)){
     $ultimeDomande .= '<li>Errore nella query</li>';
 }
 while ($linea = mysqli_fetch_array($db->getResultAsObject())){
@@ -163,8 +162,8 @@ $query = '
 SELECT COUNT(ID) AS ricorrenze
 FROM ' . $db->prefix . 'quiz_questions
 ';
-$db->setQuery($query);
-$db->executeQuery('select');
+
+$db->query($query);
 $linea = $db->getResultAsArray();
 
 $statistiche = 'Ci sono <i>' . $linea['ricorrenze'] . '</i> domande inserite nel database.';
@@ -204,13 +203,13 @@ FROM ' . $db->prefix . 'quiz_questions AS d
 WHERE d.ID = \''.$ID.'\'
 LIMIT 1
 '; 
-$db->setQuery($query);
-if (!$db->executeQuery('select')){
+
+if (!$db->query($query)){
     echo 'Errore nella query.'.$query;
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'La domanda non esiste';
     return;
 }
@@ -220,8 +219,8 @@ $arrayCategorieDomanda = explode('|',$lineaDomanda['categorie']);
 
 $query = '
 SELECT * FROM ' . $db->prefix . 'quiz_categories ORDER BY nome ASC';
-$db->setQuery($query);
-$db->executeQuery('select');
+
+$db->query($query);
 $cat = '';
 while ($linea = mysqli_fetch_array($db->getResultAsObject())){
     $cat .= ' <input '.(in_array($linea['ID'],$arrayCategorieDomanda) ? 'checked="checked"' : '').' name="categorie[]" id="cat_'.$linea['ID'].'" type="checkbox" value="'.$linea['ID'].'"/>' . '<span onclick="check(\''.$linea['ID'].'\');">'.$linea['nome'] .'</span> ';
@@ -285,8 +284,7 @@ SELECT ID, titolo
 FROM cellula_appunti
 '.$queryWhere.';';
 
-$db->setQuery($query);
-if (!$db->executeQuery('select')){
+if (!$db->query($query)){
    echo 'Errore nella query '. $query;
    return; 
 }else{

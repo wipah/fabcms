@@ -52,7 +52,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     $cronjobs->writeLog( "*** NO DATA *** " . $queryInsert);
     $cronjobs->status = 0;
     echo 'No data.';

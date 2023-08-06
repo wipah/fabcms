@@ -23,14 +23,13 @@ if (!$core->loaded || !$user->isAdmin)
 $query = 'SELECT DISTINCT(module) 
           FROM ' . $db->prefix . 'relog';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error.';
 
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     $optionModules = 'No module';
 
     return;

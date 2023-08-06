@@ -49,7 +49,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo $language->get('wiiki', 'ajaxSearchNoResult', null);
     return;
 }

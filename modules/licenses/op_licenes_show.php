@@ -31,7 +31,7 @@ if (!$result = $db->executeQuery('select')){
 
 $template->navBarAddItem($language->get('licenses', 'licensesMenu'),$URI->getBaseUri() . $this->routed . '/');
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo 'No license';
     return;
 }

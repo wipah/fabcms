@@ -44,15 +44,13 @@ $query = "SELECT * " .
     " OR {$db->buildExtendedQuery($termine, 'content',' ', 'OR')}" .
     " ORDER BY (NOT ({$db->buildExtendedQuery($termine, 'title',' ', 'OR')}))" .
     "AND visible = 1;";
-$db->setQuery($query);
 
-
-if (!$db->executeQuery()) {
+if (!$db->query($query)) {
     echo 'QUERY ERROR. ' . $query;
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo '<br/>No result';
 }
 else {

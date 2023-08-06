@@ -90,7 +90,7 @@ function plugin_showthumbs($options)
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         return 'No images.';
     }
 

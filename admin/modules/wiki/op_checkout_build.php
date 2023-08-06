@@ -78,9 +78,7 @@ ON P.master_ID = M.ID
 GROUP BY M.ID
 ORDER BY P.title ASC';
 
-$db->setQuery($query);
-
-if (!$buildResult = $db->executeQuery('select')){
+if (!$buildResult = $db->query($query)){
     echo '<pre>' . $query . '</pre>';
     return;
 }

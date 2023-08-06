@@ -47,13 +47,13 @@ if ($_GET['command'] == 'edit'){
     }
 
     $query = 'SELECT * FROM ' . $db->prefix . 'wiki_tags_menu WHERE ID = ' . $ID . ' LIMIT 1;';
-    $db->setQuery($query);
-    if (!$result = $db->executeQuery('select')){
+
+    if (!$result = $db->query($query)){
         echo '<pre>' . $query . '</pre>';
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No menu. ' . $query;
         return;
     }

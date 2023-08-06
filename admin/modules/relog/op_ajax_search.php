@@ -59,15 +59,13 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'relog ' . (!empty($where) ? 'WHERE ' . $where : '') . ' 
           ORDER BY ID ASC';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery()) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No rows';
 
     return;

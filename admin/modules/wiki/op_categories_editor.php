@@ -43,14 +43,12 @@ if ($_GET['command'] == 'edit'){
         
         WHERE master_ID = ' . $master_ID . ' AND ID=' . $ID . ' LIMIT 1;';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('update')){
+        if (!$result = $db->query($query)){
             echo 'Query error.' . $query;
             return;
         }
 
-        if (!$db->numRows){
+        if (!$db->affected_rows){
             echo 'Nessuna modifica.';
 
         } else {
@@ -66,14 +64,12 @@ if ($_GET['command'] == 'edit'){
                 ON D.master_ID = M.ID 
               WHERE M.ID = ' . $master_ID . ' AND D.ID = ' . $ID . ' LIMIT 1;';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery()){
+    if (!$result = $db->query($query)){
         echo 'Query error.';
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No row';
         return;
     }
@@ -100,9 +96,7 @@ if ($_GET['command'] == 'edit'){
         if (!isset($_GET['master_ID']) ) {
             $query = 'INSERT INTO ' . $db->prefix . 'wiki_categories_masters (type) VALUES (1)';
 
-            $db->setQuery($query);
-
-            if (!$result = $db->executeQuery('insert')){
+            if (!$result = $db->query($query)){
                 echo 'Query error.';
                 return;
             }
@@ -131,8 +125,7 @@ if ($_GET['command'] == 'edit'){
              \'' . $master_ID . '\'
          );';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo 'Query error. ' . $query;
         }
 

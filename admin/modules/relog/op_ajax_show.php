@@ -23,14 +23,13 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'relog 
           WHERE ID = \'' . $ID . '\' LIMIT 1';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery($query)) {
+if (!$result = $db->query($query)) {
     echo 'Query error';
 
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No rows';
 
     return;

@@ -106,7 +106,7 @@ if ( $_GET['command'] === 'new' )
     $db->setQuery($query);
     $result = $db->executeQuery('select');
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No hook.';
         return;
     }
@@ -190,7 +190,7 @@ if ($_GET['command'] === 'edit') {
         return;
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         echo 'No banner are associated';
         return;
     }

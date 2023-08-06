@@ -96,11 +96,11 @@ if (!$resultCustomization = $db->executeQuery('select'))
     return;
 }
 
-if (!$db->numRows)
+if (!$db->affected_rows)
 {
     $log->write('info', 'shop', 'No customizations were found');
 } else {
-    $log->write('info', 'shop', 'Customizations found. Number ' . $db->numRows);
+    $log->write('info', 'shop', 'Customizations found. Number ' . $db->affected_rows);
 
     $itemCustomization = '';
     $mandatoryIDS      = [];
@@ -151,7 +151,7 @@ if (!$db->numRows)
                     return;
                 }
 
-                if (!$db->numRows) {
+                if (!$db->affected_rows) {
                     echo 'No options found.';
                     return;
                 }
@@ -197,7 +197,7 @@ if (!empty($tags) && strlen($tags) > 1) {
     if (!$resultSimilar = $db->executeQuery('select')) {
         echo 'Query error' . $queryTags;
     } else {
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $similar = 'Nessun prodotto simile';
         } else {
             $similar = '';

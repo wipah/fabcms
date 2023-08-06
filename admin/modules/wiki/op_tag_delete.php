@@ -22,9 +22,7 @@ $query  = 'DELETE
            WHERE ID = ' . $ID . ' 
            LIMIT 1';
 
-$db->setQuery($query);
-
-if (!$db->executeQuery('delete')) {
+if (!$db->query($query)) {
     echo 'Query error. ' . $query;
 } else {
     echo 'Menù deleted';

@@ -73,7 +73,7 @@ switch ($path[3]) {
             return;
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $log->write('user_reset_password_error', 'user', 'Mail not found:' . $email);
             echo '<div class="ui-state-error">The email provided was not found.</div>'; //todo: language
             return;
@@ -92,7 +92,7 @@ switch ($path[3]) {
         $db->setQuery($query);
 
         if ($db->executeQuery('update')) {
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 echo '<div class="ui-state-error">' . $language->get('user', 'userResetPassowordEmailNotFound') . '</div>';
                 return;
             }
@@ -173,7 +173,7 @@ switch ($path[3]) {
         $query = "SELECT * FROM {$db->prefix}users WHERE reset_email_hash = '$hash' LIMIT 1";
         $db->setQuery($query);
         $result = $db->executeQuery('select');
-        if ($db->numRows) {
+        if ($db->affected_rows) {
             echo $language->get('user', 'userChooseNewPassword');
 
             echo '

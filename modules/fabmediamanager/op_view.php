@@ -121,7 +121,7 @@ if (!$db->executeQuery($query)){
     return;
 }
 
-if (!$db->numRows){
+if (!$db->affected_rows){
     echo '
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -133,7 +133,7 @@ if (!$db->numRows){
     return;
 }
 
-$numRows = $db->numRows;
+$numRows = $db->affected_rows;
 
 $result = $db->getResultAsObject();
 

@@ -71,7 +71,7 @@ function plugin_single_page($dataArray){
         return 'Query error.';
     }
 
-    if (!$db->numRows){
+    if (!$db->affected_rows){
         return'No row!';
     }
 

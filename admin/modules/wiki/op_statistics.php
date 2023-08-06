@@ -44,7 +44,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No data';
 }
 
@@ -128,7 +128,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No data';
 }
 
@@ -164,7 +164,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No data';
     return;
 }
@@ -238,7 +238,7 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No data';
 }
 
@@ -283,7 +283,7 @@ $db->setQuery($query);
 if (!$result = $db->executeQuery('select')) {
     $unlinkedItems = 'Query error. ' . $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $unlinkedItems = 'No items!';
     } else {
         echo '
@@ -322,7 +322,7 @@ $db->setQuery($query);
 if (!$result = $db->executeQuery('select')) {
     $unlinkedItems = 'Query error. ' . $query;
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $unlinkedItems = 'No items!';
     } else {
         echo '

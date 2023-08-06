@@ -11,14 +11,12 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'wiki_planner 
           WHERE enabled = 1';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo $query;
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'No planner were defined.';
     return;
 }

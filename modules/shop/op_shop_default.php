@@ -104,7 +104,7 @@ if (!$result = $db->executeQuery('select')) {
 
 echo '<div class="container fabCMS-shop-articleList">';
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     echo 'Nessun articolo al momento presente.';
 } else {
     $i = 0;

@@ -45,7 +45,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         return;
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         // echo '--> Page ' . $row['title'] . ' has no SEO keyords. Attemping to create by title. <br/>';
 
         $query = 'INSERT INTO ' . $db->prefix . 'wiki_pages_seo 
@@ -67,7 +67,7 @@ while ($row = mysqli_fetch_assoc($result)) {
         $fabwiki->updateSeo($ID, $row['title']);
 
     } else {
-        // echo 'Page ' . $row['title'] . ' has ' . $db->numRows . ' SEO keyords. <br/>';
+        // echo 'Page ' . $row['title'] . ' has ' . $db->affected_rows . ' SEO keyords. <br/>';
 
         // Delete old references
         /*

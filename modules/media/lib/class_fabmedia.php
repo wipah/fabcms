@@ -60,14 +60,13 @@ class FabMedia
             )
         LIMIT 20;';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $data = ['status' => 500];
 
             return json_encode($data);
         }
 
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             // Status:404
             $data = ['status' => 404];
 

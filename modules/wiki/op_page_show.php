@@ -136,9 +136,7 @@ FROM
   WHERE ' . $db->prefix . 'wiki_pages.trackback = \'' . $trackback . '\' AND language = \'' . $core->shortCodeLang . '\'
   LIMIT 1;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
 
     $relog->write(['type'      => '4',
                    'module'    => 'WIKI',
@@ -151,7 +149,7 @@ if (!$result = $db->executeQuery('select')) {
 }
 
 // Fire a 404 error
-if (!$db->numRows) {
+if (!$db->affected_rows) {
 
     $relog->write(['type'      => '2',
         'module'    => 'WIKI',
@@ -464,10 +462,9 @@ $query = 'SELECT *
           WHERE 
                 first_tag = \'' . $tags_array[0] . '\'';
 
-$db->setQuery($query);
-$resultCustomTag = $db->executeQuery('select');
+$resultCustomTag = $db->query($query);
 
-if ($db->numRows) {
+if ($db->affected_rows) {
     $rowCustomTitle = mysqli_fetch_assoc($resultCustomTag);
     $titleTag = $rowCustomTitle['rule'];
 
@@ -736,9 +733,8 @@ if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
         $query = substr($query, 0, -3) . ')';
 
         $query .= 'GROUP BY P.ID ORDER BY no_keywords DESC LIMIT 6';
-        $db->setQuery($query);
 
-        if (!$resultSimilarPages = $db->executeQuery('select')) {
+        if (!$resultSimilarPages = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',
@@ -749,7 +745,7 @@ if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
             $similarPages = 'Query error.';
         } else {
 
-            if (!$db->numRows) {
+            if (!$db->affected_rows) {
                 $similarPages .= '<div class="row">
                                 <div class="col-lg-12"> ' . $language->get('wiki', 'showPageNoSimilarPage') . '</div>';
             } else {
@@ -834,9 +830,7 @@ LEFT JOIN ' . $db->prefix . 'users AS U
 WHERE C.page_ID = ' . $page_ID . '
     AND visible = 1;';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery('select')) {
+    if (!$result = $db->query($query)) {
 
         $relog->write(['type'      => '4',
                        'module'    => 'WIKI',
@@ -847,7 +841,7 @@ WHERE C.page_ID = ' . $page_ID . '
         $comments = 'Query error while selecting comments';
 
     } else {
-        if (!$db->numRows) {
+        if (!$db->affected_rows) {
             $comments = 'No comments for this page';
         } else {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -1062,8 +1056,7 @@ if ($fabwiki->cacheExpired === 1) {
               WHERE ID = ' . $page_ID .' 
               LIMIT 1 ';
 
-    $db->setQuery($query);
-    $db->executeQuery('UPDATE');
+    $db->query($query);
 }
 
 $stats->write(['IDX' => $page_ID, 'module' => 'wiki', 'submodule' => 'pageView']);

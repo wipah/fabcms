@@ -86,7 +86,7 @@ $db->setQuery($query);
 if (!$result = $db->executeQuery('select')) {
     $comments = 'Query error.';
 } else {
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         $comments = 'No comments are present.';
     } else {
         $comments = '

@@ -34,7 +34,7 @@ if (!$db->executeQuery('update')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
   echo $language->get('user', 'confirmNoMatch');
 } else {
     // Get the email

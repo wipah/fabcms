@@ -32,8 +32,7 @@ SELECT * FROM '. $db->prefix .'appunti
 WHERE articolo LIKE \'%'.$termine.'%\'
 ';
 
-$db->setQuery($query);
-$db->executeQuery();
-while ($linea = mysqli_fetch_array($db->getResultAsObject())){
+$result = $db->query($query);
+while ($linea = mysqli_fetch_assoc($result)){
     echo '&bull; <a href="#" onclick="aggiungiAppunto(\''.$linea['ID'].'\',\''.str_replace('\'','\\\'',$linea['titolo']).'\')">' . $linea['titolo'] . '</a><br/>';
 }

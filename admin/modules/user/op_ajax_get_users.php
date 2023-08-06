@@ -57,8 +57,7 @@ if (!empty($where)){
 
 $query .= 'GROUP BY U.ID;';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
   echo 'QUERY ERROR: ' . $query;
   return;
 }

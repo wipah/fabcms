@@ -48,9 +48,7 @@ WHERE MATCH (P.content) AGAINST     (\'' . $phrase . '\' WITH QUERY EXPANSION)
 ORDER BY title_score DESC, content_score DESC
 LIMIT 50';
 
-
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
 
     $relog->write(['type'      => '4',
                    'module'    => 'WIKI',
@@ -62,12 +60,12 @@ if (!$result = $db->executeQuery('select')) {
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     $this->totalResults = 0;
     $chunk .= '<br/>No result';
 } else {
 
-    $this->totalResults += $db->numRows;
+    $this->totalResults += $db->affected_rows;
     $this->results['wiki'] = array();
 
     while ($row = mysqli_fetch_array($result)) {

@@ -177,14 +177,12 @@ class template extends templateBase implements iFabTemplate
         WHERE parent_ID = ' . $parent_ID . ' 
         ORDER BY `order` ASC';
 
-            $db->setQuery($query);
-
-            if (!$result = $db->executeQuery('select')){
+            if (!$result = $db->query($query)){
                 echo '<pre>' . $query . '</pre>';
                 return;
             }
 
-            if (!$db->numRows)
+            if (!$db->affected_rows)
                 return;
 
 

@@ -33,8 +33,8 @@ class cronjobs{
 				  WHERE enabled = 1
 				  AND time <= \'' . date('Y-m-d H:i:s') . '\';';
 		
-		$db->setQuery($query);
-		if (!$result = $db->executeQuery('select')){
+
+		if (!$result = $db->query($query)){
 			$log->write('cronjob_select_query_error','CRONJOBS','Cannot select cronjobs. ' . $query . ' - ' . $db->lastError );
 			return false;
 		}

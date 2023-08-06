@@ -115,7 +115,7 @@ function plugin_showrandom($options)
         return 'Query error.<pre>' .$db->lastError  . PHP_EOL . $query . '</pre>';
     }
 
-    if (!$db->numRows) {
+    if (!$db->affected_rows) {
         return 'No img.';
     }
 

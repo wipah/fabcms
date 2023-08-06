@@ -369,13 +369,11 @@ class core
                          OR lang IS NULL
                          OR lang = ''";
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select'))
+        if (!$result = $db->query($query))
             die ("Unable to load the config." . $db->lastError);
 
 
-        if (!$db->numRows)
+        if (!$db->affected_rows)
             die ("Configuration is missing");
 
         while ($row = mysqli_fetch_array($result)) {
@@ -411,9 +409,8 @@ class core
                   '$extended_value'
                  );";
 
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             echo $query;
             return false;
         } else {
@@ -433,9 +430,9 @@ class core
     {
         global $db;
         if ($htmlEscape === true) {
-            return mysqli_real_escape_string($db->linkID, htmlentities($text, ENT_COMPAT, 'UTF-8'));
+            return $db->real_escape_string(htmlentities($text));
         } else {
-            return mysqli_real_escape_string($db->linkID, $text);
+            return $db->real_escape_string($text);
         }
     }
 
@@ -451,9 +448,8 @@ class core
         if (!empty($lang))
             $query .= ' AND lang = \'' . $this->in($lang, true) . ' \'';
 
-        $db->setQuery($query);
 
-        if (!$db->executeQuery('delete'))
+        if (!$db->query($query))
             return -1;
 
         return true;
@@ -486,9 +482,7 @@ class core
                   LIMIT 1
                   ';
 
-        $db->setQuery($query);
-
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             die($query);
         }
 

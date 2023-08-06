@@ -55,8 +55,7 @@ $query = 'SELECT * FROM ' . $db->prefix . 'wiki_pages
 WHERE `language` = \'' . $core->shortCodeLang . '\'
 AND (' . $queryTrackback . ')';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error' . $query;
     return;
 }

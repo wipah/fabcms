@@ -27,7 +27,7 @@ if (!$result = $db->executeQuery('select')){
     return;
 }
 
-if (!$db->numRows) {
+if (!$db->affected_rows) {
     $log->write('info','Sitemap:wiki','No result: ' . $query);
     return;
 }
@@ -52,7 +52,7 @@ while ($row = mysqli_fetch_assoc($result)){
         ]);
 
     } else {
-        if ($db->numRows){
+        if ($db->affected_rows){
             while ( $rowImage = mysqli_fetch_assoc($resultImage)){
                 $return .= PHP_EOL . '<image:image>
                                 <image:loc><![CDATA[' . $URI->getBaseUri(true) . $rowImage['filename'] . ']]></image:loc>

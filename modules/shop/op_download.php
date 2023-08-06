@@ -58,7 +58,7 @@ if (!$result = $db->executeQuery()) {
     return;
 }
 
-if ($db->numRows){
+if ($db->affected_rows){
 
     $filename = __DIR__ . '/files/' . $file;
 
