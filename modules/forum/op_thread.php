@@ -29,8 +29,8 @@ $query = 'SELECT *
             AND visible = 1
           LIMIT 1;';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
 
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',
@@ -89,8 +89,8 @@ ORDER BY T.PINNED DESC,
          T.ID DESC';
 
 
- $db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+ 
+if (!$result = $db->query($query)){
 
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',

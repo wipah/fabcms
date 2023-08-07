@@ -48,9 +48,7 @@ if ( $_GET['command'] === 'edit'){
                   LIMIT 1
                 ';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('update')){
+        if (!$db->query($query)){
             echo 'Query error. ' . $query;
             return;
         } else {
@@ -65,9 +63,7 @@ if ( $_GET['command'] === 'edit'){
               FROM ' . $db->prefix . 'users_groups
               WHERE ID = ' . $ID . ' LIMIT 1';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery()){
+    if (!$result = $db->query($query)){
         echo 'Query error.' . $query;
         return;
     }
@@ -102,8 +98,7 @@ if ( $_GET['command'] === 'edit'){
                     \'' . $groupOrder . '\'
                   )';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo 'Query error. ' . $query;
             return;
         }

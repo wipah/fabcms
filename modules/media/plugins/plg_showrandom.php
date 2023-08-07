@@ -63,9 +63,9 @@ function plugin_showrandom($options)
              MAX(ID) AS max
       FROM ' . $db->prefix . 'fabmedia;';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select'))
+    if (!$result = $db->query($query))
     {
         echo 'Query error.' . $query;
         return;
@@ -109,9 +109,9 @@ function plugin_showrandom($options)
     LEFT JOIN ' . $db->prefix . 'fabmedia_masters AS MASTER
     ON MASTER.ID = FABMEDIA.master_ID';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')) {
+    if (!$result = $db->query($query)) {
         return 'Query error.<pre>' .$db->lastError  . PHP_EOL . $query . '</pre>';
     }
 

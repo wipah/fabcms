@@ -18,9 +18,9 @@ foreach ($languagesArray AS $language) {
                   \'General license text.\'
               )';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('insert')){
+    if (!$db->query($query)){
         echo 'Cannot insert. ' . $query;
         die();
     }

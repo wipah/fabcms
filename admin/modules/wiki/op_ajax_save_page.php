@@ -85,9 +85,7 @@ if (($_POST['crudType']) === 'update') {
               FROM ' . $db->prefix . 'wiki_pages 
               WHERE ID = ' . $ID . ' LIMIT 1';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery('select')) {
+    if (!$result = $db->query($query)) {
         echo '{"status": 504, "description": "Query error while selecting past content. ' . $db->lastError . '"}';
 
         return;
@@ -153,10 +151,7 @@ if (($_POST['crudType']) === 'update') {
     WHERE ID                =   ' . $ID . '
     LIMIT 1;';
 
-    $db->setQuery($query);
-
-
-    if (!$db->executeQuery('insert')) {
+    if (!$db->query($query)) {
         echo '{"status": 504, "description": "Query error while updating. ' . $db->lastError . '"}';
 
         return;
@@ -190,8 +185,7 @@ if (($_POST['crudType']) === 'update') {
                   VALUES 
                   (\'' . date('Y-m-d') . '\')';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             echo '{"status": 505,"description": "Unable to create master."}';
         }
         $master_ID = $db->lastInsertID;
@@ -280,8 +274,7 @@ if (($_POST['crudType']) === 'update') {
     );
     ';
 
-    $db->setQuery($query);
-    if (!$db->executeQuery('insert')) {
+    if (!$db->query($query)) {
         echo '{"status": 505,"description": "Unable to store the new page' . $query . '"}';
 
         return;

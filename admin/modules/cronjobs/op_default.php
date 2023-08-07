@@ -11,9 +11,7 @@ if (!$core->adminBootCheck())
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'cronjobs';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo '<pre>' . $query . '</pre>';
     return;
 }

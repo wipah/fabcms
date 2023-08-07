@@ -1151,7 +1151,7 @@ class wiki
         $query = substr($query, 0, -2);
 
         $db->query($query);
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             echo 'Query error. ' . $query;
         }
 

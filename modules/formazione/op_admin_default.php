@@ -18,9 +18,9 @@ $query = 'SELECT *
           ORDER BY ID DESC
           LIMIT 5';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo '<pre>' . $query . '</pre>';
     return;
 }

@@ -44,9 +44,9 @@ class shop
             $query = 'SELECT * FROM ' . $db->prefix . 'shop_users_customizations WHERE user_ID = ' . $user->ID . ' 
                       LIMIT 1';
 
-            $db->setQuery($query);
+            
 
-            if (!$result = $db->executeQuery('select')){
+            if (!$result = $db->query($query)){
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
                                'operation' => 'shop_construct_get_anonymous',
@@ -75,8 +75,8 @@ class shop
                          AND anonymous_hash = \'' . $core->in($_COOKIE['cart_secure_hash'], true) . '\'
                       LIMIT 1;';
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('update')) {
+            
+            if (!$db->query($query)) {
 
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
@@ -105,9 +105,9 @@ class shop
                   FROM ' . $db->prefix . 'shop_config 
                   WHERE lang = \'' . $core->shortCodeLang . '\';';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -145,9 +145,9 @@ class shop
                   WHERE ID = ' . $ID . '
                   LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -185,9 +185,9 @@ class shop
                                  ) . ' 
                           LIMIT 1;';
 
-            $db->setQuery($query);
+            
 
-            if (!$db->executeQuery('update')){
+            if (!$db->query($query)){
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
                                'operation' => 'shop_update_cart_global_discount_error',
@@ -212,9 +212,9 @@ class shop
                 ) . '
             GROUP BY ' . $db->prefix . 'shop_carts.latest_update';
 
-            $db->setQuery($query);
+            
 
-            if (!$result = $db->executeQuery('select')) {
+            if (!$result = $db->query($query)) {
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
                                'operation' => 'shop_update_cart_status',
@@ -255,9 +255,9 @@ class shop
                   FROM ' . $db->prefix . 'shop_carts AS CART
                   WHERE CART.ID = ' . $cart_ID;
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('select')) {
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -295,8 +295,8 @@ class shop
                     AND F.type = ' . $type . ' 
                   ORDER BY F.ordering ASC;';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -344,9 +344,9 @@ class shop
                  )
                  ';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -374,9 +374,9 @@ class shop
                   latest_update = NOW()
                   WHERE ID      = ' . ( (int) $options['ID']) . ' LIMIT 1;';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('update')) {
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -414,9 +414,9 @@ class shop
         $query = 'SELECT ID 
                   FROM ' . $db->prefix . 'shop_cart_items
                   WHERE item_ID = ' . $item_ID . ';';
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
                            'operation' => 'shop_find_cart_by_item',
@@ -459,8 +459,8 @@ class shop
                   LIMIT 1;';
 
 
-        $db->setQuery($query);
-        if (!$resultItem = $db->executeQuery('select')) {
+        
+        if (!$resultItem = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -510,8 +510,8 @@ class shop
                               SET item_qty = item_qty + ' . $qty . '
                               WHERE cart_ID = ' . $cart_ID . ' LIMIT 1';
 
-                $db->setQuery($query);
-                if (!$db->executeQuery('update')) {
+                
+                if (!$db->query($query)) {
 
                     $relog->write(['type'      => '4',
                                    'module'    => 'SHOP',
@@ -557,9 +557,9 @@ class shop
                                 NOW()
                               );';
 
-                $db->setQuery($query);
+                
 
-                if (!$db->executeQuery('insert')) {
+                if (!$db->query($query)) {
                     $relog->write(['type'      => '4',
                                    'module'    => 'SHOP',
                                    'operation' => 'shop_update_cart_add_item',
@@ -615,8 +615,8 @@ class shop
                           );';
             }
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('insert')) {
+            
+            if (!$db->query($query)) {
 
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
@@ -698,8 +698,8 @@ class shop
             echo "\r\n ********** Inserting the line \r\n $query \r\n ***********";
 
             // Adds the line
-            $db->setQuery($query);
-            if (!$db->executeQuery('insert')) {
+            
+            if (!$db->query($query)) {
 
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
@@ -744,9 +744,9 @@ class shop
                   AND status = 0
                   LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
                            'operation' => 'shop_user_has_cart',
@@ -779,8 +779,8 @@ class shop
                       FROM ' . $db->prefix . 'shop_carts 
                       WHERE ID = ' . $cart_ID . ' AND anonymous_hash = \'' . $cart_secure_hash . '\';';
 
-            $db->setQuery($query);
-            if (!$result = $db->executeQuery('select')) {
+            
+            if (!$result = $db->query($query)) {
 
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
@@ -831,9 +831,9 @@ class shop
                   FROM ' . $db->prefix . 'shop_cart_items
                   WHERE item_ID = ' . $item_ID . ' AND cart_ID = ' . $cart_ID;
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
                            'operation' => 'shop_cart_has_item',
@@ -893,9 +893,9 @@ class shop
                     
                     VALUES ' . $queryInsert;
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
                            'operation' => 'shop_update_cart_add_item',
@@ -930,9 +930,9 @@ class shop
                     ' . (!is_null($cart_ID) ? ' AND C.ID = ' . $cart_ID : '') . ' 
                     ' . ($user->logged === true ? ' AND C.user_ID = ' . $user->ID . '' : '');
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
                            'operation' => 'shop_get_cart_values',
@@ -1026,9 +1026,9 @@ class shop
                   AND I.lang = \'' . $core->shortCodeLang . '\' 
                   LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
                            'operation' => 'shop_get_item_data_by_ID_trackback',
@@ -1079,10 +1079,10 @@ class shop
                     ON I.vat_ID = V.ID
                   WHERE CI.cart_ID = ' . $cart_ID;
 
-        $db->setQuery($query);
+        
 
         // echo $query . '<br>' . PHP_EOL;
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'SHOP',
@@ -1169,9 +1169,9 @@ class shop
             LIMIT 1';
 
 
-            $db->setQuery($query);
+            
             # echo "\r\n" . $query . "\r\n";
-            if (!$db->executeQuery('update')) {
+            if (!$db->query($query)) {
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',
                                'operation' => 'shop_update_cart_values_delete',
@@ -1198,8 +1198,8 @@ class shop
                       FROM ' . $db->prefix . 'shop_cart_items 
                       WHERE ' . $items;
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('delete')) {
+            
+            if (!$db->query($query)) {
 
                 $relog->write(['type'      => '4',
                                'module'    => 'SHOP',

@@ -24,9 +24,9 @@ $query = 'SELECT ID,
 
 echo $query . '<br/>' . PHP_EOL;
 
-$db->setQuery($query);
 
-if (!$resultSelect = $db->executeQuery('select')) {
+
+if (!$resultSelect = $db->query($query)) {
     $cronjobs->status = 2;
     $cronjobs->writeLog('Query error.');
 
@@ -47,9 +47,9 @@ while ($row = mysqli_fetch_array($resultSelect)) {
               WHERE module    =     \'wiki\'
                 AND submodule =     \'pageView\' 
                 AND IDX       =     ' . $row['ID'] . ';';
-    $db->setQuery($query);
+    
 
-    if (!$resultHit = $db->executeQuery('select')) {
+    if (!$resultHit = $db->query($query)) {
         $cronjobs->status = 2;
         $cronjobs->writeLog('Query error.');
 
@@ -75,9 +75,9 @@ while ($row = mysqli_fetch_array($resultSelect)) {
               WHERE ID = ' . $row['ID'] . '
               LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('update')) {
+        if (!$db->query($query)) {
             echo $query;
 
             $cronjobs->status = 2;

@@ -25,9 +25,9 @@ $this->noTemplateParse = TRUE;
 // Gets alla categoryes
 $query = 'SELECT * FROM ' . $db->prefix .'quiz_categories';
 
-$db->query($query);
+$result = $db->query($query);
 $arrayCat = array();
-while ($row = mysqli_fetch_array($db->getResultAsObject())){
+while ($row = mysqli_fetch_array($result)){
     $arrayCat[$row['ID']] = $row['nome'];
 }
 $where = '';

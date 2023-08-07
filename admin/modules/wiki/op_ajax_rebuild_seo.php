@@ -19,9 +19,8 @@ echo 'Rebuilding SEO. <br/>';
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'wiki_pages
           WHERE (service_page = 0 OR service_page IS NULL)';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }
@@ -36,11 +35,7 @@ while ($row = mysqli_fetch_assoc($result)) {
               FROM ' . $db->prefix . 'wiki_pages_seo 
               WHERE page_ID = ' . $ID . ';';
 
-    // echo '<pre>' . $query . '</pre>';
-
-    $db->setQuery($query);
-
-    if (!$resultKeywords = $db->executeQuery()) {
+    if (!$resultKeywords = $db->query($query)) {
         echo $query;
         return;
     }
@@ -54,9 +49,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                           \''  . $core->in($row['title']) . '\', 
                           0)';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             echo 'Query error. ' . $query;
             return;
         } else {
@@ -75,10 +68,10 @@ while ($row = mysqli_fetch_assoc($result)) {
                   FROM ' . $db->prefix . 'wiki_pages_seo 
                   WHERE page_ID = ' . $ID;
 
-        $db->setQuery($query);
+        
         echo '--> Deleting old references. <br/>';
 
-        if (!$db->executeQuery('delete')) {
+        if (!$db->query($query)) {
             echo 'Error deleting!!! ' . $query;
             $relog->write(['type'      => '4',
                 'module'    => 'WIKI',

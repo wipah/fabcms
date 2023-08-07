@@ -19,9 +19,7 @@ $query = 'SELECT *
           WHERE ID = ' . $ID . ' 
           LIMIT 1';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }

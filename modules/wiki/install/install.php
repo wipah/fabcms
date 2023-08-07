@@ -12,9 +12,9 @@ if (!$isInstalling)
 // Master
 $query = 'INSERT INTO ' . $db->prefix . 'wiki_categories_masters (`type`) VALUES (1)';
 
-$db->setQuery($query);
 
-if (!$db->executeQuery('insert')){
+
+if (!$db->query($query)){
     echo 'Cannot insert category master. ' . $query;
     die();
 }
@@ -35,9 +35,9 @@ foreach ($languagesArray AS $language) {
                   \'Description ' . $language . '\'
               )';
 
-            $db->setQuery($query);
+            
 
-            if (!$db->executeQuery('insert')){
+            if (!$db->query($query)){
                 echo 'Cannot insert. ' . $query;
                 die();
             }
@@ -57,9 +57,9 @@ foreach ($languagesArray AS $language) {
                   \'main-page\'
               )';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('insert')){
+    if (!$db->query($query)){
         echo 'Cannot insert wiki config. ' . $query;
         die();
     }
@@ -79,9 +79,9 @@ foreach ($languagesArray AS $language) {
                   \':\'
               )';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('insert')){
+    if (!$db->query($query)){
         echo 'Cannot insert wiki config. ' . $query;
         die();
     }
@@ -101,9 +101,9 @@ foreach ($languagesArray AS $language) {
                   \'FabCMS wiki\'
               )';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('insert')){
+    if (!$db->query($query)){
         echo 'Cannot insert wiki config. ' . $query;
         die();
     }
@@ -120,9 +120,9 @@ foreach ($languagesArray AS $language) {
                   \'' . date('Y-m-d') . '\'
               )';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('insert')){
+    if (!$db->query($query)){
         echo 'Cannot insert wiki master. ' . $query;
         die();
     }
@@ -165,9 +165,9 @@ foreach ($languagesArray AS $language) {
     1)
     ';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('insert')){
+    if (!$db->query($query)){
         echo 'Cannot insert welcome page. ' . $query;
         die();
     }

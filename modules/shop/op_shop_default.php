@@ -49,8 +49,8 @@ $query = 'SELECT *
           WHERE enabled = 1
             AND lang    = \'' . $core->shortCodeLang . '\';';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error while selecting categories';
 
     return;
@@ -95,9 +95,9 @@ $query = 'SELECT I.*
             AND enabled = 1
           LIMIT 12';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error.';
     return;
 }

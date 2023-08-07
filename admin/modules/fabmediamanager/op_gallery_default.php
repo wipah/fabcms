@@ -23,8 +23,7 @@ LEFT JOIN ' . $db->prefix . 'fabmedia AS MEDIA
 	ON GALLERY.cover_ID = MEDIA.ID
 ORDER BY GALLERY.`order` ASC';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }

@@ -36,9 +36,8 @@ AND WP.service_page != 1
 AND WP.internal_redirect = \'\'
 GROUP BY WC.ID
 ';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error: ' . $query;
 
     return;
@@ -121,9 +120,7 @@ echo '
 <tbody>
 ';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error: ' . $query;
     return;
 }
@@ -157,9 +154,7 @@ FROM ' . $db->prefix . 'wiki_pages AS P
 ORDER BY CHARS DESC
 LIMIT 100';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error: ' . $query;
     return;
 }
@@ -231,9 +226,7 @@ FROM ' . $db->prefix . 'wiki_pages AS P
 GROUP BY year, month 
 ORDER BY YEAR DESC, MONTH DESC;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }
@@ -279,8 +272,8 @@ FROM ' . $db->prefix . 'wiki_outbound_trackback AS T
 WHERE NOT (SELECT P.trackback FROM ' . $db->prefix . 'wiki_pages AS P WHERE T.trackback_page_ID = P.trackback) 
 GROUP BY T.trackback_page_ID ORDER BY total DESC';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     $unlinkedItems = 'Query error. ' . $query;
 } else {
     if (!$db->affected_rows) {
@@ -318,8 +311,8 @@ SELECT COUNT(T.trackback_page_ID) AS total,
        GROUP BY T.trackback_page_ID ORDER BY total DESC
 ';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     $unlinkedItems = 'Query error. ' . $query;
 } else {
     if (!$db->affected_rows) {

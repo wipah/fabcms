@@ -21,9 +21,9 @@ $content = preg_replace_callback($theRegex,
                           ON V.fabmedia_ID = F.ID
                           WHERE F.ID = ' . $media_ID . ' LIMIT 1;';
 
-                $db->setQuery($query);
+                
 
-                if (!$result = $db->executeQuery('select'))
+                if (!$result = $db->query($query))
                     return '
                         <div class="panel panel-warning">
                             <div class="panel-heading">

@@ -82,9 +82,9 @@ function plugin_showthumbs($options)
                
                ' . $whereFilter . ' ' . $orderBy . ' ' . $limit;
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')) {
+    if (!$result = $db->query($query)) {
         echo 'Query error! <pre>' . $query . '</pre>';
 
         return;

@@ -65,9 +65,9 @@ switch ($path[3]) {
         WHERE email = '$email'
         LIMIT 1";
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $log->write('user_reset_password_error', 'user', 'Query error: ' . $query);
             echo '<div class="ui-state-error">We have got an internal error</div>.'; //todo: language
             return;
@@ -78,7 +78,7 @@ switch ($path[3]) {
             echo '<div class="ui-state-error">The email provided was not found.</div>'; //todo: language
             return;
         }
-        $row = $db->getResultAsArray();
+        $row =mysqli_fetch_assoc($result);
 
         $username = $row['username'];
         $hash = md5(microtime(true) . $conf['security']['siteKey']);
@@ -89,9 +89,9 @@ switch ($path[3]) {
         WHERE email = '$email'
         LIMIT 1;";
 
-        $db->setQuery($query);
+        
 
-        if ($db->executeQuery('update')) {
+        if ($db->query($query)) {
             if (!$db->affected_rows) {
                 echo '<div class="ui-state-error">' . $language->get('user', 'userResetPassowordEmailNotFound') . '</div>';
                 return;
@@ -139,8 +139,8 @@ switch ($path[3]) {
                       WHERE reset_email_hash = '$hash' 
                       LIMIT 1";
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('update')) {
+            
+            if (!$db->query($query)) {
                 echo 'Query error';
 
                 $relog->write(['type'      => '4',
@@ -171,8 +171,8 @@ switch ($path[3]) {
 
         $hash = $core->in($path[4], true);
         $query = "SELECT * FROM {$db->prefix}users WHERE reset_email_hash = '$hash' LIMIT 1";
-        $db->setQuery($query);
-        $result = $db->executeQuery('select');
+        
+        $result = $db->query($query);
         if ($db->affected_rows) {
             echo $language->get('user', 'userChooseNewPassword');
 

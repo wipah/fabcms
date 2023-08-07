@@ -45,7 +45,7 @@ $query = "SELECT * " .
     " ORDER BY (NOT ({$db->buildExtendedQuery($termine, 'title',' ', 'OR')}))" .
     "AND visible = 1;";
 
-if (!$db->query($query)) {
+if (!$result = $db->query($query)) {
     echo 'QUERY ERROR. ' . $query;
     return;
 }
@@ -54,7 +54,7 @@ if (!$db->affected_rows) {
     echo '<br/>No result';
 }
 else {
-    while ($row = mysqli_fetch_array($db->getResultAsObject())) {
+    while ($row = mysqli_fetch_array($result)) {
         echo '&bull;<a onclick="aggiungiPagina(\''.$row['ID'].'\',\''.str_replace('\'','\\\'',$row['title']).'\')">' . $row['title'] . '</a><br/>';
     }
 }

@@ -18,9 +18,7 @@ $query = 'SELECT *
           WHERE title LIKE \'%' . $title . '%\' 
           LIMIT 50';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }

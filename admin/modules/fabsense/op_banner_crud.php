@@ -37,9 +37,7 @@ if ($_GET['command'] === 'edit') {
         WHERE ID = ' . $ID . '
         LIMIT 1';
 
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('update')){
+        if (!$db->query($query)){
             echo '<div class="alert alert-warning" role="alert">
                     <strong>Query error!</strong> Query error while updating banner. <pre></pre>
                   </div>';
@@ -60,9 +58,7 @@ if ($_GET['command'] === 'edit') {
               WHERE ID = ' . $ID . ' 
               LIMIT 1';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
         echo 'Query error.';
         return;
     }
@@ -115,8 +111,7 @@ if ($_GET['command'] === 'edit') {
         )
         ';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo '<div class="panel panel-warning">
                     <div class="panel-heading">Query error</div>
                     <div class="panel-body">Query error. 

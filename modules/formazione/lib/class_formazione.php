@@ -35,8 +35,8 @@ ON C.ID = S.course_ID
 ' . (isset($limit) ? 'LIMIT ' . (int) $limit : '') . '';
 
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')){
+        
+        if (!$result = $db->query($query)){
             $log->write('formazione_get_courses_error','FORMAZIONE', $query);
             return false;
         }
@@ -68,9 +68,9 @@ ON C.ID = S.course_ID
                   FROM ' . $db->prefix . 'formazione_media
                   WHERE name_trackback = \'' . $core->in($trackback, true) . '\'
                   LIMIT 1;';
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             die ("Query error in trackback reverse");
         }
 
@@ -90,9 +90,9 @@ ON C.ID = S.course_ID
                   FROM ' . $db->prefix . 'formazione_courses
                   WHERE name_trackback = \'' . $core->in($trackback, true) . '\'
                   LIMIT 1;';
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             die ("Query error in trackback reverse");
         }
 
@@ -117,8 +117,8 @@ ON C.ID = S.course_ID
             ';
 
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery()){
+        
+        if (!$result = $db->query($query)){
             die ("Query error in userHasAccess subroutine. " . $query);
         }
 
@@ -137,8 +137,8 @@ ON C.ID = S.course_ID
         $media_ID = (int) $media_ID;
 
         $query = 'SELECT * FROM ' . $db->prefix .  'formazione_media WHERE ID = ' . (int) $media_ID . ' LIMIT 1';
-        $db->setQuery($query);
-        $result = $db->executeQuery('select');
+        
+        $result = $db->query($query);
 
         $row = mysqli_fetch_array($result);
 
@@ -160,9 +160,9 @@ ON C.ID = S.course_ID
         AND S.user_ID = ' . ($user->logged === true ? $user->ID : 0 ) . '
         ';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery()){
+        if (!$result = $db->query($query)){
             die ("Query error. " . $query);
         }
 
@@ -201,9 +201,9 @@ ON C.ID = S.course_ID
         ORDER BY `order` ASC
         ' . (isset($limit) ? ' LIMIT ' . (int) $limit : '' ) . ';';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             die ($query);
         }
 
@@ -230,9 +230,9 @@ ON C.ID = S.course_ID
 
         $query = 'SELECT * FROM ' . $db->prefix . 'formazione_courses WHERE ID = ' . (int) $course_ID . ' LIMIT 1;';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             die ($query);
         }
 
@@ -249,8 +249,8 @@ ON C.ID = S.course_ID
 
         $query = 'SELECT * FROM ' . $db->prefix . 'formazione_media WHERE ID = ' . (int) $ID. ' LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')){
+        
+        if (!$result = $db->query($query)){
             die ("Query error. " . $query);
         }
 
@@ -276,8 +276,8 @@ ON C.ID = S.course_ID
         WHERE M.media_ID = ' . $media_ID . ';';
 
 
-        $db->setQuery($query);
-        if(!$result = $db->executeQuery('select')){
+        
+        if(!$result = $db->query($query)){
             die ("Query error. " . $query);
         }
 

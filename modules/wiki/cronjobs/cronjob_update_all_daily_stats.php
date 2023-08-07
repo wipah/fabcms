@@ -49,9 +49,9 @@ foreach ($period as $singleDay) {
     $query = 'DELETE 
           FROM ' . $db->prefix . 'stats_daily 
           WHERE date = \'' . $singleDay . '\';';
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('delete')){
+    if (!$db->query($query)){
         $cronjobs->status = 2;
         $cronjobs->writeLog("Unable to delete. Query error. $query");
         return;
@@ -67,9 +67,9 @@ foreach ($period as $singleDay) {
             AND `date` >= \'' . $singleDay . ' 00:00:00\' AND `date` <= \'' . $singleDay . ' 23:59:59\' 
           GROUP BY IDX';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
         $cronjobs->status = 2;
         $cronjobs->writeLog("Unable to select HITS. Query error. $query");
 
@@ -100,8 +100,8 @@ foreach ($period as $singleDay) {
 
     $queryInsert = substr($queryInsert, 0, -1);
 
-    $db->setQuery($queryInsert);
-    if (!$db->executeQuery('insert')){
+
+    if (!$db->query($queryInsert)){
         $cronjobs->status = 2;
         $cronjobs->writeLog('Query error on last update . ');
         echo '<pre>' . $queryInsert . '</pre>';

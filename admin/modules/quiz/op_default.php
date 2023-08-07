@@ -33,10 +33,10 @@ LIMIT 5
 ';
 
 $ultimeDomande = '<ul class="side-menu layout-options">';
-if (!$db->query($query)){
+if (!$result = $db->query($query)){
     $ultimeDomande .= 'Errore nella query';
 }
-while ($linea = mysqli_fetch_array($db->getResultAsObject())){
+while ($linea = mysqli_fetch_assoc($result)){
     $ultimeDomande .= '<li> <a href="admin.php?module=quiz&op=editaDomanda&ID='.$linea['ID'].'">#' . $linea['ID'] .'</a></li>' ;
 }
 $ultimeDomande .= '</ul>';
@@ -47,8 +47,8 @@ SELECT COUNT(ID) AS ricorrenze
 FROM ' . $db->prefix . 'quiz_questions
 ';
 
-$db->query($query);
-$linea = $db->getResultAsArray();
+$result = $db->query($query);
+$linea = mysqli_fetch_assoc($result);
 
 $statistiche = 'Ci sono <i>' . $linea['ricorrenze'] . '</i> domande inserite nel database.';
 
@@ -101,6 +101,7 @@ while ($row = mysqli_fetch_array($result)){
     $ID = $row['ID'];
     $category = $row['nome'];
     $visible = (int) $row['visibile'];
+
     $query = '
     SELECT Count(ID) AS total
     FROM ' . $db->prefix . 'quiz_questions
@@ -113,7 +114,7 @@ while ($row = mysqli_fetch_array($result)){
     if (!$result_subquery = $db->query($query)){
         echo 'Subquery error';
     }else{
-        $row_subquery = $db->getResultAsArray();
+        $row_subquery = mysqli_fetch_assoc($result_subquery);
         echo '
             <tr>
                 <td>

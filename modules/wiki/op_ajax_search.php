@@ -36,9 +36,9 @@ GROUP BY P.ID
 ORDER BY title_score DESC, content_score DESC
 LIMIT 15';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $relog->write(['type'      => '4',
                    'module'    => 'WIKI',
                    'operation' => 'wiki_ajax_search_help',

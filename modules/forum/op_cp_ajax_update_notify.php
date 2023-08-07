@@ -15,9 +15,9 @@ $query = 'SELECT ID
           FROM ' . $db->prefix . 'forum_user_config 
           WHERE user_ID = ' . $user->ID . ' LIMIT 1';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery()) {
+
+if (!$result = $db->query($query)) {
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',
                    'operation' => 'forum_cp_select_photo_query_error',
@@ -36,9 +36,9 @@ if (!$db->affected_rows) {
                 ' . (int)$_POST['status'] . '
             );';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('INSERT')) {
+    if (!$result = $db->query($query)) {
 
 
         echo 'Query error with new.';
@@ -63,8 +63,8 @@ if (!$db->affected_rows) {
               WHERE ID = ' . $config_ID . ' 
                 AND user_ID = ' . $user->ID . '
               LIMIT 1';
-    $db->setQuery($query);
-    if (!$db->executeQuery('update')) {
+    
+    if (!$db->query($query)) {
         echo 'Query error';
 
         return;

@@ -30,9 +30,9 @@ $query = 'SELECT REPLY.reply
             THREAD.visible = 1 
           LIMIT 1';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',
                    'operation' => 'forum_reply_quote_select_error',

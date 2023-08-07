@@ -89,8 +89,8 @@ function plugin_latest_pages($dataArray)
     ' . $orderBy . ' 
     ' . $limit;
 
-    $db->setQuery($query);
-    if (!$result = $db->executeQuery('select')) {
+    
+    if (!$result = $db->query($query)) {
 
         $relog->write(['type'      => '4',
                        'module'    => 'WIKI',

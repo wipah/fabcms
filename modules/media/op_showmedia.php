@@ -20,9 +20,9 @@ $query = 'SELECT *
           AND trackback = ' . $trackback . '
           LIMIT 1';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery()) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error';
 
     $relog->write(['type'      => '4',

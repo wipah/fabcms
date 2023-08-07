@@ -20,9 +20,9 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'stats_groups 
           WHERE module = \'wiki\' ';
 
-$db->setQuery($query);
 
-if (!$resultGroups = $db->executeQuery('select')) {
+
+if (!$resultGroups = $db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;

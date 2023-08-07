@@ -53,9 +53,9 @@ $query = 'SELECT *
           WHERE user_ID = ' . $user->ID . ' 
              AND status = 1;';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
 
     $relog->write(['type'      => '4',
                    'module'    => 'SHOP',

@@ -29,9 +29,9 @@ if ($path[6] === 'save'){
                   AND course_ID = ' . $course_ID . ' 
                   LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('update')) {
+        if (!$db->query($query)) {
             echo 'Query error: <pre>' . $query . '</pre>';
         }
 
@@ -49,13 +49,13 @@ $query = 'SELECT *
           WHERE ID = ' . $course_ID . ' 
           LIMIT 1';
 
-$db->setQuery($query);
+
 
 $template->navBarAddItem('Formazione', $URI->getBaseUri() . $core->router->getRewriteAlias('formazione'));
 $template->navBarAddItem('Admin', $URI->getBaseUri() . $core->router->getRewriteAlias('formazione') . '/admin-cp/');
 $template->navBarAddItem('Courses', $URI->getBaseUri() . $core->router->getRewriteAlias('formazione') . '/admin-cp/course/');
 
-if (!$resultCourse = $db->executeQuery('select')) {
+if (!$resultCourse = $db->query($query)) {
     echo '<pre>' . $query . '</pre>';
     return;
 }
@@ -78,9 +78,9 @@ $query = 'SELECT MEDIA.ID media_ID,
           WHERE COURSE.course_ID = ' . $course_ID . '
           ORDER BY COURSE.order ASC;';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo '<pre>' . $query . '</pre>';
     return;
 }

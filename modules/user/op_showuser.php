@@ -33,9 +33,7 @@ $query = 'SELECT *
 
 $this->addMeta('og:type', 'profile');
 
-
-$db->setQuery($query);
-if (!$db->executeQuery())
+if (!$result = $db->query($query))
 {
     echo $template->getCustomBox(['title'   => 'Query error',
                                   'message' => 'Query error in user selection.',
@@ -52,7 +50,7 @@ if (!$db->affected_rows)
     return;
 }
 
-$row = $db->getResultAsArray();
+$row = mysqli_fetch_assoc($result);
 
 $this->addTitleTag(  sprintf($language->get('user', 'showUserProfileTitle'), $row['username']) );
 

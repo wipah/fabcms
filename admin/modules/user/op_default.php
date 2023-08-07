@@ -24,9 +24,9 @@ $template->navBarAddItem('Default',);
 
 // Count number of users
 $query = 'SELECT count(ID) as total from ' . $db->prefix . 'users';
-$db->setQuery($query);
-$result = $db->executeQuery('select');
-$row = $db->getResultAsArray();
+
+$result = $db->query($query);
+$row = mysqli_fetch_assoc($result);
 $template->sidebar .= $template->simpleBlock('Statistic', 'Total user: ' . $row['total']);
 
 // Get latest users by month
@@ -38,8 +38,7 @@ FROM `' . $db->prefix . 'users`
 GROUP BY YEAR (registration_date), MONTH( registration_date )
 ORDER BY Y DESC, M DESC;';
 
-$db->setQuery($query);
-$result = $db->executeQuery('select');
+$result = $db->query($query);
 
 $lastUser = '
 <table class="table table-responsive table-bordered table-sm table-hover table-striped">
@@ -80,9 +79,7 @@ $query = 'SELECT U.*,
           ORDER BY U.ID DESC
           LIMIT 5;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $db->lastError . ' ' . $query;
     return;
 }
@@ -128,9 +125,7 @@ $lastFiveUser .= '</tbody></table>';
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'users_groups';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }

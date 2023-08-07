@@ -188,8 +188,7 @@ switch ($_GET['op']) {
                       WHERE ID = \'' . $ID . '\'
                       LIMIT 1;';
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('insert')) {
+            if (!$db->query($query)) {
                 $log->write('quiz_new_question_modify_error','quiz', 'Query: ' . $query);
                 echo 'errore' . $query;
                 return;
@@ -213,8 +212,8 @@ switch ($_GET['op']) {
         LIMIT 1
         ';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+
+        if (!$result = $db->query($query)) {
             echo 'Errore nella query.' . $query;
             return;
         }
@@ -230,8 +229,7 @@ switch ($_GET['op']) {
         // Categoria modifica
         $query = 'SELECT * FROM ' . $db->prefix . 'quiz_categories ORDER BY nome ASC';
 
-        $db->setQuery($query);
-        $resultCategories = $db->executeQuery('select');
+        $resultCategories = $db->query($query);
         $cat = '';
         while ($linea = mysqli_fetch_assoc($resultCategories)) {
             $cat .= ' <input ' . (in_array($linea['ID'], $arrayCategorieDomanda) ? 'checked="checked"' : '') . ' name="categorie[]" id="cat_' . $linea['ID'] . '" type="checkbox" value="' . $linea['ID'] . '"/>' . '<span onclick="check(\'' . $linea['ID'] . '\');">' . $linea['nome'] . '</span> ';
@@ -268,9 +266,7 @@ switch ($_GET['op']) {
                   FROM ' . $db->prefix . 'wiki_pages
         ' . $queryWhere . ';';
 
-
-        $db->setQuery($query);
-        if (!$resultPagine = $db->executeQuery('select')) {
+        if (!$resultPagine = $db->query($query)) {
             $pagineBox = 'Errore nella query ' . $query;
 
         } else {
@@ -297,8 +293,8 @@ WHERE PAGES.visible = 1
 ORDER BY ID DESC
 LIMIT 10;
 ';
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
     return;
 }
@@ -334,9 +330,9 @@ FROM ' . $db->prefix . 'quiz_questions
 ORDER BY ID desc
 LIMIT 5
 ';
-$db->setQuery($query);
+
 $ultimeDomande = '<ul class="side-menu layout-options">';
-if (!$db->executeQuery('select')) {
+if (!$db->query($query)) {
     $ultimeDomande .= '<li>Errore nella query</li>';
 }
 while ($linea = mysqli_fetch_array($db->getResultAsObject())) {
@@ -351,9 +347,9 @@ $query = '
 SELECT COUNT(ID) AS ricorrenze
 FROM ' . $db->prefix . 'quiz_questions
 ';
-$db->setQuery($query);
-$db->executeQuery('select');
-$linea = $db->getResultAsArray();
+
+$risultato = $db->query($query);
+$linea = mysqli_fetch_assoc($risultato);
 
 $statistiche = 'Ci sono <i>' . $linea['ricorrenze'] . '</i> domande inserite nel database.';
 

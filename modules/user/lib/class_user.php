@@ -55,8 +55,8 @@ class user
             AND password = \'' . $this->getPasswordHash($password) . '\'
         LIMIT 1;';
 
-        $db->setQuery($query);
-        $result = $db->executeQuery('select');
+        
+        $result = $db->query($query);
 
         if (!$db->affected_rows) {
             $this->logged = false;
@@ -85,8 +85,8 @@ class user
             DATE_ADD( NOW(), INTERVAL 30 DAY)
         );';
 
-        $db->setQuery($query);
-        $db->executeQuery('insert');
+        
+        $db->query($query);
 
         if (!setcookie('ID', $row['ID'], time() + 60 * 60 * 24 * 30, '/')) {
             $this->logged = false;
@@ -141,9 +141,9 @@ class user
         WHERE U.ID = \'' . $ID . '\'
         LIMIT 1;';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             echo 'Query error while getting user. ';
             return;
         }
@@ -211,8 +211,8 @@ class user
                 LIMIT 1
                 ';
 
-            $db->setQuery($query);
-            $result = $db->executeQuery();
+            
+            $result = $db->query($query);
 
             if (!$db->affected_rows) {
                 $this->logged = false;
@@ -257,8 +257,8 @@ class user
         WHERE username = \'' . $user . '\'
         ';
 
-        $db->setQuery($query);
-        $db->executeQuery();
+        
+        $db->query($query);
         if (!$db->affected_rows) {
             return false;
         } else {
@@ -283,8 +283,8 @@ class user
         WHERE email = \'' . $email . '\'
         ';
 
-        $db->setQuery($query);
-        $db->executeQuery();
+        
+        $db->query($query);
         if (!$db->affected_rows) {
             return false;
         } else {
@@ -332,9 +332,9 @@ class user
         );
         ';
 
-        $db->setQuery($query);
+        
 
-        if ($db->executeQuery('insert')) {
+        if ($db->query($query)) {
             $returnArray['ID'] = $db->lastInsertID;
             $returnArray['hash'] = $optinHash;
 
@@ -419,9 +419,9 @@ class user
         WHERE ID = \'' . $userID . '\'
         LIMIT 1;
         ';
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type' => '4', 'module' => 'USER', 'operation' => 'send_confermation_email_query_error', 'details' => 'Query error in select phase. ' . $query]);
 
@@ -437,7 +437,7 @@ class user
             return false;
         }
 
-        $row = $db->getResultAsArray();
+        $row = mysqli_fetch_assoc($result);
 
         $ID = $row['ID'];
         $emailAddress = $row['email'];
@@ -502,9 +502,9 @@ class user
         $query = 'DELETE FROM ' . $db->prefix . 'users_tags 
                   WHERE user_ID = ' . $user_ID;
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('delete')) {
+        if (!$db->query($query)) {
             echo $query;
             return -1;
         }
@@ -525,9 +525,9 @@ class user
 
         $query =substr ($query, 0, -2);
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo $query;
             return -2;
         }

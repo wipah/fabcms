@@ -58,9 +58,9 @@ function plugin_single_page($dataArray){
         . $where . '
               LIMIT 1';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
 
         $relog->write(['type'      => '4',
                        'module'    => 'WIKI',

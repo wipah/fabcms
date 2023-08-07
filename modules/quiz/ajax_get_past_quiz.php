@@ -36,8 +36,8 @@ $query = 'SELECT q.ID,
           LEFT JOIN '. $db->prefix .'quiz_categories AS c
           ON q.subtype = c.ID
           WHERE user_ID = ' . $user->ID . ' ORDER BY ID DESC';
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error';
     return;
 }

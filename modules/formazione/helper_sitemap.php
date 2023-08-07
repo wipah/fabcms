@@ -3,8 +3,8 @@
 // Videos
 $query = "SELECT * 
           FROM {$db->prefix}formazione_media ";
-$db->setQuery($query);
-$result = $db->executeQuery('select');
+
+$result = $db->query($query);
 
 while ($row = mysqli_fetch_array($result)) {
     $this->result .= '<url>

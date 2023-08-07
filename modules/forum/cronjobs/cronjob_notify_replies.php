@@ -32,9 +32,9 @@ $query = 'SELECT
           WHERE status = 1';
 
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery($query)) {
+
+if (!$result = $db->query($query)) {
     $cronjobs->status = 2;
     $cronjobs->writeLog('Query error. ' . $query);
     return;
@@ -53,8 +53,8 @@ while ($row = mysqli_fetch_array($result)) {
               WHERE ID = ' . $row['subscription_ID'] . '
               LIMIT 1;';
 
-    $db->setQuery($query);
-    if (!$db->executeQuery('update')) {
+    
+    if (!$db->query($query)) {
         $cronjobs->status = 2;
         $cronjobs->writeLog('Unable to change the status of the subscription. ' . $query);
     } else {

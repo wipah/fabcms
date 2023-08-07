@@ -34,9 +34,9 @@ $query = 'SELECT
             ON ITEMS.ID = CART_ITEMS.item_ID
           WHERE cart_ID = ' . $cart_ID;
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo 'Query error';
 }
 

@@ -9,9 +9,9 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'licenses_licenses' . '
           WHERE lang = \'' . $core->shortCodeLang . '\'';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error. ';
     return;
 }

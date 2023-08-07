@@ -15,9 +15,9 @@ WHERE visible = 1
     AND (service_page != 1 OR service_page IS NULL)
     AND LENGTH(internal_redirect) < 1;';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $relog->write(['type'      => '4',
                    'module'    => 'WIKI',
                    'operation' => 'wiki_helper_sitemap_select_pages_query_error',
@@ -41,9 +41,9 @@ while ($row = mysqli_fetch_assoc($result)){
               WHERE page_ID = ' . $row['ID'] . '
               AND type = \'image\'';
 
-    $db->setQuery($query);
+    
 
-    if (!$resultImage = $db->executeQuery('select')){
+    if (!$resultImage = $db->query($query)){
 
         $relog->write(['type'      => '4',
                        'module'    => 'WIKI',

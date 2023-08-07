@@ -14,12 +14,9 @@ $template->navBar[] = '<a href="admin.php?module=user&op=groups">Groups</a>';
 
 $query = '
 SELECT * 
-FROM ' . $db->prefix . 'users_groups 
-';
+FROM ' . $db->prefix . 'users_groups';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery()){
+if (!$result = $db->query($query)){
     echo 'Query error.';
     return;
 }

@@ -31,8 +31,8 @@ $query = 'SELECT (
 
     ) AS yesterday';
 
-$db->executeQuery($query);
-$row = $db->getResultAsArray();
+$risultato = $db->query($query);
+$row = mysqli_fetch_assoc($risultato);
 $totalSearchYesterday = $row['yesterday'];
 $totalSearchToday = $row['today'];
 

@@ -26,7 +26,7 @@ $template->navBar[] = '<a href="admin.php?module=user&op=config">Configuration</
 $query = 'SELECT count(ID) as total from ' . $db->prefix . 'users';
 
 $result = $db->query($query);
-$row = $db->getResultAsArray();
+$row = mysqli_fetch_assoc($result);
 $template->sidebar .= $template->simpleBlock('Statistic', 'Total user: ' . $row['total']);
 
 $this->addJsFile("https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.8.0/tinymce.min.js", true);
@@ -116,9 +116,7 @@ $lang = $core->in ($_GET['lang'], true);
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'users_groups ';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error: ' . $query;
     return;
 }

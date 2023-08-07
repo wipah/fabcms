@@ -43,8 +43,8 @@ ORDER BY relevance_topic DESC,
          relevance_topic_test DESC
 LIMIT 15;';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',
                    'operation' => 'forum_search_query_error',
@@ -124,8 +124,8 @@ WHERE R.visible = 1
 HAVING relevance > 0
 ORDER BY relevance DESC';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
 
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',

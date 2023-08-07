@@ -52,9 +52,9 @@ LEFT JOIN ' . $db->prefix . 'fabmedia_videos AS V
 WHERE F.ID = \'' . $ID . '\' ' . $type . '
 LIMIT 1;';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error. The query is: ' . $query;
     return;
 }
@@ -70,8 +70,8 @@ $row = mysqli_fetch_assoc($result);
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'licenses_licenses 
           WHERE lang = \'' . $core->shortCodeLang . '\';';
-$db->setQuery($query);
-if (!$resultLicenses = $db->executeQuery('select')) {
+
+if (!$resultLicenses = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }
@@ -373,8 +373,8 @@ switch ($fabMedia->module) {
             WHERE F.fabmedia_ID = ' . $ID . '
         AND P.visible = 1';
 
-        $db->setQuery($query);
-        if (!$resultWikiPages = $db->executeQuery('select')) {
+        
+        if (!$resultWikiPages = $db->query($query)) {
             echo 'Query error while selecting pages from wiki!';
         } else {
             if (!$db->affected_rows) {

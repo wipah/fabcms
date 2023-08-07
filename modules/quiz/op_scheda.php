@@ -34,8 +34,8 @@ if (!isset($path[3])) {
         ' . $db->prefix . 'quiz_categories
     WHERE lang = \'' . $core->shortCodeLang . '\'
     AND visibile = \'1\';';
-    $db->setQuery($query);
-    if (!$db->executeQuery()) {
+    
+    if (!$db->query($query)) {
         echo 'Errore nella query';
         return;
     }
@@ -93,8 +93,8 @@ WHERE ID = \'' . $ID_categoria . '\'
 AND visibile = \''. 1 . '\'
 LIMIT 1;
 ';
-$db->setQuery($query);
-$db->executeQuery('SELECT');
+
+$db->query($query);
 if (!$db->affected_rows) {
     echo 'Errore interno in fase di selezione';
     return;
@@ -156,8 +156,8 @@ if ($path[4] == 'risposte') {
     WHERE ID = \'' . $ID_categoria . '\'
     LIMIT 1;
     ';
-    $db->setQuery($query);
-    $db->executeQuery('update');
+    
+    $db->query($query);
     $debug->write('info', 'Aggiunta una nuova scheda nel campo delle statistiche');
 
     $ids = '';
@@ -265,8 +265,8 @@ $this->addScript($theScript);
         }
         $query = substr($query, 0, -3);
 
-        $db->setQuery($query);
-        $db->executeQuery('select');
+        
+        $db->query($query);
         $risultato = $db->getResultAsObject();
         while ($linea = mysqli_fetch_array($risultato)) {
 
@@ -288,8 +288,8 @@ $this->addScript($theScript);
 
                 $query = substr($query, 0, -3);
 
-                $db->setQuery($query);
-                $db->executeQuery('select');
+                
+                $db->query($query);
                 $resultpagine = $db->getResultAsObject();
                 while ($linea2 = mysqli_fetch_array($resultpagine)) {
                     $pagine .= '<a target="_blank" href="' . $URI->getBaseUri() . $core->router->getRewriteAlias('wiki') . '/' . $linea2['trackback'] . '/">' . $linea2['title'] . '</a> - ';
@@ -341,8 +341,8 @@ $this->addScript($theScript);
         }
         $query = substr($query, 0, -3);
 
-        $db->setQuery($query);
-        $db->executeQuery('select');
+        
+        $db->query($query);
         $risultato = $db->getResultAsObject();
 
         while ($linea = mysqli_fetch_array($risultato)) {
@@ -364,8 +364,8 @@ $this->addScript($theScript);
 
                 $query = substr($query, 0, -3);
 
-                $db->setQuery($query);
-                $db->executeQuery('select');
+                
+                $db->query($query);
                 $resultpagine = $db->getResultAsObject();
                 while ($linea2 = mysqli_fetch_array($resultpagine)) {
                     $pagine .= ' <a target="_blank" href="' . $URI->getBaseUri() . $core->router->getRewriteAlias('wiki') . '/' . $linea2['trackback'] .'/">' . $linea2['title'] . '</a> - ';
@@ -402,8 +402,8 @@ $this->addScript($theScript);
     LIMIT 1;
     ';
 
-    $db->setQuery($query);
-    $db->executeQuery('select');
+    
+    $db->query($query);
 
     if (!$db->affected_rows) {
         echo 'Errore in selezione categoria';
@@ -423,8 +423,8 @@ $this->addScript($theScript);
         $stats = '';
         foreach ($corrette AS $IDTemp){
             $stats = 'UPDATE ' . $db->prefix . 'quiz_questions SET ok = ok + 1, views = views + 1 WHERE ID = \'' . $IDTemp . '\'; ';
-            $db->setQuery($stats);
-            if (!$db->executeQuery('update')){
+            
+            if (!$db->query($stats)){
                 echo 'Admin Message: query error. ' . $stats;
             }
         }
@@ -432,9 +432,9 @@ $this->addScript($theScript);
         foreach ($nonCorrette AS $IDTemp){
             $stats = 'UPDATE ' . $db->prefix . 'quiz_questions SET ko = ko + 1, views = views + 1 WHERE ID = \'' . $IDTemp . '\'; ';
             $db->setQuery($stats);
-            //$db->executeQuery('update');
+            //$db->query($query);
 
-            if (!$db->executeQuery('update')){
+            if (!$db->query($query)){
                 echo 'Admin Message: query error. ' . $stats;
             }
         }
@@ -442,8 +442,8 @@ $this->addScript($theScript);
         foreach ($nonDate AS $IDTemp){
             $stats = 'UPDATE ' . $db->prefix . 'quiz_questions SET blank = blank + 1, views = views + 1 WHERE ID = \'' . $IDTemp . '\'; ';
             $db->setQuery($stats);
-            //$db->executeQuery('update');
-            if (!$db->executeQuery('update')){
+            //$db->query($query);
+            if (!$db->query($query)){
                 echo 'Admin Message: query error. ' . $stats;
             }
         }
@@ -482,8 +482,8 @@ ORDER BY RAND()
 ' . $limit .'
 ';
 
-$db->setQuery($query);
-if (!$db->executeQuery('select')) {
+
+if (!$db->query($query)) {
     echo 'Errore nella query';
     return;
 }

@@ -19,9 +19,9 @@ $query = 'DELETE
           FROM ' . $db->prefix . 'stats_daily 
           WHERE date = \'' . $yesterday . '\';';
 
-$db->setQuery($query);
 
-if (!$db->executeQuery('delete')){
+
+if (!$db->query($query)){
     $cronjobs->status = 2;
     $cronjobs->writeLog("Unable to delete. Query error.");
 
@@ -39,9 +39,9 @@ $query = 'SELECT IDX,
             AND `date` >= \'' . $yesterday . ' 00:00:00\' AND `date` <= \'' . $yesterday . ' 23:59:59\' 
           GROUP BY IDX';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $cronjobs->status = 2;
     $cronjobs->writeLog("Unable to select. Query error. <br/>Error is: " . $db->lastError . '<br/>Query is: ' . $query);
 
@@ -89,8 +89,7 @@ while ($row = mysqli_fetch_assoc($result)){
 
 $queryInsert = substr($queryInsert, 0, -1);
 
-$db->setQuery($queryInsert);
-if (!$db->executeQuery('insert')){
+if (!$db->query($queryInsert)){
     $cronjobs->status = 2;
     $cronjobs->writeLog( "Unable to insert. Query error." . $queryInsert);
     echo '<pre>' . $queryInsert . '</pre>';

@@ -90,8 +90,7 @@ AND NOT EXISTS (
 	AND STATS.date >= DATE_SUB( NOW(), INTERVAL 1 MONTH)
 	) ;';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     $output .= 'Query error. ' . $query;
     return;
 }
@@ -164,8 +163,7 @@ GROUP BY PAGES.ID
 ORDER BY PAGES.last_update ASC
 LIMIT 200';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     $output .= 'Query error. ' . $query;
     return;
 }

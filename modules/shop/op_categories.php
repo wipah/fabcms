@@ -27,9 +27,9 @@ $query = 'SELECT *
             AND lang = \'' . $core->shortCodeLang . '\'
           LIMIT 1;';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
 
     $relog->write(['type'      => '4',
                    'module'    => 'SHOP',
@@ -81,9 +81,9 @@ $query = 'SELECT I.*
             AND enabled = 1
             AND category_ID = ' . $category_ID . '
           ORDER BY ID DESC';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     $relog->write(['type'      => '4',
                    'module'    => 'SHOP',
                    'operation' => 'shop_categories_show_items',

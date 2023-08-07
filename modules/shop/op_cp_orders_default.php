@@ -37,9 +37,9 @@ LEFT JOIN ' . $db->prefix . 'users USERS
 ON CARTS.user_ID = USERS.ID
 ORDER BY ID DESC';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo '<pre>Query error: ' . $query . '</pre>';
 }
 

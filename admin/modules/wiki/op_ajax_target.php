@@ -16,9 +16,7 @@ AND PAGES.service_page != 1
 AND (LENGTH(PAGES.internal_redirect) = 0)
 ';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
     return;
 }
@@ -54,9 +52,7 @@ WHERE PAGES.visible = 1
 ORDER BY total_pages DESC 
 LIMIT 1;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
     return;
 }
@@ -84,9 +80,7 @@ WHERE PAGES.visible = 1
 ORDER BY total_pages DESC 
 LIMIT 1';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select'))
+if (!$result = $db->query($query))
 {
     echo 'Query error.' . $query;
     return;
@@ -113,9 +107,7 @@ WHERE PAGES.visible = 1
 	)
 	AND PAGES.creation_date < \'' . (date('Y-m-01')) .'\';';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select'))
+if (!$result = $db->query($query))
 {
     echo 'Query error.' . $query;
     return;

@@ -20,11 +20,11 @@ $query = 'SELECT *
           WHERE enabled = 1
           AND next_run <= \'' . date('Y-m-d h:i:s') . '\';';
 
-$db->setQuery($query);
+
 
 $this->noTemplateParse = true;
 
-if (!$resultJobs = $db->executeQuery($query)) {
+if (!$resultJobs = $db->query($query)) {
     echo 'Query error.';
     return;
 }
@@ -64,11 +64,11 @@ while ($rowJobs = mysqli_fetch_array($resultJobs)) {
               WHERE ID = ' . $rowJobs['ID'] . '
               LIMIT 1';
 
-    $db->setQuery($query);
+    
 
     echo 'OUTPUT LOG IS: <pre>' . $cronjobs->getLog() . '</pre>';
 
-    if (!$db->executeQuery('update')) {
+    if (!$db->query($query)) {
         echo '--> Query error. ';
     } else {
         echo '--> Updated. <br/>';

@@ -20,9 +20,7 @@ $query = 'SELECT MASTER.ID AS master_ID,
           LEFT JOIN ' . $db->prefix .'licenses_licenses AS LICENSES
             ON LICENSES.master_ID = MASTER.ID;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }

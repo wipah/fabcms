@@ -40,8 +40,7 @@ function createTable_from_sql_select_query($query, $title) {
 
     $title = $core->getTrackback($title);
 
-    $db->setQuery($query);
-    if (!$result = $db->executeQuery('select') ){
+    if (!$result = $db->query($query) ){
         return 'Query error. ' . $query;
     }
 

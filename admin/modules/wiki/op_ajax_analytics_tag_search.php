@@ -28,9 +28,7 @@ WHERE DAILY.module = \'wiki\'
 GROUP BY YEAR(DAILY.date), MONTH(DAILY.date)';
 
 
-$db->setQuery($query);
-
-if (!$resultStats = $db->executeQuery('select')){
+if (!$resultStats = $db->query($query)){
     echo 'Query error! <pre>' . $query . '</pre>';
     return;
 }

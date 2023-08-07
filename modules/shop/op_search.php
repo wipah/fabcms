@@ -13,7 +13,7 @@ $query = 'SELECT *
           WHERE title LIKE \'%' . $keyword . '%\'
           AND enabled = 1';
 
-$db->setQuery($query);
+
 
 echo '<div class="row">
         <div class="col-md-8">
@@ -25,7 +25,7 @@ echo '<div class="row">
         </div>
     </div>';
 
-if (!$result = $db->executeQuery('SELECT')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;

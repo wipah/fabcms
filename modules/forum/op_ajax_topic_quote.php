@@ -27,9 +27,9 @@ $query = 'SELECT TOPIC.topic_message
             THREAD.visible = 1 
           LIMIT 1';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo 'Query error';
     return;
 }

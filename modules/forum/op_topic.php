@@ -78,8 +78,8 @@ WHERE T.ID = ' . $topic_ID . '
     AND TH.thread_trackback = \'' . $thread_trackback . '\'
 LIMIT 1';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',
                    'operation' => 'forum_topic_select_topics_query_error',
@@ -291,8 +291,8 @@ AND R.visible = 1
 ORDER BY R.ID ASC
 LIMIT ' . $limitFrom . ', ' . PAGINATION . ';';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
 
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',

@@ -73,9 +73,9 @@ $query = 'SELECT I.ID AS line_ID,
             AND ' . ($user->logged === true ? 'C.user_ID = ' . $user->ID : 'C.anonymous_hash = \'' . $anonymousHash . '\'') . ' 
             AND C.ID = ' . $cartID;
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $relog->write(['type'      => '4',
                    'module'    => 'SHOP',
                    'operation' => 'shop_ajax_view_cart',

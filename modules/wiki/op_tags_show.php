@@ -35,9 +35,9 @@ $query = 'SELECT P.title, P.trackback
             AND visible = 1 
             AND service_page != 1;';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery()){
+
+if (!$result = $db->query($query)){
 
     $relog->write(['type'      => '4',
                    'module'    => 'WIKI',

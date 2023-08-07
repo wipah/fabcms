@@ -19,9 +19,9 @@ $query = 'SELECT COURSES.*,
              WHERE course_ID= COURSES.ID) total_media
           FROM ' . $db->prefix . 'formazione_courses COURSES';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo '<pre>' . $query . '</pre>';
     return;
 }

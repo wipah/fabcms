@@ -58,9 +58,7 @@ $query = 'SELECT P.ID,
           ORDER BY P.ID DESC
           LIMIT 10';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     $latestPages = '<pre>' . $query . '</pre>';
 } else{
     if (!$db->affected_rows){
@@ -81,8 +79,7 @@ FROM ' . $db->prefix . 'fabmedia_custom_filetypes
 WHERE module = \'wiki\'
     AND enabled = 1;';
 
-$db->setQuery($query);
-$result = $db->executeQuery('select');
+$result = $db->query($query);
 $allowableExtensions =
     '{title : "Image files", extensions : "jpeg,jpg,gif,png"},
 	 {title : "Zip files"  , extensions : "zip"}';
@@ -143,9 +140,7 @@ if (isset($_GET['ID'])) {
               WHERE P.ID = ' . $ID . '
               LIMIT 1';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery('select')) {
+    if (!$result = $db->query($query)) {
         echo '<pre>Query error: ' . $query . '</pre>';
         return;
     }
@@ -162,9 +157,8 @@ if (isset($_GET['ID'])) {
               FROM ' . $db->prefix . 'wiki_pages_tags 
               WHERE page_ID = ' . $ID . ' 
               ORDER BY ID ASC;';
-    $db->setQuery($query);
 
-    if (!$resultTags = $db->executeQuery('select')) {
+    if (!$resultTags = $db->query($query)) {
         echo 'Query error while selecting tags';
         return;
     } else {
@@ -180,9 +174,8 @@ if (isset($_GET['ID'])) {
               FROM ' . $db->prefix . 'wiki_pages_internal_tags 
               WHERE page_ID = ' . $ID . ' 
               ORDER BY ID ASC;';
-    $db->setQuery($query);
 
-    if (!$resultTags = $db->executeQuery('select')) {
+    if (!$resultTags = $db->query($query)) {
         echo 'Query error while selecting internal tags';
         return;
     } else {
@@ -199,9 +192,7 @@ if (isset($_GET['ID'])) {
               FROM ' . $db->prefix . 'wiki_pages_keywords 
               WHERE page_ID = ' . $ID . ' ORDER BY `ID` ASC;';
 
-    $db->setQuery($query);
-
-    if (!$resultKeywords = $db->executeQuery('select')){
+    if (!$resultKeywords = $db->query($query)){
         echo 'Query error while selecting keywords.' . $query;
         return;
     } else {
@@ -218,9 +209,9 @@ if (isset($_GET['ID'])) {
               WHERE page_ID = ' . $ID . ' 
               ORDER BY ' . $db->prefix . 'wiki_pages_seo.order;';
 
-    $db->setQuery($query);
+    
 
-    if (!$resultKeywords = $db->executeQuery('select')){
+    if (!$resultKeywords = $db->query($query)){
         echo 'Query error while selecting SEO keywords.' . $query;
         return;
     } else {
@@ -242,9 +233,9 @@ if (isset($_GET['ID'])) {
                 ORDER BY ID DESC
               LIMIT 1;';
 
-    $db->setQuery($query);
+    
 
-    if (!$resultGoogle = $db->executeQuery('select')){
+    if (!$resultGoogle = $db->query($query)){
         echo $query;
         return;
     }
@@ -285,9 +276,9 @@ if (isset($_GET['ID'])) {
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'licenses_licenses
           WHERE lang = \'' . $core->shortCodeLang . '\';';
-$db->setQuery($query);
 
-if (!$resultLicenses = $db->executeQuery('select')){
+
+if (!$resultLicenses = $db->query($query)){
     echo 'Query error: ' . $query;
     return;
 }
@@ -325,9 +316,9 @@ $this->addJsFile( $URI->getBaseUri(true) . 'lib/editors/tinymce-4/tinymce.min.js
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'wiki_categories_details';
 
-$db->setQuery($query);
 
-if (!$resultCategory = $db->executeQuery('select')){
+
+if (!$resultCategory = $db->query($query)){
     echo 'Query error.';
     return;
 }
@@ -355,8 +346,8 @@ $languageSelect .= '</select>';
  * Status
  */
 $query = 'SELECT * FROM ' . $db->prefix . 'wiki_pages_status';
-$db->setQuery($query);
-if (!$resultStatus = $db->executeQuery('select')){
+
+if (!$resultStatus = $db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }
@@ -390,9 +381,9 @@ GROUP BY DAILY.IDX,
       YEAR(DAILY.date), 
       MONTH(DAILY.date);';
 
-    $db->setQuery($query);
+    
 
-    if (!$resultStats = $db->executeQuery('select')){
+    if (!$resultStats = $db->query($query)){
         echo 'Query error! <pre>' . $query . '</pre>';
         return;
     }

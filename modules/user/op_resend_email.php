@@ -29,8 +29,8 @@ if ($path[3] === 'send') {
               FROM ' . $db->prefix . 'users 
               WHERE email = \'' . $email . '\' LIMIT 1';
 
-    $db->setQuery($query);
-    if (!$db->executeQuery('select')) {
+    
+    if (!$result = $db->query($query)) {
 
         $relog->write(['type'      => '4',
                        'module'    => 'user',
@@ -48,7 +48,7 @@ if ($path[3] === 'send') {
         return;
     }
 
-    $row = $db->getResultAsArray();
+    $row = mysqli_fetch_assoc($result);
     if ((int)$row['enabled'] === 1) {
         echo '<div class="ui-state-error">User is already enabled.</div>';
         return;

@@ -44,9 +44,9 @@ if ($qty > 0)
             : 'C.anonymous_hash = \'' . $anonymousHash . '\''
         ) . ';';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('update')){
+    if (!$db->query($query)){
         $relog->write(['type'      => '4',
                        'module'    => 'SHOP',
                        'operation' => 'shop_ajax_update_qty',
@@ -70,10 +70,10 @@ if ($qty > 0)
             ? 'C.user_ID =      ' . $user->ID
             : 'C.anonymous_hash = \'' . $anonymousHash . '\''
         ) . ';';
-    $db->setQuery($query);
+    
 
     echo $query;
-    if (!$db->executeQuery('delete')){
+    if (!$db->query($query)){
         $relog->write(['type'      => '4',
                        'module'    => 'SHOP',
                        'operation' => 'shop_ajax_update_qty',

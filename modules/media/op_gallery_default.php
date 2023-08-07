@@ -23,9 +23,9 @@ $query = "SELECT G.ID,
           AND G.lang = '{$core->shortCodeLang}'
           ORDER BY G.order;";
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Internal error.';
     $relog->write(['type'      => '4',
                    'module'    => 'media',

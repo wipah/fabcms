@@ -54,8 +54,8 @@ if ($path[2] == 'new-topic') {
             AND ID = ' . $thread_ID . '
           LIMIT 1;';
 
-    $db->setQuery($query);
-    if (!$result = $db->executeQuery('select')) {
+    
+    if (!$result = $db->query($query)) {
         $relog->write(['type'      => '4',
                        'module'    => 'FORUM',
                        'operation' => 'forum_topic_crud_select_query_error',
@@ -140,9 +140,9 @@ if ($path[2] == 'new-topic') {
               \'' . $_SERVER['HTTP_HOST'] . '\'
               )';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -210,8 +210,8 @@ if ($path[2] == 'new-topic') {
         LIMIT 1;
         ';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('update')) {
+        
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -236,9 +236,9 @@ if ($path[2] == 'new-topic') {
               ' . ( $user->isAdmin !== true ? ' AND user_ID = ' . $user->ID  : '') . '
               ;';
 
-    $db->setQuery($query);
+    
 
-    if (!$resultTopic = $db->executeQuery('select')){
+    if (!$resultTopic = $db->query($query)){
 
         $relog->write(['type'      => '4',
                        'module'    => 'FORUM',

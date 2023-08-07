@@ -41,8 +41,8 @@ $log_ID = $ID;
 
 $query = 'SELECT * FROM ' . $db->prefix . 'quiz_logs WHERE ID = \'' . $ID . '\' AND user_ID = \'' .  $user->ID .'\' LIMIT 1';
 
-$db->setQuery($query);
-$result = $db->executeQuery();
+
+$result = $db->query($query);
 
 if (!$db->affected_rows){
     echo 'Non risulta nessuna scheda.';
@@ -87,8 +87,8 @@ foreach ($domande as $domanda){
 }
 
 $query = substr($query,0, -9);
-$db->setQuery($query);
-$result = $db->executeQuery('select');
+
+$result = $db->query($query);
 
 while ($row = mysqli_fetch_array($result)){
 
@@ -110,8 +110,8 @@ while ($row = mysqli_fetch_array($result)){
 
         $query = substr($query, 0, -3);
 
-        $db->setQuery($query);
-        $resultpagine = $db->executeQuery('select');
+        
+        $resultpagine = $db->query($query);
 
         while ($row2 = mysqli_fetch_array($resultpagine)) {
             $pagine .= '<a href="' . $URI->getBaseUri() . $core->router->getRewriteAlias('wiki') . '/' . $row2['trackback'] . '/">' . $row2['title'] . '</a> - ';

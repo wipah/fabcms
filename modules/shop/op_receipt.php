@@ -42,9 +42,9 @@ $query = 'SELECT I.ID AS line_ID,
              ON I.item_ID = ITEM.ID
           WHERE I.ID = ' . $line_ID . ' AND C.user_ID = ' . $user->ID . ';';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $relog->write(['type'      => '4',
         'module'    => 'SHOP',
         'operation' => 'shop_view_receipt',

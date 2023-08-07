@@ -40,9 +40,9 @@ WHERE ID = ' . $reply_ID .
     ($user->isAdmin === false ? ' AND user_ID = ' . $user->ID . ' ' : '') . '
 LIMIT 1';
 
-$db->setQuery($query);
 
-if (!$db->executeQuery('update')){
+
+if (!$db->query($query)){
     echo '<!--error-->' . $query;
 } else {
     echo '<div class="alert alert-success">

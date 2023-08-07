@@ -77,7 +77,7 @@ ORDER BY RAND()
 ' . ($maxQuestions > 0 ? 'LIMIT ' . (int) $maxQuestions : '') .'
 ';
 
-if (!$db->query($query)) {
+if (!$result = $db->query($query)) {
     echo 'Errore nella query';
     return;
 }
@@ -90,7 +90,7 @@ $answersReview = array();
 $numPage = 0;
 $progressiveQuestion = 11;
 
-while ($linea = mysqli_fetch_array($db->getResultAsObject())) {
+while ($linea = mysqli_fetch_array($result)) {
 
     if ($progressiveQuestion >= $questionsPerPage){
         $numPage++;

@@ -69,9 +69,9 @@ switch ($path[3]) {
 				  SET password = "' . $password . '"
 				  WHERE ID = ' . $user->ID . '
 				  LIMIT 1';
-		$db->setQuery($query);
 		
-		if (!$db->executeQuery('update')){
+		
+		if (!$db->query($query)){
             echo '<div class="alert alert-danger">
                     ' . $language->get('user','cpPasswordUpdateKo') . '
                   </div>';
@@ -156,8 +156,8 @@ switch ($path[3]) {
         ';
 
 
-        $db->setQuery($query);
-        if ($db->executeQuery('update')){
+        
+        if ($db->query($query)){
             $log->write('user_update_info_ok', 'user', 'ID: ' . $user->ID);
 
             echo $template->getCustomBox(['title'   => $language->get('user', 'cpProfilesUpdatedTitle', null),

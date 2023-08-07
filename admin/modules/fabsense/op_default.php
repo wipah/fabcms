@@ -12,9 +12,7 @@ if (!$core->adminBootCheck())
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'sense_hooks';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo '<pre>' . $query . '</pre>';
     return;
 }

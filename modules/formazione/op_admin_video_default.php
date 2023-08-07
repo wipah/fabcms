@@ -16,9 +16,9 @@ echo '<h1>Video</h1>';
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'formazione_media';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo '<pre>' . $query . '</pre>';
     return;
 }

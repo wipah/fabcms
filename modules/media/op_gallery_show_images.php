@@ -33,8 +33,8 @@ $query = "SELECT G.description,
 				ON FM.ID = F.master_ID
           WHERE G.ID = $gallery_ID LIMIT 1";
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     $relog->write(['type'      => '4',
                    'module'    => 'media',
                    'operation' => 'media_gallery_select_gallery_query_error',
@@ -88,8 +88,8 @@ $query = "SELECT I.image_ID,
                 AND I.gallery_ID = $gallery_ID
           ORDER BY I.order";
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Unable to show images.';
     $relog->write(['type'      => '4',
                    'module'    => 'media',

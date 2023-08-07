@@ -21,8 +21,8 @@ WHERE indexable = 1
      AND LENGTH(F.trackback) > 0
      AND LENGTH(F.filename) > 0;';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery()) {
+
+if (!$result = $db->query($query)) {
     echo 'Error in FabMedia. ' . $query;
 }
 

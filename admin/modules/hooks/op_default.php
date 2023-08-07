@@ -13,7 +13,7 @@ $template->sidebar .= $template->simpleBlock('Quick links', '<a href="admin.php?
 
 $query = "SELECT * FROM {$db->prefix}hooks";
 
-if (!$db->query($query)) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
 }
 
@@ -21,7 +21,7 @@ if (!$db->affected_rows) {
     echo 'No records. Would you like to <a href="admin.php?module=hooks&op=add">add one block</a>?';
 }
 else {
-    $dbData = $db->getResultAsObject();
+    $dbData = mysqli_fetch_assoc($result);
 
     $table = '
 	<table id="tablesortable" class="table table-striped table-bordered table-hover">

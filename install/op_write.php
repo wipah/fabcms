@@ -119,8 +119,8 @@ foreach (glob('../modules/*/install') AS $installer)
               0,
               1
               );';
-    $db->setQuery($query);
-    $db->executeQuery('insert');
+    
+    $db->query($query);
     echo '--> Schema version updated. <br/>';
     installFlush();
 }
@@ -149,8 +149,8 @@ $query = "INSERT INTO {$mysqlPrefix}users
           1       
           );";
 
-$db->setQuery($query);
-if (!$db->executeQuery('select')){
+
+if (!$db->query($query)){
     echo '&ebull; Unable to insert the admin. ' . $query;
     return;
 } else {
@@ -198,8 +198,8 @@ VALUES
 ( \'' . $languagesArray[0] . '\', \'template\', \'template\', \'fabtemplate\' ),
 ( \'' . $languagesArray[0] . '\', \'template\', \'templateVariant\', \'default.css\' );';
 
-$db->setQuery($query);
-if ($db->executeQuery('select')){
+
+if ($db->query($query)){
     echo '&bull; Template set<br/>';
 } else {
     echo '&ebull; [ERROR]. Query error while inserting template. ' . $query;
@@ -216,8 +216,8 @@ INSERT INTO fabcms_config (lang, module, param, value)
 VALUES
 ( \'' . $languagesArray[0] . '\', \'core\', \'defaultModule\', \'wiki\' );';
 
-$db->setQuery($query);
-if ($db->executeQuery('select')){
+
+if ($db->query($query)){
     echo '&bull;  Default mode set.<br/>';
 } else {
     echo '&ebull; [ERROR]. Query error while inserting default module. ' . $query;
@@ -330,8 +330,8 @@ function doQuery($queryFile){
         if (preg_match('#(.*)?(;\w?\s?$)#mix', $line)) {
 
             // Perform the query
-            $db->setQuery($templine);
-            if (!$db->executeQuery('select')) {
+
+            if (!$db->query($templine)) {
                 echo '<pre style="border:1px solid red; padding: 8px; margin-left: 12px">' . $templine . '</pre>';
                 die ("Query error. " . $db->lastError);
             }

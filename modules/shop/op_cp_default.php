@@ -42,9 +42,9 @@ WHERE CARTS.`status` = 1
 ORDER BY ID DESC
 LIMIT 10';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo '<pre>Query error: ' . $query . '</pre>';
 }
 

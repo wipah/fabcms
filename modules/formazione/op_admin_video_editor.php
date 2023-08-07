@@ -37,9 +37,9 @@ if (isset($_GET['ID'])) {
             WHERE ID = ' . $ID . '
             LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('update')) {
+        if (!$db->query($query)) {
             echo '<pre>' . $query . '</pre>';
             return;
         }
@@ -54,9 +54,9 @@ if (isset($_GET['ID'])) {
               WHERE ID = ' . $ID . ' 
               LIMIT 1';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')) {
+    if (!$result = $db->query($query)) {
         echo '<pre>' . $query . '</pre>';
         return;
     }
@@ -105,9 +105,9 @@ if (isset($_GET['ID'])) {
                 \'' . $core->in($_POST['keywords']) . '\'
             )';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             echo '<pre>' . $query . '</pre>';
             return;
         }

@@ -55,9 +55,9 @@ if ($_GET['command'] === 'save') {
     $beforeFirstH2BannerPC = $core->in($_POST['beforeFirstH2BannerPC']);
 
     $query = 'DELETE FROM ' . $db->prefix . 'wiki_config WHERE lang = \'' . $lang . '\'';
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('delete')) {
+    if (!$db->query($query)) {
         echo 'Deleting old config error. ' . $query;
 
         return;
@@ -100,8 +100,7 @@ if ($_GET['command'] === 'save') {
     (\'beforeFirstH2BannerPC\', \'' . $lang . '\', \'' . $beforeFirstH2BannerPC . '\');
     ';
 
-    $db->setQuery($query);
-    if (!$db->executeQuery('insert')) {
+    if (!$db->query($query)) {
         echo 'Query error. ' . $query;
 
         return;
@@ -137,8 +136,7 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'wiki_config 
           WHERE lang= \'' . $lang . '\';';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;

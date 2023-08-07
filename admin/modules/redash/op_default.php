@@ -124,8 +124,7 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'users 
           ORDER BY ID DESC LIMIT 10';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     $latestUsers = $query;
 } else {
     if (!$db->affected_rows) {
@@ -169,8 +168,8 @@ $query = 'SELECT T.*,
             ON T.latest_reply_user_ID = TL.ID
 
           ORDER BY ID DESC LIMIT 10';
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     $latestTopic = $query;
 } else {
     if (!$db->affected_rows) {
@@ -223,9 +222,7 @@ $query = 'SELECT C.*,
           ORDER BY ID DESC
           LIMIT 10';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery()) {
+if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
 
     return;
@@ -260,9 +257,7 @@ $query = 'SELECT *
           ORDER BY ID DESC
           LIMIT 10;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery()) {
+if (!$result = $db->query($query)) {
     $latestWikiPages = 'Query error.' . $query;
 
 } else {
@@ -311,10 +306,7 @@ $query = 'SELECT C.date,
           LIMIT 10
           ';
 
-
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery()) {
+if (!$result = $db->query($query)) {
     $latestComments = 'Query error.' . $query;
 } else {
     if (!$db->affected_rows) {
@@ -358,9 +350,7 @@ GROUP BY P.title
 ORDER BY hits DESC
 LIMIT 10';
 
-$db->setQuery($query);
-
-if (!$resultYesterdayTopPages = $db->executeQuery('select')) {
+if (!$resultYesterdayTopPages = $db->query($query)) {
     echo $yesterdayTopPages = 'Query error. ' . $query;
 } else {
     if (!$db->affected_rows) {
@@ -401,9 +391,7 @@ GROUP BY P.title
   ORDER BY hits DESC
   LIMIT 10';
 
-$db->setQuery($query);
-
-if (!$resultTodayTopPages = $db->executeQuery('select')) {
+if (!$resultTodayTopPages = $db->query($query)) {
     echo $todayTopPages = 'Query error. ' . $query;
 } else {
     if (!$db->affected_rows) {

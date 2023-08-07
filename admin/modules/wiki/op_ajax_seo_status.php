@@ -21,9 +21,7 @@ $query = 'SELECT *
           FROM ' . $db->prefix  . 'wiki_pages_seo
           WHERE page_ID = ' . $ID;
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }

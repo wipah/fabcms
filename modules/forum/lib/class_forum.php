@@ -35,9 +35,9 @@ class forum
                   WHERE enabled = 1
                   ORDER BY `order` ASC';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             die ("Unable to load parsers");
         }
 
@@ -63,9 +63,9 @@ class forum
         global $relog;
         $query = ' SELECT * FROM ' . $db->prefix . 'forum_config';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery()) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -100,8 +100,8 @@ class forum
                       AND ban_end_date >= NOW()
                       LIMIT 1;';
 
-            $db->setQuery($query);
-            if (!$result = $db->executeQuery()) {
+            
+            if (!$result = $db->query($query)) {
 
                 $relog->write(['type'      => '4',
                                'module'    => 'FORUM',
@@ -143,8 +143,8 @@ class forum
                   WHERE thread_ID = ' . $thread_ID . ' 
                     AND visible = 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'forum_update_topic_count_query_error',
@@ -168,8 +168,8 @@ class forum
                   WHERE ID = ' . $thread_ID . ' 
                   LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('update')) {
+        
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -197,8 +197,8 @@ class forum
                   FROM ' . $db->prefix . 'forum_topics 
                   WHERE ID = ' . $topic_ID . ' LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'forum_is_topic_locked_query_errror',
@@ -260,9 +260,9 @@ class forum
                       \'' . $_SERVER['REMOTE_ADDR'] . '\'
                   )';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')) {
+        if (!$db->query($query)) {
             $relog->write(['module'    => 'FORUM',
                            'operation' => 'post_reply_query_error',
                            'details'   => 'Unable insert the reply. ' . $query,
@@ -284,9 +284,9 @@ class forum
                       date_latest_update = NOW() 
                       WHERE ID = ' . $topic_ID . ' LIMIT 1;';
 
-            $db->setQuery($query);
+            
 
-            if (!$db->executeQuery('update')) {
+            if (!$db->query($query)) {
 
                 $relog->write(['module'    => 'FORUM',
                                'operation' => 'post_reply_update_topics_error',
@@ -331,9 +331,9 @@ class forum
         WHERE TOPIC.ID = ' . $topic_ID .'; 
         ';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')){
+        if (!$result = $db->query($query)){
             $relog->write(['module'    => 'FORUM',
                            'operation' => 'post_get_paginated_URI_error',
                            'details'   => 'Query error. ' . $query,
@@ -374,8 +374,8 @@ class forum
 
         $query = 'SELECT ID FROM ' . $db->prefix . 'forum_topics WHERE ID = ' . $topic_ID . ' AND visible = 1 LIMIT 1';
 
-        $db->setQuery($query);
-        $result = $db->executeQuery('select');
+        
+        $result = $db->query($query);
 
         if (!$db->affected_rows) {
             $relog->write(['type'      => '4',
@@ -407,8 +407,8 @@ class forum
                 AND R.visible = 1 ) AS replies_count,
                (SELECT COUNT(ID) FROM ' . $db->prefix . 'forum_topics WHERE user_ID = ' . $user_ID . '  AND visible = 1 ) AS topics_count';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        
+        if (!$result = $db->query($query)) {
             echo('Query error!!! ' . $query);
 
             return;
@@ -420,9 +420,9 @@ class forum
         $replies    = $row['replies_count'];
 
         $query = 'SELECT ID FROM ' . $db->prefix . 'forum_user_stats WHERE user_ID = ' . $user_ID . ' LIMIT 1';
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'forum_update_post_count_query_errror',
@@ -444,8 +444,8 @@ class forum
                       WHERE ID = ' . $row_ID . ' 
                         AND user_ID = ' . $user_ID . ' 
                       LIMIT 1';
-            $db->setQuery($query);
-            if (!$db->executeQuery('update')) {
+            
+            if (!$db->query($query)) {
                 $relog->write(['type'      => '4',
                                'module'    => 'FORUM',
                                'operation' => 'forum_update_post_count_update_stats_query_errror',
@@ -466,8 +466,8 @@ class forum
                         ' . $replies . ',
                         ' . $topics . '
                       );';
-            $db->setQuery($query);
-            if (!$db->executeQuery('update')) {
+            
+            if (!$db->query($query)) {
                 $relog->write(['type'      => '4',
                                'module'    => 'FORUM',
                                'operation' => 'forum_update_post_count_insert_stats_query_errror',
@@ -489,8 +489,8 @@ class forum
                   WHERE user_ID = ' . $user_ID . '
                   LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')){
+        
+        if (!$result = $db->query($query)){
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'forum_get_reply_count_query_errror',
@@ -524,9 +524,9 @@ class forum
                   ORDER BY ID DESC
                   LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('select')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['module'    => 'FORUM',
                            'operation' => 'refresh_topic_get_reply_error',
@@ -558,8 +558,8 @@ class forum
                  LIMIT 1;
                  ';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('update')) {
+        
+        if (!$db->query($query)) {
 
             $relog->write(['module'    => 'FORUM',
                            'operation' => 'post_reply_update_topics_error',
@@ -594,9 +594,9 @@ class forum
                             AND enabled = 1
                           LIMIT 1';
 
-                $db->setQuery($query);
+                
 
-                if (!$result = $db->executeQuery('select')) {
+                if (!$result = $db->query($query)) {
                     $relog->write(['type'      => '4',
                                    'module'    => 'FORUM',
                                    'operation' => 'forum_parse_content_fabmedia_query_errror',
@@ -634,9 +634,9 @@ class forum
                   FROM ' . $db->prefix . 'forum_replies 
                   WHERE topic_ID = ' . $topic_ID . '
                   AND visible = 1';
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('update')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -658,8 +658,8 @@ class forum
             LIMIT 1;
             ';
 
-            $db->setQuery($query);
-            if (!$db->executeQuery('update')) {
+            
+            if (!$db->query($query)) {
                 $relog->write(['type'      => '4',
                                'module'    => 'FORUM',
                                'operation' => 'forum_update_reply_count_update_query_errror',
@@ -684,10 +684,10 @@ class forum
                   WHERE user_ID = ' . $user_ID . '
                   AND topic_ID = ' . $topic_ID . '
                   LIMIT 1';
-        $db->setQuery($query);
+        
 
 
-        if (!$result = $db->executeQuery('update')) {
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -719,8 +719,8 @@ class forum
             )
             ';
 
-            $db->setQuery($query);
-            if (!$result = $db->executeQuery('insert')) {
+            
+            if (!$result = $db->query($query)) {
 
                 $relog->write(['type'      => '4',
                                'module'    => 'FORUM',
@@ -745,9 +745,9 @@ class forum
                   FROM ' . $db->prefix . 'forum_topics 
                   WHERE ID = ' . $topic_ID . ' LIMIT 1;';
 
-        $db->setQuery($query);
+        
 
-        if (!$resultTopic = $db->executeQuery('select')) {
+        if (!$resultTopic = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'delete_topic_select',
@@ -774,9 +774,9 @@ class forum
                   FROM ' . $db->prefix . 'forum_replies 
                   WHERE topic_ID = ' . $topic_ID . ';';
 
-        $db->setQuery($query);
+        
 
-        if (!$resultReplies = $db->executeQuery('select')) {
+        if (!$resultReplies = $db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'delete_topic_select_replies',
@@ -797,9 +797,9 @@ class forum
 
             $query = 'DELETE FROM ' . $db->prefix . 'forum_replies 
                       WHERE ID IN (' . $usersReplies . ')';
-            $db->setQuery($query);
+            
 
-            if (!$db->executeQuery('delete')) {
+            if (!$db->query($query)) {
                 $relog->write(['type'      => '4',
                                'module'    => 'FORUM',
                                'operation' => 'delete_topic_delete_replies',
@@ -820,8 +820,8 @@ class forum
         $query = 'DELETE FROM ' . $db->prefix . 'forum_topics 
                   WHERE ID = ' . $topic_ID . ' LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('delete')) {
+        
+        if (!$db->query($query)) {
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
                            'operation' => 'delete_topic_delete_main_topic',
@@ -857,8 +857,8 @@ class forum
                   ORDER BY ID 
                   DESC LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery('select')) {
+        
+        if (!$result = $db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -890,8 +890,8 @@ class forum
                       ';
         }
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('update')) {
+        
+        if (!$db->query($query)) {
 
             $relog->write(['type'      => '4',
                            'module'    => 'FORUM',
@@ -973,8 +973,8 @@ class forum
         ON R.topic_ID = T.ID
         WHERE R.ID = ' . $reply_ID . ' LIMIT 1;';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery()) {
+        
+        if (!$result = $db->query($query)) {
 
 
             $relog->write(['type'      => '4',

@@ -53,9 +53,9 @@ function plugin_showgallery($options)
     ' . $order . '
     ';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
         return 'Query error. ' . $query;
     }
 

@@ -39,9 +39,9 @@ $query = 'SELECT
             
             AND (M.lang = \'' . $lang . '\' OR M.lang IS NULL OR M.lang= \'\')
           LIMIT 1;';
-$db->setQuery($query);
 
-if (!$db->executeQuery('select')) {
+
+if (!$db->query($query)) {
     die ($query);
 }
 
@@ -66,9 +66,9 @@ if ($db->affected_rows)
             modified    = \'1\'
         WHERE ID = \'' . $ID . '\'';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('update')){
+    if (!$db->query($query)){
         echo 'Error: ' . $query;
     } else {
         echo '[' . date('d-m-Y h:i:s') . '] File updated (lang: ' . $lang . ').';
@@ -112,9 +112,9 @@ if ($db->affected_rows)
         )   
      ';
 
-     $db->setQuery($query);
+     
 
-    if (!$db->executeQuery('insert')){
+    if (!$db->query($query)){
         echo 'Error: ' . $query;
     } else {
         if (!$db->affected_rows){
@@ -133,9 +133,9 @@ if ($_POST['fabmediamanager_type'] === 'video') {
     WHERE ID = ' . ( (int) $_POST['fabmediamanager_video_ID']) . '
     LIMIT 1';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('update')){
+    if (!$db->query($query)){
         echo 'Query error. ' . $query;
     } else {
         echo 'Video updated';

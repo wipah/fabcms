@@ -61,9 +61,9 @@ if ($_GET['op'] === 'edit') {
 
         // Obtain the user
         $query = 'SELECT * FROM ' . $db->prefix . 'users WHERE ID = \'' . $ID . '\' LIMIT 1;';
-        $db->setQuery($query);
-        $db->executeQuery('select');
-        $row = $db->getResultAsArray();
+
+        $result = $db->query($query);
+        $row = mysqli_fetch_assoc($result);
 
         echo '<h1>Updating the user ' . $row['ID'] . ' (<em>' . $row['username'] . ' <em>)</h1>';
 
@@ -97,10 +97,7 @@ if ($_GET['op'] === 'edit') {
             WHERE ID = ' . $ID . '
             LIMIT 1';
 
-
-        $db->setQuery($query);
-
-        if ($db->executeQuery('update')) {
+        if ($db->query($query)) {
             $log->write('user_update', 'user', 'ID:' . $ID);
 
             echo '<div class="alert alert-success">
@@ -135,13 +132,13 @@ if ($_GET['op'] === 'edit') {
               LEFT JOIN ' . $db->prefix . 'users_tags AS T
                 ON U.ID = T.user_ID 
               WHERE U.ID = ' . $ID . ' LIMIT 1;';
-    $db->setQuery($query);
-    if (!$db->executeQuery('select')) {
+
+    if (!$result = $db->query($query)) {
         echo 'Query error: ' . $query;
 
         return;
     }
-    $row = $db->getResultAsArray();
+    $row = mysqli_fetch_assoc($result);
 } else {
 
     $postCommand = '&op=new&save';
@@ -169,9 +166,9 @@ if ($_GET['op'] === 'edit') {
 
         // Obtain the user
         $query = 'SELECT * FROM ' . $db->prefix . 'users WHERE ID = \'' . $ID . '\' LIMIT 1;';
-        $db->setQuery($query);
-        $db->executeQuery('select');
-        $row = $db->getResultAsArray();
+
+        $result = $db->query($query);
+        $row = mysqli_fetch_assoc($result);
 
         echo '<h1>Updating the user ' . $row['ID'] . ' (<em>' . $row['username'] . ' <em>)</h1>';
 
@@ -238,8 +235,7 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'users_groups
           ORDER by group_order ASC';
 
-$db->setQuery($query);
-if (!$resultGroups = $db->executeQuery('select')) {
+if (!$resultGroups = $db->query($query)) {
     echo 'Query error while selecting groups. ' . $query;
 
     return;

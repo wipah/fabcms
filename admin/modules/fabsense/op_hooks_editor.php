@@ -35,8 +35,7 @@ if ( $_GET['command'] === 'new' )
                       \'' . $hookEnabled . '\'
                   )';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo '
                 <div class="alert alert-warning">
                     <strong>Error!</strong> Query error. ' .  $query .'
@@ -85,8 +84,7 @@ if ( $_GET['command'] === 'new' )
               enabled = \'' . $hookEnabled . '\'
               WHERE ID = ' . $ID . ' LIMIT 1;';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('update')){
+        if (!$db->query($query)){
             echo 'Error. ' . $query;
             return;
         }
@@ -103,8 +101,7 @@ if ( $_GET['command'] === 'new' )
               FROM ' . $db->prefix . 'sense_hooks 
               WHERE ID = ' . $ID . ';';
 
-    $db->setQuery($query);
-    $result = $db->executeQuery('select');
+    $result = $db->query($query);
 
     if (!$db->affected_rows){
         echo 'No hook.';
@@ -183,9 +180,7 @@ if ($_GET['command'] === 'edit') {
           FROM ' . $db->prefix . 'sense_banner 
           WHERE hook_ID = ' . $ID . ';';
 
-    $db->setQuery($query);
-
-    if (!$result = $db->executeQuery($query)){
+    if (!$result = $db->query($query)){
         echo 'Query error. ' . $query;
         return;
     }

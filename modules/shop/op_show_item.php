@@ -89,8 +89,8 @@ $query = 'SELECT C.*
             AND C.lang = \'' . $core->shortCodeLang . '\'
           ORDER BY L.order DESC';
 
-$db->setQuery($query);
-if (!$resultCustomization = $db->executeQuery('select'))
+
+if (!$resultCustomization = $db->query($query))
 {
     echo 'Query error while selecting customizations.' . $query;
     return;
@@ -145,8 +145,8 @@ if (!$db->affected_rows)
                           FROM ' . $db->prefix . 'shop_items_customizations_options 
                           WHERE customization_ID = ' . $rowCustomization['ID'];
 
-                $db->setQuery($query);
-                if (!$resultCustomizationOptions = $db->executeQuery('select')){
+                
+                if (!$resultCustomizationOptions = $db->query($query)){
                     echo 'Query error. ' . $query;
                     return;
                 }
@@ -192,9 +192,8 @@ if (!empty($tags) && strlen($tags) > 1) {
     }
 
     $queryTags = substr($queryTags, 0, -3) . ' ) LIMIT 4';
-
-    $db->setQuery($queryTags);
-    if (!$resultSimilar = $db->executeQuery('select')) {
+    
+    if (!$resultSimilar = $db->query($queryTags)) {
         echo 'Query error' . $queryTags;
     } else {
         if (!$db->affected_rows) {

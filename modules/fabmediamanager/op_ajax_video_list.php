@@ -21,9 +21,9 @@ LEFT JOIN ' . $db->prefix . 'fabmedia_videos AS VIDEO
 LEFT JOIN ' . $db->prefix . 'fabmedia_masters AS MASTER
     ON MEDIA.master_ID = MASTER.ID';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     return;
 }

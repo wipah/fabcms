@@ -27,9 +27,9 @@ WHERE enabled = 1
     AND ID = ' . $ID . '
 LIMIT 1';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery()) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error';
     return;
 }
@@ -57,9 +57,9 @@ if (file_exists($file)) {
                 \'' . $_SERVER['REMOTE_ADDR'] . '\'
               )';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('insert')) {
+    if (!$db->query($query)) {
         $this->noTemplateParse = false;
         echo 'Unable to send the file. We apoligize. ';
 

@@ -25,8 +25,7 @@ $query = 'SELECT COUNT(PAGES.ID) AS total, SUM(STATS.words) total_words
             AND PAGES.visible = 1
             AND PAGES.internal_redirect = \'\'';
 
-$db->setQuery($query);
-if (!$resultCount = $db->executeQuery('select')) {
+if (!$resultCount = $db->query($query)) {
     echo 'Query error. ' . $query;
 }
 $rowCount = mysqli_fetch_assoc($resultCount);
@@ -37,9 +36,8 @@ unset ($resultCount);
 
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'wiki_pages_status';
-$db->setQuery($query);
 
-if (!$resultStatus = $db->executeQuery('select')) {
+if (!$resultStatus = $db->query($query)) {
     echo $query;
     die();
 }
@@ -54,9 +52,7 @@ $selectStatus .= '</select>';
 $query = 'SELECT C.* 
           FROM ' . $db->prefix . 'wiki_categories_details AS C';
 
-$db->setQuery($query);
-
-if (!$resultCategories = $db->executeQuery('select')) {
+if (!$resultCategories = $db->query($query)) {
     echo $query;
     die();
 }
@@ -82,8 +78,8 @@ LEFT JOIN ' . $db->prefix . 'users USERS
     ON USERS.ID = COMMENTS.author_ID    
 ORDER BY ID DESC';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     $comments = 'Query error.';
 } else {
     if (!$db->affected_rows) {
@@ -149,8 +145,8 @@ $query = 'SELECT
 ) AS today';
 
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
     die();
 }

@@ -62,8 +62,8 @@ function plugin_ipb4($dataArray)
         WHERE ' . $db->buildExtendedQuery($dataArray['keywords'], 'title', ', ', 'OR') . '
         AND state = \'open\';';
     }
-    $db->setQuery($query);
-    if (!$result = $db->executeQuery()) {
+    
+    if (!$result = $db->query($query)) {
         return 'Query error. ' . $query;
     } else {
         if (!$db->affected_rows) {

@@ -157,9 +157,8 @@ $statusFilter . '
 GROUP BY P.ID 
 ORDER BY P.ID DESC';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;

@@ -137,7 +137,7 @@ switch ($_GET['command']) {
 
             $query = 'SELECT * FROM ' . $db->prefix . 'quiz_categories WHERE ID = \'' . $ID . '\' LIMIT 1;';
 
-            if (!$db->query($query)) {
+            if (!$result = $db->query($query)) {
                 echo 'Query error. ' . $query;
                 return;
             }
@@ -147,7 +147,7 @@ switch ($_GET['command']) {
                 return;
             }
 
-            $row = $db->getResultAsArray();
+            $row = mysqli_fetch_assoc($result);
         }
 
         if ($_GET['command'] == 'nuova') {
@@ -273,10 +273,11 @@ FROM ' . $db->prefix . 'quiz_categories
 
 $db->query($query);
 
-if (!$db->affected_rows) {
+if (!$result = $db->affected_rows) {
     echo 'Nessuna categoria ancora creata';
 } else {
-    while ($linea = mysqli_fetch_array($db->getResultAsObject())) {
+
+    while ($linea = mysqli_fetch_assoc($result)) {
         echo '&bull; <a href="admin.php?module=quiz&op=categoria&command=modifica&ID=' . $linea['ID'] . '">' . $linea['nome'] . '</a> <br/>';
     }
 }

@@ -32,9 +32,7 @@ if (isset($_GET['save'])){
               WHERE ID = ' . $ID . ' 
               LIMIT 1;';
 
-    $db->setQuery($query);
-
-    if (!$db->executeQuery('update')){
+    if (!$db->query($query)){
         echo 'Query error ' . $query;
         return;
     } else {

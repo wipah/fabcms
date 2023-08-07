@@ -22,8 +22,8 @@ $query = 'UPDATE ' . $db->prefix . 'users ' .
   ' AND optin_hash = \'' . $hash . '\' ' .
   ' LIMIT 1';
 
-$db->setQuery($query);
-if (!$db->executeQuery('update')) {
+
+if (!$db->query($query)) {
     $relog->write(['type'      => '4',
                    'module'    => 'USER',
                    'operation' => 'user_confirm_update_db',
@@ -41,8 +41,8 @@ if (!$db->affected_rows) {
     $query = 'SELECT * 
               FROM ' . $db->prefix . 'users 
               WHERE ID = ' . $ID . ' LIMIT 1';
-    $db->setQuery($query);
-    $result = $db->executeQuery('select');
+    
+    $result = $db->query($query);
     $row = mysqli_fetch_array($result);
 
     /*************

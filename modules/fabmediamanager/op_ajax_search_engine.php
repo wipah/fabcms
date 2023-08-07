@@ -53,9 +53,9 @@ WHERE MEDIA.enabled = 1
     ORDER BY '. $orderBy.'
 ';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }

@@ -135,7 +135,7 @@ class FabMedia
             return false;
         }
 
-        if (!$db->affected_rows) {
+        if (!$result = $db->affected_rows) {
             echo 'Error. No file found.';
 
             $relog->write(['type'      => '3',
@@ -146,7 +146,7 @@ class FabMedia
 
             return false;
         }
-        $row = $db->getResultAsArray();
+        $row = mysqli_fetch_assoc($result);
 
         $relog->write(['type'      => '1',
                        'module'    => 'FABMEDIAMANAGER',

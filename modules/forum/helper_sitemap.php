@@ -20,9 +20,9 @@ LEFT JOIN ' . $db->prefix . 'forum_threads AS TH
 WHERE T.visible = 1
 LIMIT 1';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
     $log->write('error','Sitemap:forum','Query error: ' . $query);
     return;
 }

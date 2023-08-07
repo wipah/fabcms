@@ -29,8 +29,8 @@ WHERE user_ID = \'' . $user->ID . '\'
 LIMIT 1;
 ';
 
-$db->setQuery($query);
-if (!$db->executeQuery('DELETE')) {
+
+if (!$db->query($query)) {
     $relog->write(['type'      => '4',
                    'module'    => 'USER',
                    'operation' => 'user_logout_delete_session',

@@ -27,8 +27,8 @@ switch ($path[2]){
 }
 
 $query = 'UPDATE ' . $db->prefix . 'forum_topics SET locked = ' . $status . ' WHERE ID = ' . $topic_ID . ' LIMIT 1';
-$db->setQuery($query);
-if (!$db->executeQuery('update')){
+
+if (!$db->query($query)){
     echo 'Error.' . $query;
 } else {
     echo 'Update ok.' . $query;

@@ -46,7 +46,7 @@ class plugin
 
         $query = "SELECT * FROM {$db->prefix}plugins_chain WHERE visible = 1;";
 
-        if (!$db->query($query)) {
+        if (!$result = $db->query($query)) {
             $debug->write('error', 'Query error while attempt "plugins chain" ' . $query . 'PLUGIN');
             return $page;
         }
@@ -56,7 +56,7 @@ class plugin
             return $page;
         }
 
-        $dbData = $db->getResultAsObject();
+        $dbData = mysqli_fetch_assoc($result);
 
         while ($row = mysqli_fetch_array($dbData)) {
 

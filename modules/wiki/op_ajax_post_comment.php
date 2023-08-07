@@ -76,9 +76,9 @@ VALUES
     0
 )';
 
-$db->setQuery($query);
 
-if (!$db->executeQuery('insert')){
+
+if (!$db->query($query)){
     echo '<!--error-->' . 'Query error.';
 } else {
     echo '<!--ok-->' .  $language->get('wiki', 'commentUnderModerationQueue');

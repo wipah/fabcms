@@ -31,8 +31,8 @@ $query = 'SELECT *
           ' . ( $user->isAdmin === true ? '' :  ' AND user_ID = ' . $user->ID ) . '  
           LIMIT 1';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')){
+
+if (!$result = $db->query($query)){
 
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',

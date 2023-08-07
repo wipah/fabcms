@@ -36,9 +36,9 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'forum_user_config 
           WHERE user_ID = ' . $user->ID . ' 
           LIMIT 1';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error.';
 
     return;

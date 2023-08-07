@@ -49,8 +49,7 @@ $query = "INSERT INTO {$db->prefix}hooks
 VALUES
 ('$name', '$html', '$enabled');";
 
-$db->setQuery($query);
-if (!$db->executeQuery('insert')) {
+if (!$db->query($query)) {
   echo 'Query error: ' . $query;
   return;
 }

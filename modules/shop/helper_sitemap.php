@@ -11,9 +11,7 @@ $query = 'SELECT *
           FROM ' . $db->prefix . 'shop_items
           WHERE enabled = 1';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select'))
+if (!$result = $db->query($query))
     return false;
 
 

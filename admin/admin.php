@@ -65,18 +65,16 @@ $URI->useHTTPS = $conf['uri']['useHTTPS'];
 $URI->usePort = $conf['uri']['usePort'];
 $URI->port = $conf['uri']['port'];
 
-
-
 require $conf['path']['baseDir'] . 'lib/module/class_module.php';
 $module = new \CrisaSoft\FabCMS\module(true);
 
 require $conf['path']['baseDir'] . 'lib/language/class_language.php';
 $language = new language();
 
-include_once '../lib/mysql/class_mysqli.php';
+include_once '../lib/db/class_db.php';
 
-$db = new CrisaSoft\FabCMS\dbi ($conf['db']['host'], $conf['db']['user'], $conf['db']['password'], $conf['db']['dbname']);
-$db->prefix = $conf['prefix'];
+$db = new db($conf['db']['host'], $conf['db']['user'], $conf['db']['password'], $conf['db']['dbname']);
+$db->prefix = $conf['db']['prefix'];
 
 if ($db->connect_errno) {
     echo "Failed to connect to MySQL: (" . $db->connect_errno . ") " . $db->connect_error;

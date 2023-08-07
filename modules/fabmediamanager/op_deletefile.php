@@ -23,9 +23,9 @@ WHERE
     AND user_ID = ' . $user->ID . ' 
 LIMIT 1;';
 
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo '
         <div class="panel panel-warning">
             <div class="panel-heading">
@@ -65,8 +65,8 @@ $query = 'DELETE FROM ' . $db->prefix . 'fabmedia
           WHERE ID = \'' . $ID . '\' 
           LIMIT 1;';
 
-$db->setQuery($query);
-if (!$db->executeQuery('delete')){
+
+if (!$db->query($query)){
     echo '
         <div class="panel panel-warning">
             <div class="panel-heading">
@@ -99,9 +99,9 @@ if ($type === 'image') {
               WHERE file_ID = \'' . $ID . '\' 
               LIMIT 1;';
 
-    $db->setQuery($query);
+    
 
-    if (!$db->executeQuery('delete')){
+    if (!$db->query($query)){
         echo '
         <div class="panel panel-warning">
             <div class="panel-heading">

@@ -46,9 +46,9 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
                   FROM ' . $db->prefix . 'forum_user_config 
                   WHERE user_ID = ' . $user->ID . ' LIMIT 1';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery()) {
+    if (!$result = $db->query($query)) {
         echo 'Query error while updating photo.';
 
         return;
@@ -64,9 +64,9 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
             )
             ';
 
-        $db->setQuery($query);
+        
 
-        if (!$result = $db->executeQuery('INSERT')) {
+        if (!$result = $db->query($query)) {
             echo 'Query error with new.';
 
             return;
@@ -90,8 +90,8 @@ if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
                   WHERE ID = ' . $config_ID . ' 
                     AND user_ID = ' . $user->ID . '
                   LIMIT 1';
-        $db->setQuery($query);
-        if (!$db->executeQuery('update')) {
+        
+        if (!$db->query($query)) {
             echo 'Query error';
 
             return;

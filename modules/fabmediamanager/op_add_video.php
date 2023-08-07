@@ -19,7 +19,7 @@ $query = 'INSERT INTO ' . $db->prefix . 'fabmedia_masters
           (
             NULL
           )';
-$db->setQuery($query);
+
 if (!$db->executeQuery('inserto')){
     echo 'Query error. ' . $query;
     return;
@@ -46,8 +46,8 @@ $query = 'INSERT INTO ' . $db->prefix . 'fabmedia
             \'' . $youtubeTitle . '\'
           );';
 
-$db->setQuery($query);
-if (!$db->executeQuery('insert')) {
+
+if (!$db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;
@@ -68,8 +68,8 @@ $query = 'INSERT INTO ' . $db->prefix . 'fabmedia_videos
          )
          ';
 
-$db->setQuery($query);
-if (!$db->executeQuery('insert')) {
+
+if (!$db->query($query)) {
     echo 'Query error. ' . $query;
 
     return;

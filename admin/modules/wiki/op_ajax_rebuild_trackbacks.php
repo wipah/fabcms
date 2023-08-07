@@ -14,9 +14,8 @@ $this->noTemplateParse = true;
 set_time_limit ( 1200 );
 
 $query = 'SELECT * FROM ' . $db->prefix . 'wiki_pages';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')){
+if (!$result = $db->query($query)){
     echo 'Query error. ' . $query;
     return;
 }
@@ -30,8 +29,7 @@ while ($row = mysqli_fetch_assoc($result)){
               WHERE ID = ' . $ID . '
               LIMIT 1;';
 
-    $db->setQuery($query);
-    if (!$db->executeQuery('update')){
+    if (!$db->query($query)){
         echo $query;
         return;
     }

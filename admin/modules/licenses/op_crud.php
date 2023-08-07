@@ -25,10 +25,8 @@ if (isset($_GET['ID'])) {
             WHERE ID = ' . $ID . '
             LIMIT 1
         ';
-
-        $db->setQuery($query);
-
-        if (!$db->executeQuery('update')){
+        
+        if (!$db->query($query)){
             echo 'Query error. <pre>' . $query . '</pre>';
             return;
         }
@@ -39,9 +37,8 @@ if (isset($_GET['ID'])) {
     $query = 'SELECT * 
               FROM ' . $db->prefix . 'licenses_licenses
               WHERE ID = ' . $ID ;
-    $db->setQuery($query);
 
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
         echo '<strong>Query error:</strong>
             <pre>' . $query . '</pre>';
 
@@ -93,9 +90,9 @@ if (isset($_GET['saveNew'])) {
                   WHERE ID = ' . $master_ID . '
                   LIMIT 1';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('select')){
+        if (!$db->query($query)){
             echo '<strong>Query error</strong>. ' . $query;
             return;
         }
@@ -114,9 +111,9 @@ if (isset($_GET['saveNew'])) {
                   AND lang = \'' . $language . '\'
                   LIMIT 1;';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('select')){
+        if (!$db->query($query)){
             echo '&bull; Query error. <pre>' . $query . '</pre>';
             return;
         }
@@ -148,9 +145,9 @@ if (isset($_GET['saveNew'])) {
                   ' . ( (int) $_POST['allow_share']  === 1 ? '1': '0' ) . ',
                   ' . ( (int) $_POST['mandatory_credits']  === 1 ? '1': '0' ) . '
                   )';
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo 'Query error. ' . $query;
             return;
         }
@@ -171,9 +168,9 @@ if (isset($_GET['saveNew'])) {
                  null
                  );';
 
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo '<strong>Query error.</strong>'. $query;
             return;
         }
@@ -202,9 +199,9 @@ if (isset($_GET['saveNew'])) {
                   ' . ( (int) $_POST['allow_share']  === 1 ? '1': '0' ) . ',
                   ' . ( (int) $_POST['mandatory_credits']  === 1 ? '1': '0' ) . '
                   )';
-        $db->setQuery($query);
+        
 
-        if (!$db->executeQuery('insert')){
+        if (!$db->query($query)){
             echo 'Query error. ' . $query;
             return;
         } else {

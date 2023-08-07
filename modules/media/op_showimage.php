@@ -54,8 +54,8 @@ if (isset($_GET['gallery_ID']))
         
     LIMIT 1;';
 
-    $db->setQuery($query);
-    if (!$result = $db->executeQuery('select')){
+    
+    if (!$result = $db->query($query)){
         echo 'Query error while getting gallery info. ' . $query;
         return;
     }
@@ -95,9 +95,9 @@ if (isset($_GET['gallery_ID']))
     ORDER BY ITEMS.`order` DESC
     LIMIT 1';
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
         echo 'Query error while checking for previous item.' . $query;
         return;
     }
@@ -143,9 +143,9 @@ if (isset($_GET['gallery_ID']))
     LIMIT 1';
 
 
-    $db->setQuery($query);
+    
 
-    if (!$result = $db->executeQuery('select')){
+    if (!$result = $db->query($query)){
         echo 'Query error while checking for previous item.' . $query;
         return;
     }
@@ -192,9 +192,9 @@ $query = 'SELECT
             ON LICENSES.ID = FMEDIA.license_ID    
           WHERE FMEDIA.ID = \'' . $ID . '\'
             AND FMEDIA.trackback = \'' . $trackback . '\';';
-$db->setQuery($query);
 
-if (!$db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Error';
     return;
 }
@@ -204,7 +204,7 @@ if (!$db->affected_rows) {
     return;
 }
 
-$row            =   $db->getResultAsArray();
+$row            =   mysqli_fetch_assoc($result);
 
 $user_ID        =   $row['user_ID'];
 $filename       =   $row['filename'];
@@ -245,9 +245,9 @@ $query = "SELECT F.filename,
               AND I.image_ID = $ID
           ORDER BY G.order";
 
-$db->setQuery($query);
 
-if (!$resultGalleries = $db->executeQuery($query)) {
+
+if (!$resultGalleries = $db->query($query)) {
     echo 'Query error.' . $query;
 
     $relog->write(['type'      => '4',
@@ -307,8 +307,8 @@ foreach ($tag_array as $single_tag) {
 }
 $query = substr($query, 0, -3) . ') AND F.enabled = 1 AND F.ID != ' . $ID . ' LIMIT 6';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo 'Query error.' . $query;
     return;
 } else {
@@ -396,8 +396,8 @@ ON P.ID = F.page_ID
     WHERE F.fabmedia_ID = ' . $ID . '
 AND P.visible = 1';
 
-$db->setQuery($query);
-if (!$resultWikiPages = $db->executeQuery('select')) {
+
+if (!$resultWikiPages = $db->query($query)) {
     echo 'Query error while selecting pages from wiki!';
 } else {
     if (!$db->affected_rows) {

@@ -38,8 +38,7 @@ if ($_GET['command'] == 'edit'){
         WHERE ID = ' . $ID . '
         LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('update')){
+        if (!$db->query($query)){
             echo '<pre>' . $query . '</pre>';
         } else {
             echo 'Update ok.';
@@ -89,8 +88,8 @@ if ($_GET['command'] == 'edit'){
         )
         ';
 
-        $db->setQuery($query);
-        if (!$db->executeQuery('insert')){
+
+        if (!$db->query($query)){
             echo 'Query error. ' . $query;
             return;
         }

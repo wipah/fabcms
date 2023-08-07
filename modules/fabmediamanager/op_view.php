@@ -107,9 +107,9 @@ WHERE
     ' . $limit . ';';
 
 
-$db->setQuery($query);
 
-if (!$db->executeQuery($query)){
+
+if (!$result = $db->query($query)){
     echo '
         <div class="panel panel-danger">
             <div class="panel-heading">
@@ -121,7 +121,7 @@ if (!$db->executeQuery($query)){
     return;
 }
 
-if (!$db->affected_rows){
+if ($db->affected_rows){
     echo '
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -135,7 +135,7 @@ if (!$db->affected_rows){
 
 $numRows = $db->affected_rows;
 
-$result = $db->getResultAsObject();
+$result = mysqli_fetch_assoc($result);
 
 $i = 0;
 while ($row = mysqli_fetch_array($result)){

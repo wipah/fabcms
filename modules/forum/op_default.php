@@ -35,8 +35,8 @@ $query = 'SELECT T.ID,
 ORDER BY T.ID DESC
 LIMIT 5';
 
-$db->setQuery($query);
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
 
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',
@@ -66,8 +66,8 @@ SELECT * FROM ' . $db->prefix . 'forum_categories AS C
 WHERE C.enabled = 1
 ORDER BY C.order ASC
 ';
-$db->setQuery($query);
-if (!$resultCategory = $db->executeQuery('select')){
+
+if (!$resultCategory = $db->query($query)){
 
     $relog->write(['type'      => '4',
                    'module'    => 'FORUM',
@@ -108,9 +108,9 @@ while ($rowCategories = mysqli_fetch_assoc($resultCategory)){
               WHERE T.category_ID = ' . $rowCategories['ID'] .' AND T.visible = 1
               GROUP BY T.ID
               ';
-    $db->setQuery($query);
+    
 
-    if (!$resultTopics = $db->executeQuery('select')){
+    if (!$resultTopics = $db->query($query)){
 
         $relog->write(['type'      => '4',
                        'module'    => 'FORUM',

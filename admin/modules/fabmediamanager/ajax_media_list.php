@@ -19,9 +19,7 @@ FROM ' . $db->prefix .'fabmedia MEDIA
 LEFT JOIN ' . $db->prefix .'fabmedia_masters MASTER
 ON MASTER.ID = MEDIA.master_ID;';
 
-$db->setQuery($query);
-
-if (!$result = $db->executeQuery('select')) {
+if (!$result = $db->query($query)) {
     echo '<pre>' . $query . '</pre>';
     return;
 }

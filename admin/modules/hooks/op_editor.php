@@ -40,9 +40,7 @@ switch ($_GET['op']) {
       $query = "SELECT * FROM {$db->prefix}hooks 
                 WHERE ID = '$ID' LIMIT 1;";
 
-    $db->setQuery($query);
-
-    if (!$db->executeQuery('select')) {
+    if (!$result = $db->query($query)) {
       echo 'Query error. ' . $query;
       return;
     }
@@ -52,7 +50,7 @@ switch ($_GET['op']) {
       return;
     }
 
-    $row = $db->getResultAsArray();
+    $row = mysqli_fetch_assoc($result);
 
       (int) $row['enabled'] === 1 ? $checkboxenabled = 'checked="checked"' : $checkboxenabled = '';
     break;

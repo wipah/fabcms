@@ -31,8 +31,8 @@ class quiz{
         LIMIT ' . $limit . '
         ';
 
-        $db->setQuery($query);
-        $result = $db->executeQuery('select');
+        
+        $result = $db->query($query);
 
         $return = '';
         while ($row = mysqli_fetch_array($result)){
@@ -93,8 +93,8 @@ class quiz{
             $query = substr($query, 0, -1);
         $query .= '\');';
 
-        $db->setQuery($query);
-        if ($db->executeQuery('insert')){
+        
+        if ($db->query($query)){
             return true;
         }else{
             return false;
@@ -118,8 +118,8 @@ class quiz{
         ORDER BY percent DESC
         LIMIT 1';
 
-        $db->setQuery($query);
-        if (!$result = $db->executeQuery()){
+        
+        if (!$result = $db->query($query)){
             return 'Query error. #1 ';
         }
         $row = mysqli_fetch_array($result);
@@ -129,8 +129,8 @@ class quiz{
 
         $query = 'SELECT * FROM ' . $db->prefix . 'quiz_categories WHERE ID = \'' . $category . '\' LIMIT 1;';
 
-        $db->setQuery($query);
-        $result = $db->executeQuery('select');
+        
+        $result = $db->query($query);
         $row = mysqli_fetch_array($result);
         $cat_ID = $row['ID'];
         $cat_name = $row['nome'];

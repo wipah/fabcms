@@ -19,9 +19,9 @@ echo '<h2>Rebuild trackback tool</h2>';
 
 $query = 'SELECT * 
           FROM ' . $db->prefix . 'fabmedia';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery('select')) {
+
+if (!$result = $db->query($query)) {
     echo '<pre>' . $query . '</pre>';
 
     return;
@@ -43,8 +43,8 @@ while ($row = mysqli_fetch_assoc($result)) {
               SET trackback = \'' . $trackback . '\' 
               WHERE ID = ' . $ID . ' LIMIT 1';
 
-    $db->setQuery($query);
-    if (!$db->executeQuery('update')) {
+    
+    if (!$db->query($query)) {
         echo 'Query error. ' . $query;
         die();
     }

@@ -42,8 +42,7 @@ WHERE ID = ' . $ID . '
 LIMIT 1;
 ';
 
-$db->setQuery($query);
-if ($db->executeQuery('insert')){
+if ($db->query($query)){
     echo 'Password changed';
     $log->write('user_update_password','user','ID:'. $ID);
 }else{

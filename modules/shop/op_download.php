@@ -45,9 +45,8 @@ $query = 'SELECT *
           AND   type = 0 
           AND   enabled = 1
           LIMIT 1;';
-$db->setQuery($query);
 
-if (!$result = $db->executeQuery()) {
+if (!$result = $db->query($query)) {
     $relog->write(['type'      => '4',
                    'module'    => 'SHOP',
                    'operation' => 'shop_download_public_search',
