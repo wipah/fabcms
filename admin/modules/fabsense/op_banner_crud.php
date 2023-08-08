@@ -123,7 +123,7 @@ if ($_GET['command'] === 'edit') {
             echo '<div class="panel panel-success">
                     <div class="panel-heading">Banner was created</div>
                     <div class="panel-body">The banner was created. <br/> 
-                        &bull; <a href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $db->lastInsertID . '">Edit the banner</a></div>
+                        &bull; <a href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $dbinsert_id . '">Edit the banner</a></div>
                         &bull; <a href="admin.php?module=fabsense&op=banner&command=new&hook_ID=' . $hook_ID. '">Create new banner</a></div>
                   </div>';
         }

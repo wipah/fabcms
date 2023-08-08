@@ -58,5 +58,5 @@ if (!$db->affected_rows) {
   echo 'No data changed';
 }
 else {
-    echo $template->getCustomBox( ['class' => 'info', 'title' => 'Hook saved', 'message' => 'Hook saved. <a href="admin.php?module=hook&op=edit&ID=' . $db->lastInsertID . '">Click here</a> to edit it.'] );
+    echo $template->getCustomBox( ['class' => 'info', 'title' => 'Hook saved', 'message' => 'Hook saved. <a href="admin.php?module=hook&op=edit&ID=' . $dbinsert_id . '">Click here</a> to edit it.'] );
 }

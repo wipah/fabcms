@@ -571,7 +571,7 @@ class shop
                     return false;
                 }
 
-                $line_ID = $db->lastInsertID;
+                $line_ID = $dbinsert_id;
 
                 echo 'Calling update cart values from addToCart() 2<br/>';
 
@@ -630,7 +630,7 @@ class shop
                 return false;
             }
 
-            $cart_ID = $db->lastInsertID;
+            $cart_ID = $dbinsert_id;
             $this->cartID = $cart_ID;
 
             echo 'Cart ID is ' . $cart_ID . PHP_EOL;
@@ -713,7 +713,7 @@ class shop
             }
 
             $this->updateCartValues($cart_ID);
-            $this->cartInsertAdditionalInfo($db->lastInsertID);
+            $this->cartInsertAdditionalInfo($dbinsert_id);
             $this->updateDbCartStatus($cart_ID);
             echo 'Item was inserted into the cart.' . PHP_EOL;
 

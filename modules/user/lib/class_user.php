@@ -335,10 +335,10 @@ class user
         
 
         if ($db->query($query)) {
-            $returnArray['ID'] = $db->lastInsertID;
+            $returnArray['ID'] = $dbinsert_id;
             $returnArray['hash'] = $optinHash;
 
-            $log->write('add_user', 'LOGIN', 'username:' . $username, ', email: ' . $email . ', ID: ' . $db->lastInsertID);
+            $log->write('add_user', 'LOGIN', 'username:' . $username, ', email: ' . $email . ', ID: ' . $dbinsert_id);
             $debug->write('info', 'User was pushed to DB', 'USER');
 
             return $returnArray;

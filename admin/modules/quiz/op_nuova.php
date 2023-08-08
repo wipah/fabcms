@@ -111,11 +111,11 @@ switch ($_GET['op']) {
                 <div class="response-msg success ui-corner-all">
                     <span>La domanda è stata inserita con successo</span> <br/>
                     &bull; <a href="admin.php?module=quiz&op=nuova">Aggiungi una nuova domanda</a>;<br/>
-                    &bull; <a href="admin.php?module=quiz&op=editaDomanda&ID=' . $db->lastInsertID . '">Modifica la domanda appena inserita
+                    &bull; <a href="admin.php?module=quiz&op=editaDomanda&ID=' . $dbinsert_id . '">Modifica la domanda appena inserita
                 </div>
             </div>';
 
-            $log->write('quiz_new_question_save_ok','quiz', 'ID: ' . $db->lastInsertID);
+            $log->write('quiz_new_question_save_ok','quiz', 'ID: ' . $dbinsert_id);
 
             return;
         }

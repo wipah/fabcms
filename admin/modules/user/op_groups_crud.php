@@ -103,7 +103,7 @@ if ( $_GET['command'] === 'edit'){
             return;
         }
 
-        echo 'Group created. <a href="admin.php?module=user&op=groups&command=edit&ID=' . $db->lastInsertID . '">Click here</a> to edit the group';
+        echo 'Group created. <a href="admin.php?module=user&op=groups&command=edit&ID=' . $dbinsert_id . '">Click here</a> to edit the group';
         return;
     }
 }

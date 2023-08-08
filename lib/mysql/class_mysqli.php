@@ -73,11 +73,11 @@ class dbi extends \mysqli
                 $this->numRows = mysqli_num_rows($this->result);
                 break;
             case 'insert' :
-                $this->lastInsertID = mysqli_insert_id($this->linkID);
+                $thisinsert_id = mysqli_insert_id($this->linkID);
                 $this->numRows = mysqli_affected_rows($this->linkID);
                 break;
             default :
-                @$this->lastInsertID = mysqli_insert_id($this->linkID);;
+                @$thisinsert_id = mysqli_insert_id($this->linkID);;
                 $this->numRows = mysqli_affected_rows($this->linkID);
                 break;
         }

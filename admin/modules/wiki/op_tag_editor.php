@@ -94,7 +94,7 @@ if ($_GET['command'] == 'edit'){
             return;
         }
 
-        echo 'Menu was inserted. <a href="admin.php?module=wiki&op=tag&command=edit&ID=' . $db->lastInsertID . '">Click here</a> to edit.';
+        echo 'Menu was inserted. <a href="admin.php?module=wiki&op=tag&command=edit&ID=' . $dbinsert_id . '">Click here</a> to edit.';
         return;
 
     } else {

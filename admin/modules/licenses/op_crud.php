@@ -152,7 +152,7 @@ if (isset($_GET['saveNew'])) {
             return;
         }
 
-        echo '&bull; License was added. <a href="admin.php?module=licenses&op=crued&ID=' . $db->lastInsertID . '">Edit</a>.';
+        echo '&bull; License was added. <a href="admin.php?module=licenses&op=crued&ID=' . $dbinsert_id . '">Edit</a>.';
         return;
     } else {
 
@@ -175,7 +175,7 @@ if (isset($_GET['saveNew'])) {
             return;
         }
 
-        $master_ID = $db->lastInsertID;
+        $master_ID = $dbinsert_id;
         echo '&ebull; Master ID created: ' . $master_ID;
 
 
@@ -205,7 +205,7 @@ if (isset($_GET['saveNew'])) {
             echo 'Query error. ' . $query;
             return;
         } else {
-            $ID = $db->lastInsertID;
+            $ID = $dbinsert_id;
             echo '&bull; License was added. 
                   <a href="admin.php?module=licenses&op=crud&ID=' .  $ID . '">Edit</a> or 
                   <a href="admin.php?module=liceses&op=crud&master_ID=' . $master_ID . '">add new language</a>.';

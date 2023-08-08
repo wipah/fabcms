@@ -25,7 +25,7 @@ if (!$db->executeQuery('inserto')){
     return;
 }
 
-$insert_ID = $db->lastInsertID;
+$insert_ID = $dbinsert_id;
 
 $query = 'INSERT INTO ' . $db->prefix . 'fabmedia 
           (
@@ -53,7 +53,7 @@ if (!$db->query($query)) {
     return;
 }
 
-$fabmedia_ID = $db->lastInsertID;
+$fabmedia_ID = $dbinsert_id;
 
 $query = 'INSERT INTO ' . $db->prefix . 'fabmedia_videos 
          (  fabmedia_ID,

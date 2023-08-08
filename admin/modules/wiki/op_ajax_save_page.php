@@ -188,7 +188,7 @@ if (($_POST['crudType']) === 'update') {
         if (!$db->query($query)) {
             echo '{"status": 505,"description": "Unable to create master."}';
         }
-        $master_ID = $db->lastInsertID;
+        $master_ID = $db->insert_id;
     } else {
         $master_ID = (int) $_POST['master_ID'];
     }
@@ -279,7 +279,7 @@ if (($_POST['crudType']) === 'update') {
 
         return;
     }
-    $page_ID = $db->lastInsertID;
+    $page_ID = $dbinsert_id;
     $fabwiki->updateTags($page_ID, $_POST['tags']);
     $fabwiki->updateInternalTags($page_ID, $_POST['internalTags']);
     $fabwiki->updateKeywords($page_ID, $_POST['keywords']);
