@@ -279,7 +279,7 @@ if (($_POST['crudType']) === 'update') {
 
         return;
     }
-    $page_ID = $dbinsert_id;
+    $page_ID = $db->insert_id;
     $fabwiki->updateTags($page_ID, $_POST['tags']);
     $fabwiki->updateInternalTags($page_ID, $_POST['internalTags']);
     $fabwiki->updateKeywords($page_ID, $_POST['keywords']);

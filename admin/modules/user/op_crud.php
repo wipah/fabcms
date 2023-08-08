@@ -218,7 +218,7 @@ if ($_GET['op'] === 'edit') {
 
             // Update tags
             $tags = explode(',', $tags);
-            if ($user->updateTags($dbinsert_id, $tags) !== 1) {
+            if ($user->updateTags($db->insert_id, $tags) !== 1) {
                 echo 'Error. ';
             }
 

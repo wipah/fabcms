@@ -101,7 +101,7 @@ if ($_GET['command'] == 'edit'){
                 return;
             }
 
-            $master_ID = $dbinsert_id;
+            $master_ID = $db->insert_id;
         } else {
             $master_ID = (int) $_GET['master_ID'];
         }
@@ -129,7 +129,7 @@ if ($_GET['command'] == 'edit'){
             echo 'Query error. ' . $query;
         }
 
-        echo $dbinsert_id;
+        echo $db->insert_id;
 
     }
 

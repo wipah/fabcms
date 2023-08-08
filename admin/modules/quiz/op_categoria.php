@@ -124,7 +124,7 @@ switch ($_GET['command']) {
                 $log->write('quiz_new_category_insert_error', 'quiz', 'Query: ' . $query);
                 echo '<div class="ui-corner-all" style="border:1px solid red; background-color: #FFC0C0; padding:4px;">Errore nella query.<br/>' . $query . '</div>';
             } else {
-                $log->write('quiz_new_category_insert_ok', 'quiz', 'ID: ' . $dbinsert_id);
+                $log->write('quiz_new_category_insert_ok', 'quiz', 'ID: ' . $db->insert_id);
                 echo '<div class="ui-corner-all" style="border:1px solid green; background-color: #C0FFC0; padding:4px;">Categoria inserita con successo</div>';
             }
         }

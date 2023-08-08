@@ -153,7 +153,7 @@ if ($path[2] == 'new-topic') {
 
             echo 'Query error';
         } else {
-            $topic_ID = $dbinsert_id;
+            $topic_ID = $db->insert_id;
             echo '<!--success-->';
 
             $link = $URI->getBaseUri() . $this->routed . '/' .

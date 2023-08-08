@@ -272,7 +272,7 @@ class forum
 
             return -1;
         } else {
-            $last = $dbinsert_id;
+            $last = $db->insert_id;
             $this->updatePostCount($user->ID);
             $this->updateReplyCount($topic_ID);
 

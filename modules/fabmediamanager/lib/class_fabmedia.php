@@ -679,7 +679,7 @@ class FabMedia
             return false;
         }
 
-        $master_ID = $dbinsert_id;
+        $master_ID = $db->insert_id;
 
         $relog->write(['type'      => '1',
                        'module'    => 'FABMEDIAMANAGER',
@@ -750,7 +750,7 @@ class FabMedia
 
             return;
         } else {
-            $latestRow = $dbinsert_id;
+            $latestRow = $db->insert_id;
 
             $relog->write(['type'      => '1',
                            'module'    => 'FABMEDIAMANAGER',
@@ -815,7 +815,7 @@ class FabMedia
             return false;
         }
 
-        return $dbinsert_id;
+        return $db->insert_id;
     }
 
     /*
@@ -879,7 +879,7 @@ class FabMedia
             echo 'Query error. <br/> . <pre>' . $query . '</pre>';
             return false;
         }
-        $master_ID = $dbinsert_id;
+        $master_ID = $db->insert_id;
 
         $relog->write(['type'      => '1',
                        'module'    => 'FABMEDIAMANAGER',

@@ -43,7 +43,7 @@ if ( $_GET['command'] === 'new' )
         } else {
             echo '
                 <div class="alert alert-warning">
-                    <strong>Success!</strong> Hook was inserted. <a href="admin.php?module=fabsense&op=hooks&command=edit&ID=' . $dbinsert_id . '">Click here</a> to edit.
+                    <strong>Success!</strong> Hook was inserted. <a href="admin.php?module=fabsense&op=hooks&command=edit&ID=' . $db->insert_id . '">Click here</a> to edit.
                 </div>';
             return;
         }

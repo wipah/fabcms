@@ -117,7 +117,7 @@ if (isset($_GET['ID'])) {
                 <a href="' . $URI->getBaseUri() .
                              $this->routed .
                              '/admin-cp/video/editor/?ID=' .
-                             $dbinsert_id .'">Click here to update
+                             $db->insert_id .'">Click here to update
                 </a>
               </div>';
         return;
