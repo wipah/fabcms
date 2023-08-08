@@ -64,7 +64,7 @@ class template extends templateBase implements iFabTemplate
           
           <a class="navbar-brand" href="' . $URI->getBaseUri() . '">' . $logoBrand . '</a>
           
-          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="myNavigation" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="myNavigation" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
@@ -205,7 +205,7 @@ class template extends templateBase implements iFabTemplate
 
                     if ( (int) $row['childs'] > 0 )
                         $out .= '<li class="dropdown-submenu">
-                                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink-' . $row['ID'] . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink-' . $row['ID'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     ' . $row['name'] . '
                                  </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-' . $row['ID'] .'">' . $this->iterateMenu($row['ID'], true, true) . '</ul>';
@@ -216,7 +216,7 @@ class template extends templateBase implements iFabTemplate
                     $out .= '
                     <li class="nav-item dropdown">
                         
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-' . $row['ID'] .'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-' . $row['ID'] .'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             ' . $row['name'] . '
                         </a>
                         
@@ -524,13 +524,13 @@ class template extends templateBase implements iFabTemplate
         <!--FabCMS-hook:afterFooter-->
     </footer>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
     
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;800&display=swap" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-<script defer="defer" async="" src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
 <script defer="defer" src="https://kit.fontawesome.com/e3fdf687e4.js" crossorigin="anonymous"></script>
 
 <script>
