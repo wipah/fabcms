@@ -121,7 +121,7 @@ if (!$result = $db->query($query)){
     return;
 }
 
-if ($db->affected_rows){
+if (!$db->affected_rows){
     echo '
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -135,10 +135,8 @@ if ($db->affected_rows){
 
 $numRows = $db->affected_rows;
 
-$result = mysqli_fetch_assoc($result);
-
 $i = 0;
-while ($row = mysqli_fetch_array($result)){
+while ($row = mysqli_fetch_assoc($result)){
 
     if ($i === 0)
         echo '<div class="row">';
