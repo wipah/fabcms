@@ -295,11 +295,11 @@ echo '
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   
   <li class="nav-item active">
-    <a  class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
+    <a  class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
   </li>
   
   <li class="nav-item">
-    <a  class="nav-link" id="home-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="true">Comments</a>
+    <a  class="nav-link" id="home-tab" data-bs-toggle="tab" href="#comments" role="tab" aria-controls="comments" aria-selected="true">Comments</a>
   </li>
 </ul>
 
@@ -323,14 +323,14 @@ echo '
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
         <div id="modalBody"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

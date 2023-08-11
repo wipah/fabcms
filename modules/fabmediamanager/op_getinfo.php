@@ -170,18 +170,18 @@ echo '  <form id="fabMediaInfoForm" method="post">
         <input  type="hidden" id="ID" value="' . $_POST['ID'] . '" />
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class=" nav-link active" aria-selected="true" data-toggle="tab" role="tab" id="tabGeneral" href="#tabPanelGeneral">General</a>
+                <a class=" nav-link active" aria-selected="true" data-bs-toggle="tab" role="tab" id="tabGeneral" href="#tabPanelGeneral">General</a>
             </li>
             <li class="nav-item">
             
-                <a class=" nav-link"  aria-selected="false" data-toggle="tab" role="tab" id="tabVideo" href="#tabPanelVideo">Video</a>
+                <a class=" nav-link"  aria-selected="false" data-bs-toggle="tab" role="tab" id="tabVideo" href="#tabPanelVideo">Video</a>
                 </li>';
 
 if ($fabMedia->module === 'wiki') {
     echo '  
                 <li class="nav-item">
             
-                <a class=" nav-link" aria-selected="false" data-toggle="tab" role="tab" id="tabPages" href="#tabPanelPages">Pages</a>
+                <a class=" nav-link" aria-selected="false" data-bs-toggle="tab" role="tab" id="tabPages" href="#tabPanelPages">Pages</a>
                 </li>
            
 ';

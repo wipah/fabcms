@@ -160,15 +160,15 @@ echo '
 
 <ul class="nav nav-tabs FabCMS-Admin-Tabs">
   <li class="nav-item">
-    <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
+    <a class="nav-link active" data-bs-toggle="tab" href="#home">Home</a>
   </li>
   
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#pages">Pages</a>
+    <a class="nav-link" data-bs-toggle="tab" href="#pages">Pages</a>
   </li>
   
   <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#banner">Banner</a>
+    <a class="nav-link" data-bs-toggle="tab" href="#banner">Banner</a>
   </li>
 </ul>
 
@@ -303,15 +303,15 @@ echo '
     
         <ul class="nav nav-tabs FabCMS-Admin-Tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#pc">PC</a>
+                <a class="nav-link active" data-bs-toggle="tab" href="#pc">PC</a>
             </li>
       
            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tablet">Tablet</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#tablet">Tablet</a>
             </li>
           
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#mobile">Mobile</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#mobile">Mobile</a>
             </li>
         </ul>
     

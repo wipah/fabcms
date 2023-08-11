@@ -88,11 +88,11 @@ echo '<!DOCTYPE HTML>
          <input type="hidden" name="dummy" id="dummy">
          
             <ul class="nav nav-pills">
-               <li class="active"><a data-toggle="pill" href="#mysql">MySQL</a></li>
-               <li><a data-toggle="pill" href="#path">Path</a></li>
-               <li><a data-toggle="pill" href="#security">Security</a></li>
-               <li><a data-toggle="pill" href="#cms">CMS</a></li>
-               <li><a data-toggle="pill" href="#first_admin">First admin</a></li>
+               <li class="active"><a data-bs-toggle="pill" href="#mysql">MySQL</a></li>
+               <li><a data-bs-toggle="pill" href="#path">Path</a></li>
+               <li><a data-bs-toggle="pill" href="#security">Security</a></li>
+               <li><a data-bs-toggle="pill" href="#cms">CMS</a></li>
+               <li><a data-bs-toggle="pill" href="#first_admin">First admin</a></li>
             </ul>
             <div class="tab-content">
                <div id="mysql" class="tab-pane fade in active">

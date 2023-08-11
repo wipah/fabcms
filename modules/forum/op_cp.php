@@ -54,8 +54,8 @@ $row = mysqli_fetch_assoc($result);
 
 echo '
 <ul class="nav nav-tabs">
-  <li class="active"><a data-toggle="tab" href="#home">Avatar</a></li>
-  <li class=""><a data-toggle="tab" href="#notify">Notify</a></li>
+  <li class="active"><a data-bs-toggle="tab" href="#home">Avatar</a></li>
+  <li class=""><a data-bs-toggle="tab" href="#notify">Notify</a></li>
 </ul>
 
 <div class="tab-content">

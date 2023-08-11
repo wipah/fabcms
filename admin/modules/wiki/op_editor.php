@@ -445,13 +445,13 @@ echo '
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Main</a>
+    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Main</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Seo</a>
+    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Seo</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Stats</a>
+    <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Stats</a>
   </li>
 </ul>
 
@@ -571,13 +571,13 @@ echo '
                   
                   <ul class="nav nav-tabs" id="FabWiki" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="contentHome-tab" data-toggle="tab" href="#contentHome" role="tab" aria-controls="contentHome" aria-selected="true">Content</a>
+                        <a class="nav-link active" id="contentHome-tab" data-bs-toggle="tab" href="#contentHome" role="tab" aria-controls="contentHome" aria-selected="true">Content</a>
                     </li>
                     <li>
-                        <a class="nav-link" id="contentAdvanced-tab" data-toggle="tab" href="#contentAdvanced" role="tab" aria-controls="home" aria-selected="false">Advanced</a>
+                        <a class="nav-link" id="contentAdvanced-tab" data-bs-toggle="tab" href="#contentAdvanced" role="tab" aria-controls="home" aria-selected="false">Advanced</a>
                     </li>
                     <li>
-                        <a class="nav-link" id="contentNotes-tab" data-toggle="tab" href="#contentNotes" role="tab" aria-controls="home" aria-selected="false">Notes</a>
+                        <a class="nav-link" id="contentNotes-tab" data-bs-toggle="tab" href="#contentNotes" role="tab" aria-controls="home" aria-selected="false">Notes</a>
                     </li>
                   </ul>
         
