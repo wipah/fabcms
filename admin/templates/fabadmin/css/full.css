@@ -19,6 +19,41 @@ body {
     }
 }
 
+/* Darwin */
+html{
+    --FABCMS-admin-primary: #8ecae6;
+    --FABCMS-admin-secondary: #219ebc;
+    --FABCMS-admin-tertiary: #023047;
+    --FABCMS-admin-warning: #ffb703;
+    --FABCMS-admin-danger: #fb8500 ;
+}
+
+.fabTemplateModuleSectionHead {
+    background-color: var(--FABCMS-admin-secondary);
+    padding: 4px;
+    text-align: center;
+    color: white;
+}
+
+.fabTemplateModuleSectionSubHead {
+    background-color: var(--FABCMS-admin-primary);
+    padding: 4px;
+    text-align: center;
+    color: #626262;
+}
+
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active  {
+    color: white !important;
+    background-color: var(--FABCMS-admin-tertiary) !important;
+    border-color: var(--bs-nav-tabs-link-active-border-color) !important;
+}
+
+.nav-link {
+    color: #8197A3 !important;
+}
+/* End Darwin */
+
 .breadcrumb-item {
     color: #626262;
 }

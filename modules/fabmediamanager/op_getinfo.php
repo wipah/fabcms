@@ -60,7 +60,7 @@ if (!$result = $db->query($query)) {
 }
 
 if (!$db->affected_rows) {
-    echo 'No image found! Aborting.: ' . $query;
+    echo 'No media found! Aborting.: ' . $query;
     return;
 }
 
@@ -81,7 +81,7 @@ if (!$db->affected_rows){
     return;
 }
 
-$selectLicenses = '<select class="form-control-sm input-sm" id="fabmediamanager_licenses">';
+$selectLicenses = '<select class="form-control-sm input-sm w-100" id="fabmediamanager_licenses">';
 while ($rowLicenses = mysqli_fetch_assoc($resultLicenses)){
     $selectLicenses .= '<option ' . ( (int) $row['license_ID'] === (int) $rowLicenses['ID'] ? 'selected="selected"' : '') . ' value="' . $rowLicenses['ID'] . '">' . $rowLicenses['name'] . '</option>';
 }
@@ -107,61 +107,91 @@ switch ($row['type']) {
         switch ($fabMedia->module) {
             case 'wiki':
                 $sendToEditor = '
-
-                    <span class="float-right">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="1" id="simpleImage">
-                            <label class="form-check-label" for="simpleImage">SimpleImage</label>
+                    <div class="row">
+                        
+                        <div class="col">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <button onclick="deleteFile(\'' . $row['media_ID'] . '\')" type="button" class="btn btn-outline-warning">Delete</button>
+                                    <button onclick="setAsPageImage(' . $row['media_ID'] . ',\'' . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'] . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');" type="button" class="btn btn-outline-primary">Page</button>
+                                    <button  onclick="updateInfo()" type="button" class="btn btn-outline-primary">Update</button>
+                                </div>    
+                        </div>    
+                    
+                        <div class="col">
+                          <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="simpleImage" value="1" >
+                            <label class="form-check-label" 
+                                for="simpleImage">Simple image</label>
+                          </div>        
+                       </div> 
+                       
+                       <div class="col">  
+                          <select id="imageQuality" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                            <option value="' . 'fabmedia/' . $row['user_ID'] . '/' . $imageFinalLQPath .  '">Low quality (' . human_filesize(filesize($pathLQ)) . ')</option>
+                            <option value="' . 'fabmedia/' . $row['user_ID'] . '/' . $imageFinalMQPath .  '">Medium quality (' . human_filesize(filesize($pathMQ)) . ')</option>
+                            <option value="' . 'fabmedia/' . $row['user_ID'] . '/' . utf8_encode($row['filename']) . '" selected>High quality (' . human_filesize(filesize($pathOriginal)) . ')</option>
+                          </select> 
                         </div>
-                    </span>
-                    
-                    <span class="btn btn-default float-right" 
-                          aria-label="Send FabCode" 
-                          onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . 'fabmedia/' . $row['user_ID'] . '/' . utf8_encode($row['filename']) . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');">
-                        <img style="width:32px; height: 32px;" src="' . $URI->getBaseUri(true) .'/modules/fabmediamanager/res/send_hq.png" alt="GQ" /><br/>(' . human_filesize(filesize($pathOriginal)) . ')
-                    </span>
-                    
-                    <span class="btn btn-default float-right" 
-                          aria-label="Send FabCode" 
-                          onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . 'fabmedia/' . $row['user_ID'] . '/' . $imageFinalMQPath . '\', \'' . utf8_encode($row['filename']) . '\', \'' . $row['media_ID'] . '\');"> 
-                        <img style="width:32px; height: 32px;" src="' . $URI->getBaseUri(true) .'/modules/fabmediamanager/res/send_mq.png" alt="GQ" /><br/>(' . human_filesize(filesize($pathMQ)) . ')
-                    </span>
-          
-                    <span class="btn btn-default float-right" 
-                          aria-label="Send FabCode" 
-                          onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . 'fabmedia/' . $row['user_ID'] . '/' . $imageFinalLQPath . '\', \'' . utf8_encode($row['filename']) . '\', \'' . $row['media_ID'] . '\');"> 
-                        <img style="width:32px; height: 32px;" src="' . $URI->getBaseUri(true) .'/modules/fabmediamanager/res/send_lq.png" alt="GQ" /><br/>(' . human_filesize(filesize($pathLQ)) . ')
-                    </span>';
-                break;
-            case 'forum-topic':
-            case 'forum':
-                $sendToEditor = '
-                      <button type="button" class="btn btn-default float-right" aria-label="Send FabCode" onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . 'fabmedia/' . $row['user_ID'] . '/' . $imageFinalMQPath . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');">
-                        <span class="glyphicon glyphicon-file" aria-hidden="true"></span> Send to editor (' . human_filesize(filesize($pathMQ)) . ')
-                      </button>';
-                break;
-            default:
-                $sendToEditor = '
-                    <button type="button" class="btn btn-default float-right" aria-label="Send FabCode" onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'] . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');">
-                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>Send to editor GQ (' . human_filesize(filesize($pathOriginal)) . ')
-                    </button>
-          
-                      <button type="button" class="btn btn-default float-right" aria-label="Send FabCode" onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . 'fabmedia/' . $row['user_ID'] . '/' . $imageFinalMQPath . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');">
-                        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>Send to editor MQ (' . human_filesize(filesize($pathMQ)) . ')
-                      </button>
-                    
-                      <button type="button" class="btn btn-default float-right" aria-label="Send FabCode" onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . 'fabmedia/' . $row['user_ID'] . '/' . $imageFinalLQPath . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');">
-                        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>Send to editor LQ (' . human_filesize(filesize($pathLQ)) . ')
-                      </button>';
+                       
+                       <div class="col">
+                            <button type="button" onclick="sendFileToEditor(\'' . $row['type'] . '\', $(\'#imageQuality\').val(), \'' . $row['filename'] . '\', ' . $row['media_ID']  . ');" class="btn btn-primary">Insert image</button>
+                       </div>
+
+                    </div>
+';
                 break;
         }
 
         break;
+    case 'audio':
+
+        $sendToEditor = '
+        <div class="row">
+            <div class="col">
+                <audio controls>
+                    <source src="'  . $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'] . ' " type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            <div class="col">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button onclick="deleteFile(\'' . $row['media_ID'] . '\')" type="button" class="btn btn-outline-warning">Delete</button>
+                    <button disabled onclick="setAsAudioGuide(' . $row['media_ID'] . ',\'' . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'] . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');" type="button" class="btn btn-outline-primary">Page Audioguide</button>
+                    <button onclick="updateInfo()" type="button" class="btn btn-outline-primary">Update</button>
+                </div>    
+            </div>    
+            <div class="col">
+                <button type="button" 
+                        class="btn btn-primary"
+                        aria-label="Send FabCode" 
+                        onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . $row['filename'] . '\', null, ' . $row['media_ID'] . ', null);">Send to editor
+                </button>
+            </div>
+        </div>';
+        break;
     case 'video':
         $sendToEditor = '
-         <button type="button" class="btn btn-default float-right" aria-label="Send FabCode" onclick="sendFileToEditor(\'' . $row['type'] . '\', null, null, ' . $row['media_ID'] . ', \'' . $row['provider_ID'] . '\');">
-            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>Send video to editor 
-         </button>';
+        <div class="row">
+            <div class="col">
+                <video preload="auto" width="480" height="360" controls>
+                    <source src="'  . $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'] . ' " type="video/mp4">
+                </video>
+              
+            </div>
+            <div class="col">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button onclick="deleteFile(\'' . $row['media_ID'] . '\')" type="button" class="btn btn-outline-warning">Delete</button>
+                    <button onclick="updateInfo()" type="button" class="btn btn-outline-primary">Update</button>
+                </div>    
+            </div>    
+            <div class="col">
+                <button type="button" 
+                        class="btn btn-primary"
+                        aria-label="Send FabCode" 
+                        onclick="sendFileToEditor(\'' . $row['type'] . '\', \'' . $row['filename'] . '\', null, ' . $row['media_ID'] . ', null);">Send to editor
+                </button>
+            </div>
+        </div>';
         break;
 }
 
@@ -188,11 +218,14 @@ if ($fabMedia->module === 'wiki') {
 }
 
 
-$selectLanguage = '<select id="FabMediaLanguage" name="FabMediaLanguage">';
+$selectLanguage = '<select class="form-control" id="FabMediaLanguage" name="FabMediaLanguage">';
 foreach ($conf['langAllowed'] as $lang ) {
     $selectLanguage .= '<option ' . ($row['lang'] === $lang ? 'selected' : '') . ' value="' . $lang . '">' . $lang . '</option>';
 }
 $selectLanguage .= '</select>';
+
+$filename = mb_convert_encoding($row['filename'], 'UTF-8');
+
 
 echo '
         
@@ -202,37 +235,11 @@ echo '
   
               <div id="tabPanelGeneral" class="tab-pane fade show active " role="tabpanel" aria-labelledby="tabPanelGeneral">
     
-                <div class="row">
-                
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label" for="master_ID">Master ID</label>
-                            <input value="' . utf8_encode($row['master_ID']) . '" type="text" class="form-control-sm input-sm" id="master_ID" disabled="disabled">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="control-label" for="media_ID">Media ID</label>
-                            <input value="' . utf8_encode($row['media_ID']) . '" type="text" class="form-control-sm input-sm" id="media_ID" disabled="disabled">
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="control-label" for="filename">Filename</label>
-                            <input value="' . utf8_encode($row['filename']) . '" type="text" class="form-control-sm input-sm" id="filename" disabled="disabled"> -
-                            <a onclick="renameFile(' . $row['media_ID'] . ', \'' . utf8_encode($row['filename']) . '\');">Rename</a> -
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label" for="uploadDate">Upload</label>
-                            <input value="' . $row['upload_date'] . '" type="text" class="form-control-sm input-sm" id="uploadDate" disabled="disabled">
-                        </div>
-                    </div>
-                
+                <div class="fabTemplateModuleSectionHead">' .
+    $filename .
+    ' - <a onclick="renameFile(' . $row['media_ID'] . ', \'' . $filename . '\');">Rename</a>
                 </div>
+
                 
                 <hr />
                 
@@ -241,17 +248,16 @@ echo '
                     <div class="col-md-2">
                         <div class="form-group">
                             <label class="control-label" for="type">Type</label>
-                            <input value="' . $row['type'] . '" type="text" class="form-control-sm input-sm" id="fabmediamanager_type" disabled="disabled">
+                            <input value="' . $row['type'] . '" type="text" class="form-control-sm input-sm w-100" id="fabmediamanager_type" disabled="disabled">
                         </div>
                     </div>
                     
                     <div class="col-md-2">
                         <div class="form-group">
                             <label class="control-label" for="subtype">Subtype</label>
-                            <input value="' . $row['subtype'] . '" type="text" class="form-control-sm input-sm" id="fabmediamanager_subtype" placeholder="Placeholder text">
+                            <input value="' . $row['subtype'] . '" type="text" class="form-control-sm input-sm w-100" id="fabmediamanager_subtype" placeholder="Placeholder text">
                         </div>
                     </div>
-                    
                     <div class="col-md-2">
                         <div class="form-group">
                             <label class="control-label" for="FabMediaLanguage">Lang</label> <br/>
@@ -259,51 +265,49 @@ echo '
                         </div>
                     </div>
                     
-                    <div class="col-md-2">
-                        <div class="checkbox">
-                            <label class="control-label">
-                                <input ' . ( (int)$row['modified'] === 1 ? "checked=\'checked\'" : "") . ' id="fabmediamanager_modified" type="checkbox" value="1">                                                                                                                                                                                                Modified
-                            </label>
-                        </div>
-  
-                        <div class="checkbox">
-                            <label class="control-label">
-                                <input ' . ( (int) $row['enabled'] === 1 ? 'checked="checked"' : "") . 'id="fabmediamanager_enabled" type="checkbox" value="1">Enabled
-                            </label>
-                        </div>
-                    
-                        <div class="checkbox">
-                            <label class="control-label">
-                                <input ' . ( (int) $row['indexable'] === 1 ? 'checked="checked"' : "") . 'id="fabmediamanager_indexable" type="checkbox" value="1">Indexable
-                            </label>
-                        </div>
-
-                        <div class="checkbox">
-                            <label class="control-label">
-                                <input ' . ( (int) $row['global_available'] === 1 ? "checked=\'checked\'" : "") . ' id="fabmediamanager_globalAvailable" type="checkbox" value="1"> Global avaliable
-                            </label>
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label" for="fabmediamanager_license">License</label>
+                                    ' . $selectLicenses . '
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label" for="author">Author</label> <br/>
+                                    <input value="' . $row['author'] . '" type="text" class="form-control-sm w-100" id="fabmediamanager_author" placeholder="Placeholder text">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="col-md-2">
-                    
-                                    <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="control-label" for="fabmediamanager_license">License</label>
-                           ' . $selectLicenses.'
+                    <div class="col-md-2">   
+                        <div class="form-check">
+                            <input class="form-check-input" ' . ( (int)$row['modified'] === 1 ? "checked" : "") . ' id="fabmediamanager_modified" type="checkbox" value="1">
+                                <label class="form-check-label" for="fabmediamanager_modified">
+                                Modified
+                                </label>
                         </div>
-                    </div>
-                
-                                    
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="control-label" for="author">Author</label>
-                            <input value="' . $row['author'] . '" type="text" class="form-control-sm" id="fabmediamanager_author" placeholder="Placeholder text">
+                        <div class="form-check">
+                            <input class="form-check-input" ' . ((int)$row['enabled'] === 1 ? 'checked' : "") . ' id="fabmediamanager_enabled" type="checkbox" value="1">
+                                <label class="form-check-label" for="fabmediamanager_enabled">
+                                Enabled
+                                </label>
                         </div>
-                    </div>
-                </div>
-                    </div>
+                        <div class="form-check">
+                            <input class="form-check-input" ' . ((int)$row['indexable'] === 1 ? 'checked' : "") . ' id="fabmediamanager_indexable" type="checkbox" value="1">
+                                <label class="form-check-label" for="fabmediamanager_indexable">
+                                Indexable
+                                </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" ' . ((int)$row['global_available'] === 1 ? 'checked' : "") . ' id="fabmediamanager_globalAvailable" type="checkbox" value="1">
+                                <label class="form-check-label" for="fabmediamanager_globalAvailable">
+                                Global
+                                </label>
+                        </div>
+                    </div>   
                 </div>
     
                 <hr />
@@ -334,11 +338,38 @@ echo '
                         </div>
                     </div>
                 </div>
+              
+
+              <div class="fabTemplateModuleSectionSubHead mt-4 mb-4">Database references</div>
                 
+              <div class="row">
+                
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" for="master_ID">Master ID</label>
+                            <input value="' . utf8_encode($row['master_ID']) . '" type="text" class="form-control-sm input-sm" id="master_ID" disabled="disabled">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                         <div class="form-group">
+                            <label class="control-label" for="media_ID">Media ID</label>
+                            <input value="' . utf8_encode($row['media_ID']) . '" type="text" class="form-control-sm input-sm" id="media_ID" disabled="disabled">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" for="uploadDate">Upload</label>
+                            <input value="' . $row['upload_date'] . '" type="text" class="form-control-sm input-sm" id="uploadDate" disabled="disabled">
+                        </div>
+                    </div>
+                    
+                </div>
               </div>              
              
               <div id="tabPanelVideo" class="tab-pane fade" role="tabpanel" aria-labelledby="tabPanelVideo">
-    
+                <h2 class="mt-4 mb-4>">Video properties</h2>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -361,7 +392,6 @@ echo '
 
 switch ($fabMedia->module) {
     case 'wiki':
-
         $query = '
         SELECT 
           P.title, 
@@ -419,56 +449,13 @@ switch ( $fabMedia->module) {
 }
 
 echo '     
-             
-           <div class="row"> <!-- Start buttons -->
-                <div class="col-md-3">
-                    <div id="fabMediaUpdate">
-                        <small>FabMediaManager</small>
-                    </div>
-                </div>
-    
-                <div class="col-md-9 fabcms-FabMedia-ButtonBox">
-                     ' . $fabMedia->renderCustomButton() .
-
-    ($enablePageImage === true
-        ?
-        '
-        
-        
-                     <span class="btn btn-default float-right" aria-label="Send FabCode" onclick="setAsPageImage(' . $row['media_ID'] . ',\'' . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'] . '\', \'' . $row['filename'] . '\', \'' . $row['media_ID'] . '\');">
-                        <img style="width:32px; height: 32px;" src="' . $URI->getBaseUri(true) .'/modules/fabmediamanager/res/image_homepage.png" alt="update" /><br/>Set as page image
-                     </span>
-                     
-            '
-        : '') .
-    '
-                     
-                    ' . $sendToEditor .
-
-    ($enableUpdateFile === true
-        ?
-        '
-                     <span class="btn btn-default float-right" aria-label="Update" onclick="updateInfo()">
-                       <img style="width:32px; height: 32px;" src="' . $URI->getBaseUri(true) .'/modules/fabmediamanager/res/update.png" alt="update" /><br/>
-                       Update
-                     </span>
-                     '
-        : '')
-    .
-
-    ($enableDelete === true
-        ?
-        '
-                  
-                    <span class="btn btn-default float-right" aria-label="Delete" onclick="deleteFile(\'' . $row['media_ID'] . '\')">
-                       <img style="width:32px; height: 32px;" src="' . $URI->getBaseUri(true) .'/modules/fabmediamanager/res/delete.png" alt="GQ" /><br/>
-                       Delete
-                     </span>'
-        : '') . '
-    
-                </div>
-            </div> <!-- End buttons -->
-    
+           <div class="fabTemplateModuleSectionSubHead mt-4 mb-4">Operations</div>
+           <div class="row">
+            ' . $sendToEditor . '
+           </div> 
+            <!-- Start buttons -->
+                     ' . $fabMedia->renderCustomButton();
+echo '    
           
             </div>
         </form>
@@ -507,9 +494,12 @@ function sendFileToEditor(type, path, filename, ID, provider_ID = null) {
             }
             
             tinyMCE.execCommand("mceInsertContent", false,"[$img src=" + path + "|ID=="+ ID + "||description==" + type + "||alt==" + $(\'#fabmediamanager_title\').val() + "||class==img-fluid" + simpleImage + "$]");
-            break;  
+            break;
+        case "audio":
+            tinyMCE.execCommand("mceInsertContent", false,"[$audio src=" + path + "|ID=="+ ID + "||description==" + type + "||alt==" + $(\'#fabmediamanager_title\').val() + "$]");            
+            break;
         case "video": /* [youtube abcde] */
-            tinyMCE.execCommand("mceInsertContent", false,"[youtube " + provider_ID + "||ID==" + ID + "]");
+            tinyMCE.execCommand("mceInsertContent", false,"[$video src=" + path + "|ID=="+ ID + "||description==" + type + "||alt==" + $(\'#fabmediamanager_title\').val() + "$]");            
             break;
         case "archive":
             tinyMCE.execCommand("mceInsertContent", false,"[file " + ID + "]");            
@@ -537,6 +527,12 @@ function updateInfo() {
         } else {
             fabmediamanager_indexable = 0;
         }
+       
+        if ( $("#fabmediamanager_globalAvailable").prop(\'checked\') ) {
+            fabmediamanager_globalAvailable = 1;
+        } else {
+            fabmediamanager_globalAvailable = 0;
+        }
 
         image_ID = $("#ID").val();
 
@@ -547,9 +543,9 @@ function updateInfo() {
         fabmediamanager_copyright   =   $("#fabmediamanager_licenses").val();
         fabmediamanager_author      =   $("#fabmediamanager_author").val();
         fabmediamanager_language    =   $("#FabMediaLanguage").val();
-        fabmediamanager_indexable    =   $("#fabmediamanager_indexable").val();
-        fabmediamanager_enabled    =   $("#fabmediamanager_enabled").val();
-        fabmediamanager_globalAvailable    =   $("#fabmediamanager_globalAvailable").val();
+        fabmediamanager_indexable    =   fabmediamanager_indexable;
+        fabmediamanager_enabled    =   fabmediamanager_enabled;
+        fabmediamanager_globalAvailable    =   fabmediamanager_globalAvailable;
         fabmediamanager_length      =   $("#FabmediaLength").val();
         fabmediamanager_video_ID    =   $("#fabMediaVideoID").val();
         

@@ -8,69 +8,8 @@
 
 $this->noTemplateParse = true;
 
-$youtubeID = $core->in($_POST['youtubeID'], true);
-$youtubeTitle = $core->in($_POST['youtubeTitle'], true);
+$provider       = (int) $_POST['provider'];
+$provider_ID    = $core->in($_POST['provider_ID'], true);
+$title          = $core->in($_POST['title']);
 
-$query = 'INSERT INTO ' . $db->prefix . 'fabmedia_masters 
-          (
-            ID
-          ) 
-          VALUES 
-          (
-            NULL
-          )';
-
-if (!$db->executeQuery('inserto')){
-    echo 'Query error. ' . $query;
-    return;
-}
-
-$insert_ID = $db->insert_id;
-
-$query = 'INSERT INTO ' . $db->prefix . 'fabmedia 
-          (
-            master_ID,
-            type,
-            subtype,
-            enabled, 
-            indexable, 
-            title
-          )
-          VALUES
-          (
-            ' . $insert_ID . ',
-            \'video\',
-            \'youtube\',
-            1,
-            1,
-            \'' . $youtubeTitle . '\'
-          );';
-
-
-if (!$db->query($query)) {
-    echo 'Query error. ' . $query;
-
-    return;
-}
-
-$fabmedia_ID = $db->insert_id;
-
-$query = 'INSERT INTO ' . $db->prefix . 'fabmedia_videos 
-         (  fabmedia_ID,
-            provider, 
-            provider_ID
-         ) 
-            VALUES 
-         (
-            ' . $fabmedia_ID . ',
-            \'youtube\',
-            \'' . $youtubeID . '\'
-         )
-         ';
-
-
-if (!$db->query($query)) {
-    echo 'Query error. ' . $query;
-
-    return;
-}
+$fabMedia->addExternalVideo($provider, $provider_ID, $title);

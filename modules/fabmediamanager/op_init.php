@@ -23,7 +23,7 @@ $selectLanguage .= '</select>';
 
 $fabMediaContent = '
 <div class="FabCMS-adminDefaultPanel">
-    Keywords: <input id="fabMediaSearchKeywords" onkeypress="fabMediaRenderView();"/>
+    Keywords: <input id="fabMediaSearchKeywords" />
 	Order by: <select id="fabMediaOrderBy">
 			    <option value="0">None</option>
 				<option value="1">Name ASC</option>
@@ -54,20 +54,30 @@ $fabMediaContent = '
 $uploadManagerContent = '<div id="html5_uploader">Your browser doesn\'t support native upload.</div>';
 
 $externalVideoContent =  '
-                        <div class="form-group">
-                            <label class="control-label" for="video_youtube_title">Title</label>
-                            <input type="text" class="form-control-sm input-sm" id="video_youtube_title">
-
-                            <label class="control-label" for="video_youtube_ID">Code</label>
-                            <input type="text" class="form-control-sm input-sm" id="video_youtube_ID">
-                            
-                            <button class="form-control-sm" id="youtubeManagerButton" onclick="videoAddYouTube();">Add</button>
+                        <h2 class="mt-2">External video manager</h2>
+                            <div class="row">
+                                <div class="col">
+                                    <label class="control-label" for="videoExternalProvider">Provider</label> <br/>
+                                    <select id="videoExternalProvider" class="form-control">
+                                        <option value="1">YouTube</option>
+                                        <option value="2">Vimeo</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label class="control-label" for="videoExternalTitle">Title</label> <br/>
+                                    <input type="text" class="form-control-sm input-sm" id="videoExternalTitle">
+                                </div>
+                                <div class="col">
+                                    <label class="control-label" for="videoExternalID">Code</label> <br/>
+                                    <input type="text" class="form-control-sm input-sm" id="videoExternalID">
+                                </div>
+                                <div class="col"><br/>
+                                    <button class="button btn btn-primary" id="videoExternalManagerButton" onclick="externalVideoAdd();">Add</button>
+                                </div>
                         </div>
-                        <div id="videoList">Please wait...</div>
-        
-        
-        
-        <div id="youtube_status"></div>';
+                        <h3 class="mt-2">External video</h3>
+                        <div id="videoList">Please wait...</div>';
+
 echo $template->getTabs('fabMediaManager', ['FabMedia', 'Upload manager', 'External video manager'], [$fabMediaContent, $uploadManagerContent, $externalVideoContent] , []);
 
 echo '
@@ -79,7 +89,8 @@ $(function()
     fabMediaListVideo();
 });
 
-function fabMediaListVideo() {
+function fabMediaListVideo()
+{
   $.post( "' . $URI->getBaseUri() . $this->routed . '/list-video/", { type: "youtube" })
   .done(function( data )
   {
@@ -87,18 +98,25 @@ function fabMediaListVideo() {
   });
 }
 
-function videoAddYouTube() {
-  youtubeTitle = $("#video_youtube_title").val();
-  youtubeID    = $("#video_youtube_ID").val();
-  
-  if (youtubeID.length === 0){
+function externalVideoAdd() 
+{
+  title         = $("#videoExternalTitle").val();
+  provider      = $("#videoExternalProvider").val();
+  provider_ID   = $("#videoExternalID").val();
+
+  if (title.length === 0){
+    alert ("No title set");
+    return;
+  }
+
+  if (provider_ID.length === 0){
     alert ("Empty video passed");
     return;
   }
   
-  $.post( "' . $URI->getBaseUri() . $this->routed . '/add-video/", { type: "youtube", 
-                                                                     youtubeTitle: youtubeTitle,
-                                                                     youtubeID: youtubeID })
+  $.post( "' . $URI->getBaseUri() . $this->routed . '/add-video/", { provider: provider, 
+                                                                     title: title,
+                                                                     provider_ID: provider_ID })
   .done(function( data ) {
     fabMediaListVideo();
   });

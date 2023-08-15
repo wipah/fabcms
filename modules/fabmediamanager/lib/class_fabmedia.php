@@ -20,6 +20,7 @@ class FabMedia
             return;
         }
 
+        return ''; /* Fabrizio. 12.08.2023 - Questa funzione non sembra aver alcun utilizzo */
         $buttons = '';
         foreach ($this->customButtons as $button) {
             $buttons .= '
@@ -51,7 +52,7 @@ class FabMedia
             FM.extension,
             FM.filename
           FROM ' . $db->prefix . 'fabmedia AS FM
-          LEFT JOIN ' . $db->prefix .'fabmedia_masters AS FMASTER
+          LEFT JOIN ' . $db->prefix . 'fabmedia_masters AS FMASTER
             ON FM.master_ID = FMASTER.ID
           WHERE 
           FM.enabled = 1 AND
@@ -79,11 +80,11 @@ class FabMedia
 
             while ($row = mysqli_fetch_array($result)) {
                 $element['media'][] = [
-                    'ID'       => $row['ID'],
-                    'type'     => $row['type'],
-                    'user_ID'  => $row['user_ID'],
+                    'ID' => $row['ID'],
+                    'type' => $row['type'],
+                    'user_ID' => $row['user_ID'],
                     'filename' => $row['filename'],
-                    'ext'      => $row['extension'],
+                    'ext' => $row['extension'],
                 ];
 
             }
@@ -126,86 +127,95 @@ class FabMedia
         if (!$result = $db->query($query)) {
             echo 'Error. Query error while selecting. ' . $query;
 
-            $relog->write(['type'      => '3',
-                           'module'    => 'FABMEDIAMANAGER',
-                           'operation' => 'fabmedia_manager_rename_query_error',
-                           'details'   => 'Cannot excec the query. ' . $query,
+            $relog->write(['type' => '3',
+                'module' => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_rename_query_error',
+                'details' => 'Cannot excec the query. ' . $query,
             ]);
 
             return false;
         }
 
-        if (!$result = $db->affected_rows) {
+        if (!$db->affected_rows) {
             echo 'Error. No file found.';
 
-            $relog->write(['type'      => '3',
-                           'module'    => 'FABMEDIAMANAGER',
-                           'operation' => 'fabmedia_manager_rename_media_no_file',
-                           'details'   => 'Rename. Unable to find any file to rename with the query. ' . $query,
+            $relog->write(['type' => '3',
+                'module' => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_rename_media_no_file',
+                'details' => 'Rename. Unable to find any file to rename with the query. ' . $query,
             ]);
 
             return false;
         }
+
         $row = mysqli_fetch_assoc($result);
 
-        $relog->write(['type'      => '1',
-                       'module'    => 'FABMEDIAMANAGER',
-                       'operation' => 'fabmedia_manager_rename_request_file',
-                       'details'   => 'Rename. Requesting file. ' . $query,
+        $relog->write(['type' => '1',
+            'module' => 'FABMEDIAMANAGER',
+            'operation' => 'fabmedia_manager_rename_request_file',
+            'details' => 'Rename. Requesting file. ' . $query,
         ]);
 
         $filename = $row['filename'];
 
-        $imagePath = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $filename;
-        $imagePathOriginal = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $filename;
-        $extension = $row['extension'];
-        $pos = strrpos($imagePath, '.' . $extension);
+        if ($row['type'] === 'image') {
+            $imagePath = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $filename;
+            $imagePathOriginal = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $filename;
+            $extension = $row['extension'];
+            $pos = strrpos($imagePath, '.' . $extension);
 
-        /* Those files are the original files */
-        $imageOriginalPath = substr_replace($imagePath, '_original.' . $extension, $pos, strlen('.' . $extension));
+            /* Those files are the original files */
+            $imageOriginalPath = substr_replace($imagePath, '_original.' . $extension, $pos, strlen('.' . $extension));
 
-        $imageFinalMQPath = substr_replace($imagePath, '_mq.' . $extension, $pos, strlen('.' . $extension));
-        $imageFinalLQPath = substr_replace($imagePath, '_lq.' . $extension, $pos, strlen('.' . $extension));
+            $imageFinalMQPath = substr_replace($imagePath, '_mq.' . $extension, $pos, strlen('.' . $extension));
+            $imageFinalLQPath = substr_replace($imagePath, '_lq.' . $extension, $pos, strlen('.' . $extension));
 
-        $imageThumbPath = substr_replace($imagePath, '_thumb.' . $extension, $pos, strlen('.' . $extension));
-        $imageThumbMQPath = substr_replace($imagePath, '_original_mq.' . $extension, $pos, strlen('.' . $extension));
-        $imageThumbLQPath = substr_replace($imagePath, '_original_lq.' . $extension, $pos, strlen('.' . $extension));
+            $imageThumbPath = substr_replace($imagePath, '_thumb.' . $extension, $pos, strlen('.' . $extension));
+            $imageThumbMQPath = substr_replace($imagePath, '_original_mq.' . $extension, $pos, strlen('.' . $extension));
+            $imageThumbLQPath = substr_replace($imagePath, '_original_lq.' . $extension, $pos, strlen('.' . $extension));
 
-        /* Those files are the new files */
-        $imagePath = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $newName;
-        $pos = strrpos($imagePath, '.' . $extension);
-        $imageOriginalPath_destination = substr_replace($imagePath, '_original.' . $extension, $pos, strlen('.' . $extension));
+            /* Those files are the new files */
+            $imagePath = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $newName;
+            $pos = strrpos($imagePath, '.' . $extension);
+            $imageOriginalPath_destination = substr_replace($imagePath, '_original.' . $extension, $pos, strlen('.' . $extension));
 
-        $imageFinalMQPath_destination = substr_replace($imagePath, '_mq.' . $extension, $pos, strlen('.' . $extension));
-        $imageFinalLQPath_destination = substr_replace($imagePath, '_lq.' . $extension, $pos, strlen('.' . $extension));
+            $imageFinalMQPath_destination = substr_replace($imagePath, '_mq.' . $extension, $pos, strlen('.' . $extension));
+            $imageFinalLQPath_destination = substr_replace($imagePath, '_lq.' . $extension, $pos, strlen('.' . $extension));
 
-        $imageThumbPath_destination = substr_replace($imagePath, '_thumb.' . $extension, $pos, strlen('.' . $extension));
-        $imageThumbMQPath_destination = substr_replace($imagePath, '_original_mq.' . $extension, $pos, strlen('.' . $extension));
-        $imageThumbLQPath_destination = substr_replace($imagePath, '_original_lq.' . $extension, $pos, strlen('.' . $extension));
+            $imageThumbPath_destination = substr_replace($imagePath, '_thumb.' . $extension, $pos, strlen('.' . $extension));
+            $imageThumbMQPath_destination = substr_replace($imagePath, '_original_mq.' . $extension, $pos, strlen('.' . $extension));
+            $imageThumbLQPath_destination = substr_replace($imagePath, '_original_lq.' . $extension, $pos, strlen('.' . $extension));
 
-        // Move all the files
-        try {
-            rename($imagePathOriginal, $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $newName);
-            rename($imageOriginalPath, $imageOriginalPath_destination);
-            rename($imageFinalMQPath, $imageFinalMQPath_destination);
-            rename($imageFinalLQPath, $imageFinalLQPath_destination);
-            rename($imageThumbPath, $imageThumbPath_destination);
-            rename($imageThumbMQPath, $imageThumbMQPath_destination);
-            rename($imageThumbLQPath, $imageThumbLQPath_destination);
-        } catch (Exception $e) {
-            $relog->write(['type'      => '3',
-                           'module'    => 'FABMEDIAMANAGER',
-                           'operation' => 'fabmedia_manager_rename_error',
-                           'details'   => 'Cannot rename',
+            // Move all the files
+            try {
+                rename($imagePathOriginal, $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $newName);
+                rename($imageOriginalPath, $imageOriginalPath_destination);
+                rename($imageFinalMQPath, $imageFinalMQPath_destination);
+                rename($imageFinalLQPath, $imageFinalLQPath_destination);
+                rename($imageThumbPath, $imageThumbPath_destination);
+                rename($imageThumbMQPath, $imageThumbMQPath_destination);
+                rename($imageThumbLQPath, $imageThumbLQPath_destination);
+            } catch (Exception $e) {
+                $relog->write(['type' => '3',
+                    'module' => 'FABMEDIAMANAGER',
+                    'operation' => 'fabmedia_manager_rename_error',
+                    'details' => 'Cannot rename',
+                ]);
+                echo 'Error while renaming: ', $e->getMessage(), "\n";
+            }
+
+            $relog->write(['type' => '1',
+                'module' => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_rename_step_info',
+                'details' => $imageOriginalPath . '->' . $imageOriginalPath_destination,
             ]);
-            echo 'Error while renaming: ', $e->getMessage(), "\n";
+        } else {
+            $imagePath      = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'];
+            $imageNewPath   = $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $newName;
+            rename($imagePath, $imageNewPath);
         }
 
-        $relog->write(['type'      => '1',
-                       'module'    => 'FABMEDIAMANAGER',
-                       'operation' => 'fabmedia_manager_rename_step_info',
-                       'details'   => $imageOriginalPath . '->' . $imageOriginalPath_destination,
-        ]);
+
 
         // Update the row
         $query = 'UPDATE ' . $db->prefix . 'fabmedia 
@@ -213,22 +223,22 @@ class FabMedia
                   WHERE ID = ' . $row['ID'] . ' 
                   LIMIT 1';
 
-            if (!$db->query($query)) {
+        if (!$db->query($query)) {
             echo 'Query error while updating.' . $query;
 
-            $relog->write(['type'      => '3',
-                           'module'    => 'FABMEDIAMANAGER',
-                           'operation' => 'fabmedia_manager_rename_query_error',
-                           'details'   => 'Unable to update the database. ' . $query,
+            $relog->write(['type' => '3',
+                'module' => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_rename_query_error',
+                'details' => 'Unable to update the database. ' . $query,
             ]);
 
             return false;
         }
 
-        $relog->write(['type'      => '1',
-                       'module'    => 'FABMEDIAMANAGER',
-                       'operation' => 'fabmedia_manager_rename_ok',
-                       'details'   => 'Renamed file with ID . ' . $row['ID'] . ' to ' . $filename,
+        $relog->write(['type' => '1',
+            'module' => 'FABMEDIAMANAGER',
+            'operation' => 'fabmedia_manager_rename_ok',
+            'details' => 'Renamed file with ID . ' . $row['ID'] . ' to ' . $filename,
         ]);
         echo 'ok';
 
@@ -289,13 +299,13 @@ class FabMedia
             $fileName = uniqid("file_");
         }
 
-        $fileName = utf8_decode(strtolower(str_replace(' ', '-',$_FILES['file']['name'])));
+        $fileName = mb_convert_encoding(strtolower(str_replace(' ', '-', $_FILES['file']['name'])), 'ISO-8859-1');
 
         if (empty($fileName)) {
-            $relog->write(['type'      => '4',
-                'module'    => 'FABMEDIAMANAGER',
+            $relog->write(['type' => '4',
+                'module' => 'FABMEDIAMANAGER',
                 'operation' => 'fabmedia_upload_error_no_filename',
-                'details'   => 'Tried to upload an empty filename. Filename is ' . $fileName]);
+                'details' => 'Tried to upload an empty filename. Filename is ' . $fileName]);
             return;
         }
         $extension = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -304,28 +314,28 @@ class FabMedia
         // Security check
         if (in_array($extension, ['php', 'php3', 'html' . 'htm', 'exe', 'cgi', 'js', 'java', 'cgi'])) {
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'FABMEDIAMANAGER',
-                           'operation' => 'fabmedia_upload_security_extension',
-                           'details'   => 'Tried to upload an ' . $extension . ' file. User was ' . $user->ID]);
+            $relog->write(['type' => '4',
+                'module' => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_upload_security_extension',
+                'details' => 'Tried to upload an ' . $extension . ' file. User was ' . $user->ID]);
 
             return;
         }
 
         $filePath = $conf['path']['baseDir'] . "fabmedia/" . $user->ID . '/' . $fileName;
 
-        $relog->write(['type'      => '1',
-                       'module'    => 'FABMEDIAMANAGER',
-                       'operation' => 'fabmedia_manager_start_upload_info',
-                       'details'   => sprintf('Start file upload. Filename: %s, extension: %s, path: %s ', $fileName, $extension, $filePath)]);
+        $relog->write(['type' => '1',
+            'module' => 'FABMEDIAMANAGER',
+            'operation' => 'fabmedia_manager_start_upload_info',
+            'details' => sprintf('Start file upload. Filename: %s, extension: %s, path: %s ', $fileName, $extension, $filePath)]);
 
         // Check if target exist, if yes abort
         if (file_exists($filePath)) {
 
-            $relog->write(['type'      => '3',
-                           'module'    => 'FABMEDIAMANAGER',
-                           'operation' => 'fabmedia_manager_file_exists_error',
-                           'details'   => sprintf('File %s already exists. Aborting', $filePath),
+            $relog->write(['type' => '3',
+                'module' => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_file_exists_error',
+                'details' => sprintf('File %s already exists. Aborting', $filePath),
             ]);
 
             die('{"jsonrpc" : "2.0", "error" : {"code": 166, "message": "File exists."}, "id" : "id"}');
@@ -336,18 +346,18 @@ class FabMedia
         if (!is_dir($targetDir)) {
             if (!@mkdir($targetDir, 0777, true)) {
 
-                $relog->write(['type'      => '3',
-                               'module'    => 'FABMEDIAMANAGER',
-                               'operation' => 'fabmedia_manager_create_directory_error',
-                               'details'   => sprintf('Unable to create the directory %s ', $targetDir)]);
+                $relog->write(['type' => '3',
+                    'module' => 'FABMEDIAMANAGER',
+                    'operation' => 'fabmedia_manager_create_directory_error',
+                    'details' => sprintf('Unable to create the directory %s ', $targetDir)]);
 
                 die('{"jsonrpc" : "2.0", "error" : {"code": 166, "message": "Directory exists."}, "id" : "id"}');
             } else {
 
-                $relog->write(['type'      => '1',
-                               'module'    => 'FABMEDIAMANAGER',
-                               'operation' => 'fabmedia_manager_directory_exists_info',
-                               'details'   => sprintf('Directory already exists: %s ', $targetDir)]);
+                $relog->write(['type' => '1',
+                    'module' => 'FABMEDIAMANAGER',
+                    'operation' => 'fabmedia_manager_directory_exists_info',
+                    'details' => sprintf('Directory already exists: %s ', $targetDir)]);
             }
         }
 
@@ -361,10 +371,10 @@ class FabMedia
         if ($cleanupTargetDir) {
             if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
 
-                $relog->write(['type'      => '3',
-                               'module'    => 'FABMEDIAMANAGER',
-                               'operation' => 'fabmedia_manager_remove_old_files_error',
-                               'details'   => sprintf('Failed to remove old files in %s ', $targetDir)]);
+                $relog->write(['type' => '3',
+                    'module' => 'FABMEDIAMANAGER',
+                    'operation' => 'fabmedia_manager_remove_old_files_error',
+                    'details' => sprintf('Failed to remove old files in %s ', $targetDir)]);
 
                 die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
             }
@@ -386,22 +396,23 @@ class FabMedia
         if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
 
 
-            $relog->write(['type'      => '3',
-                           'module'    => 'FABMEDIAMANAGER',
-                           'operation' => 'fabmedia_manager_remove_open_part_error',
-                           'details'   => 'Failed to open part']);
+            $relog->write(['type' => '3',
+                'module' => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_remove_open_part_error',
+                'details' => 'Failed to open part']);
 
             die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
         }
+
         if (!empty($_FILES)) {
             if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
 
-                $relog->write(['type'      => '3',
-                               'module'    => 'FABMEDIAMANAGER',
-                               'operation' => 'fabmedia_manager_move_uploaded_file_error',
-                               'details'   => 'failed to move uploaded file.' .
-                                   $_FILES["file"]["error"] . ' || ' .
-                                   $_FILES["file"]["tmp_name"]]);
+                $relog->write(['type' => '3',
+                    'module' => 'FABMEDIAMANAGER',
+                    'operation' => 'fabmedia_manager_move_uploaded_file_error',
+                    'details' => 'failed to move uploaded file.' .
+                        $_FILES["file"]["error"] . ' || ' .
+                        $_FILES["file"]["tmp_name"]]);
 
                 die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
             }
@@ -409,20 +420,20 @@ class FabMedia
             // Read binary input stream and append it to temp file
             if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
 
-                $relog->write(['type'      => '3',
-                               'module'    => 'FABMEDIAMANAGER',
-                               'operation' => 'fabmedia_manager_open_input_stream_error',
-                               'details'   => 'Failed to open input stream.',
+                $relog->write(['type' => '3',
+                    'module' => 'FABMEDIAMANAGER',
+                    'operation' => 'fabmedia_manager_open_input_stream_error',
+                    'details' => 'Failed to open input stream.',
                 ]);
 
                 die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
             }
         } else {
             if (!$in = @fopen("php://input", "rb")) {
-                $relog->write(['type'      => '3',
-                               'module'    => 'FABMEDIAMANAGER',
-                               'operation' => 'fabmedia_manager_open_input_stream_error_generic',
-                               'details'   => 'Failed to open input stream (generic).',
+                $relog->write(['type' => '3',
+                    'module' => 'FABMEDIAMANAGER',
+                    'operation' => 'fabmedia_manager_open_input_stream_error_generic',
+                    'details' => 'Failed to open input stream (generic).',
                 ]);
                 die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
             }
@@ -457,15 +468,21 @@ class FabMedia
             case 'tar.gz':
                 $this->processGeneric('archive', $filePath, $extension);
                 break;
+            case 'mp3':
+                $this->processAudio('audio', $filePath, $extension);
+                break;
+            case 'mp4':
+                $this->processVideo('video', $filePath, $extension);
+                break;
             default:    // Process custom type
                 $this->processGeneric('custom', $filePath, $extension);
                 break;
         }
 
-        $relog->write(['type'      => '1',
-                       'module'    => 'FABMEDIAMANAGER',
-                       'operation' => 'fabmedia_upload_ok',
-                       'details'   => 'Upload finished',
+        $relog->write(['type' => '1',
+            'module' => 'FABMEDIAMANAGER',
+            'operation' => 'fabmedia_upload_ok',
+            'details' => 'Upload finished',
         ]);
 
         // Return Success JSON-RPC response
@@ -473,9 +490,224 @@ class FabMedia
 
     }
 
-    function getMediaTrackback($filename)
+    function addExternalVideo($provider, $provider_ID, $title)
     {
+        global $core;
+        global $db;
+        global $user;
 
+        $insert_ID = $this->createMasterID();
+
+        $query = 'INSERT INTO ' . $db->prefix . 'fabmedia 
+          (
+            
+            master_ID,
+            user_ID,
+            type,
+            subtype,
+            trackback,
+            enabled, 
+            indexable, 
+            title
+          )
+          VALUES
+          (
+            ' . $insert_ID . ',
+            ' . $user->ID . ',
+            \'video\',
+            \'' . $provider . '\',
+            \'' . $core->getTrackback($title) . '\',
+            1,
+            1,
+            \'' . $title . '\'
+          );';
+
+
+        if (!$db->query($query)) {
+            echo 'Query error. ' . $query;
+
+            return;
+        }
+
+        $fabmedia_ID = $db->insert_id;
+
+        $query = 'INSERT INTO ' . $db->prefix . 'fabmedia_videos 
+         (  fabmedia_ID,
+            provider, 
+            provider_ID
+         ) 
+            VALUES 
+         (
+            ' . $fabmedia_ID . ',
+            \'' . $provider . '\',
+            \'' . $provider_ID . '\'
+         )
+         ';
+
+
+        if (!$db->query($query)) {
+            echo 'Query error. ' . $query;
+
+            return;
+        }
+    }
+
+    function processVideo($type, $videoPath, $extension, $provider = null, $provider_ID = null, $length = 0)
+    {
+        global $core;
+        global $user;
+        global $db;
+        global $relog;
+
+        $master_ID = $this->createMasterID();
+
+        $relog->write(['type'      => '1',
+            'module'    => 'FABMEDIAMANAGER',
+            'operation' => 'fabmedia_manager_get_video_master_ID',
+            'details'   => 'Master ID is  ' . $master_ID,
+        ]);
+
+        $fileSize = filesize($videoPath);
+
+        $videoPath = $core->in($videoPath);
+        $extension = $core->in($extension);
+
+        $baseName = basename($videoPath);
+
+        $query = 'INSERT INTO ' . $db->prefix . 'fabmedia
+        (
+            master_ID
+            , user_ID
+            , filename
+            , extension
+            , type
+            , subtype
+            , upload_date
+            , title
+            , trackback
+            , size
+        )
+        VALUES
+        (
+              ' . $master_ID . '
+            , ' . $user->ID . '
+            , \'' . $baseName . '\'
+            , \'' . $extension . '\'
+            , \'video\'
+            , \'' . $extension . '\' 
+            , NOW() 
+            , \'' . $baseName . '\'
+            , \'' . $core->getTrackback($baseName) . '\'
+            , ' . $fileSize . '
+        )';
+
+        if (!$db->query($query)) {
+            $relog->write(['type'      => '4',
+                'module'    => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_insert_video_db_error',
+                'details'   => 'Query error while inserting into DB ' . $query,
+            ]);
+        } else {
+            $relog->write(['type'      => '1',
+                'module'    => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_insert_video_ok',
+                'details'   => 'Video pushed to DB',
+            ]);
+        }
+
+        $fabmedia_ID = $db->insert_id;
+
+        $query = 'INSERT INTO ' . $db->prefix . 'fabmedia_videos                   
+                  (
+                     fabmedia_ID
+                   , provider
+                   , length                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                  )
+                  VALUES
+                  (
+                    ' .  $fabmedia_ID . ' 
+                    ,  \'internal\'
+                    , ' . ( (int) $length) . '
+                  )';
+
+        if (!$db->query($query)) {
+            $relog->write(['type'      => '4',
+                'module'    => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_insert_video_details_db_error',
+                'details'   => 'Query error while inserting into DB ' . $query,
+            ]);
+        } else {
+            $relog->write(['type'      => '1',
+                'module'    => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_insert_video_details_ok',
+                'details'   => 'Video details were pushed to DB',
+            ]);
+        }
+    }
+
+    function processAudio($type, $audioPath, $extension)
+    {
+        global $core;
+        global $user;
+        global $db;
+        global $relog;
+
+        $master_ID = $this->createMasterID();
+
+        $relog->write(['type'      => '1',
+            'module'    => 'FABMEDIAMANAGER',
+            'operation' => 'fabmedia_manager_get_audio_master_ID',
+            'details'   => 'Master ID is  ' . $master_ID,
+        ]);
+
+        $fileSize = filesize($audioPath);
+
+        $audioPath = $core->in($audioPath);
+        $extension = $core->in($extension);
+
+        $baseName = basename($audioPath);
+
+        $query = 'INSERT INTO ' . $db->prefix . 'fabmedia
+        (
+            master_ID,
+            user_ID,
+            filename,
+            extension,
+            type,
+            subtype,
+            upload_date,
+            title,
+            trackback,
+            size
+        )
+        VALUES
+        (
+             ' . $master_ID . '
+            ,' . $user->ID . '
+            ,\'' . $baseName . '\'
+            ,\'' . $extension . '\'
+            , \'audio\'
+            , \'' . $extension . '\' 
+            , NOW() 
+            , \'' . $baseName . '\'
+            , \'' . $core->getTrackback($baseName) . '\'
+            , ' . $fileSize . '
+        )';
+
+        if (!$db->query($query)) {
+            $relog->write(['type'      => '4',
+                'module'    => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_insert_audio_db_error',
+                'details'   => 'Query error while inserting into DB ' . $query,
+            ]);
+        } else {
+            $relog->write(['type'      => '1',
+                'module'    => 'FABMEDIAMANAGER',
+                'operation' => 'fabmedia_manager_insert_audio_ok',
+                'details'   => 'Audio pushed to DB',
+            ]);
+
+        }
     }
 
     function processImage($imagePath, $extension)
@@ -494,7 +726,6 @@ class FabMedia
             ]);
             die ('This kind of file is not processed, sorry');
         }
-
 
         // Basic security check against MySQL-Injections
         $imagePath = str_replace("'", "", $imagePath);
@@ -722,7 +953,7 @@ class FabMedia
             \'' . $extension . '\',
             \'image\',
             \'\',
-            \'' . date('Y-m-d') . '\',
+            \'' . date('Y-m-d H:i:s') . '\',
             NULL,                           /* License ID */
             NULL,                           /* Lang */
             NULL,                           /* modified */
@@ -799,11 +1030,12 @@ class FabMedia
     {
         global $db;
         global $relog;
+        global $user;
 
         // Create the master
         $query = 'INSERT INTO ' . $db->prefix . 'fabmedia_masters 
-                    (creation_date) 
-                  VALUES (NOW());
+                    (user_ID) 
+                  VALUES ( ' . $user->ID . ' );
                   ';
 
         if (!$db->query($query)){

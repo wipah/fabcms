@@ -19,7 +19,9 @@ FROM ' . $db->prefix . 'fabmedia AS MEDIA
 LEFT JOIN ' . $db->prefix . 'fabmedia_videos AS VIDEO
     ON VIDEO.fabmedia_ID = MEDIA.ID
 LEFT JOIN ' . $db->prefix . 'fabmedia_masters AS MASTER
-    ON MEDIA.master_ID = MASTER.ID';
+    ON MEDIA.master_ID = MASTER.ID
+WHERE MEDIA.type = \'video\'
+       AND VIDEO.provider != \'internal\'';
 
 
 
@@ -53,7 +55,7 @@ while ($row = mysqli_fetch_assoc($result)){
     $fragment = explode(':', $row['length']);
     $totalSeconds += $fragment[2];
     $totalMinutes += $fragment[1];
-    $totalMinutes += $fragment[0] * 60;
+    $totalMinutes += (int) $fragment[0] * 60;
 
 
     echo '<tr>
@@ -68,6 +70,7 @@ while ($row = mysqli_fetch_assoc($result)){
 }
 
 $totalMinutes = floor($totalMinutes + ($totalSeconds / 60));
+
 echo '
     <tfoot>
     <tr>

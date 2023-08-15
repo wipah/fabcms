@@ -37,7 +37,7 @@ switch ( (int) $_POST['fabMediaLimit']){
         break;
     case 0:
     default:
-        $limit = '';
+        $limit = 'LIMIT 100';
         break;
 }
 
