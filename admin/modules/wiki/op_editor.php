@@ -34,20 +34,15 @@ foreach (glob( $conf['path']['baseDir'] . '/modules/wiki/editor_plugins/*.php' )
 foreach ($editorPlugins['buttons'] AS $pgName => $pgContent) {
 
     $pgToolbar .= $pgName . ' | ';
-
-    $editorCustomButtons .= 'editor.addButton(\'' . $pgName . '\', {
-                text: \'' . $pgName . '\',
-                icon: false,
-                onclick: function () {
-                    editor.focus();
-                    var text = editor.selection.getContent({\'format\': \'html\'});
-
-                    tinymce.activeEditor.execCommand(\'mceInsertContent\',
-                                        false, 
-                                        `' . $pgContent . '`);
-                }
-            });                      
-';
+    $pgContent = str_replace(PHP_EOL, '', $pgContent);
+    $editorCustomButtons .= '
+        editor.ui.registry.addButton(\'' . $pgName .'\', {
+            text: \''.  $pgName. '\',
+            onAction: () => {
+                tinymce.activeEditor.execCommand(\'InsertHTML\', false, \'' . $pgContent . '\');
+            }
+        });
+    ';
 }
 
 // Get latest 10 pages
@@ -308,8 +303,7 @@ $template->sidebar .= $template->simpleBlock('Article image', '
 
 $template->sidebar .= $template->simpleBlock('Search engine scan', '<strong>Google hit</strong>: ' . $googleLast);
 
-$this->addJsFile( $URI->getBaseUri(true) . 'lib/editors/tinymce-4/tinymce.min.js',true);
-
+$this->addJsFile('https://cdn.tiny.cloud/1/uhoydmhzumww33r04peevya5z8riovh2l8jyf0dbcgarstnr/tinymce/6/tinymce.min.js', true);
 /*
  * Category select
  */
@@ -1004,11 +998,7 @@ tinymce.init({
           height: 120,
           menubar: false,
        	 
-          plugins: [
-            \'advlist autolink lists link image charmap print preview anchor textcolor\',
-            \'searchreplace visualblocks code fullscreen\',
-            \'insertdatetime media table contextmenu paste code help\'
-          ],
+          plugins: \'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table contextmenu code help\',
           toolbar: \'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help\',
           content_css: [
             \'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i\',
@@ -1019,40 +1009,32 @@ function initEditor() {
     console.log("Called initEditor()");
     
     tinymce.init({
-      setup: function(editor) {
-          relative_urls: false,
-          ' . $editorCustomButtons . ' 
-          editor.addButton(\'FabTable\', {
+      setup: (editor) => {
+            relative_urls: false,
+            
+            ' . $editorCustomButtons . ' 
+          
+            editor.ui.registry.addButton(\'FabTable\', {
                 text: \'FabTable\',
-                icon: false,
-                onclick: function () {
-                    editor.focus();
-                    var text = editor.selection.getContent({\'format\': \'html\'});
-
-                    tinymce.activeEditor.execCommand(\'mceInsertContent\', 
-                                        false, 
-                                        \'{| tableCaption<br/>|* class="table table-bordered table-striped table-responsive"*|<br/>|* Heading1 || Heding2 || Heding3 *|<br/>|* Cell1 || Cell2 || Cell3 *|<br/>|}\');  
+                onAction: () => {
+                    tinymce.activeEditor.execCommand(\'InsertHTML\', false, \'{| tableCaption<br/>|* class="table table-bordered table-striped table-responsive"*|<br/>|* Heading1 || Heding2 || Heding3 *|<br/>|* Cell1 || Cell2 || Cell3 *|<br/>|}\');               
                 }
-            }),                      
-
-          editor.addButton(\'section\', {
+            }),
+            
+            editor.ui.registry.addButton(\'section\', {
                 text: \'Section\',
-                icon: false,
-                onclick: function () {
+                onAction: () => {
                     editor.focus();
                     var text = editor.selection.getContent({\'format\': \'html\'});
-                    
                     sectionName = prompt("Section name");
                     
                     if (sectionName.length === 0)
                         return;
                     
-                    if(text && text.length > 0) {
-                        tinymce.activeEditor.execCommand(\'mceInsertContent\', false, \'<section class="FabCMS-section" id="\' + sectionName + \'">\' + text + \'</section><p>&nbsp;</p>\');
-                    }
+                    tinymce.activeEditor.execCommand(\'InsertHTML\', false, \'<section class="FabCMS-section" id="\' + sectionName + \'">\' + text + \'</section><p>&nbsp;</p>\');               
                 }
-            });
-                      
+            }),
+            
             editor.on(\'init\', function(e) {
                 getOutGoingLinks();
             
@@ -1070,17 +1052,12 @@ function initEditor() {
       relative_urls : false,
       selector: \'.richText\',
       height: 450,
-      theme: \'modern\',
-       
+      theme: \'silver\' ,
+      skin: \'oxide\', 
          
-      plugins: [
-        \'advlist autolink lists link image charmap print preview hr anchor pagebreak\',
-        \'searchreplace wordcount visualblocks visualchars code fullscreen\',
-        \'insertdatetime media nonbreaking save table contextmenu directionality\',
-        \'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc\'
-      ],
-      toolbar1: \' undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | subscript superscript | bullist numlist outdent indent | link image\',
-      toolbar2: \'print preview media | forecolor backcolor emoticons | codesample | section\',
+      plugins: \'lists codesample code searchreplace visualblocks anchor charmap wordcount\',
+      toolbar1: \' undo redo | insert | searchreplace | visualblocks | anchor | charmap | styleselect  | bold italic | alignleft aligncenter alignright alignjustify | subscript superscript | numlist bullist outdent indent | link image\',
+      toolbar2: \' preview media | forecolor backcolor emoticons | codesample code| section\',
       toolbar3: \'section | FabTable | ' . $pgToolbar . '\',
       
       image_advtab: true,
