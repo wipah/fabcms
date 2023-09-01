@@ -1131,11 +1131,12 @@ class wiki
     {
         global $core;
         global $db;
-        $page_ID = (int)$page_ID;
+
+        $page_ID = (int) $page_ID;
 
         // Delete old references
-        $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_tags WHERE page_ID = ' . $page_ID;
-
+        $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_tags 
+                  WHERE page_ID = ' . $page_ID;
 
         if (!$db->query($query)) {
             echo 'Query error: ' . $query;
@@ -1143,14 +1144,18 @@ class wiki
         }
 
         $tagsArray = explode(', ', $tags);
-        $query = 'INSERT INTO ' . $db->prefix . 'wiki_pages_tags (page_ID, tag, tag_trackback) VALUES';
+        $query = 'INSERT INTO ' . $db->prefix . 'wiki_pages_tags 
+                                (  page_ID
+                                 , tag
+                                 , tag_trackback
+                                )
+                                VALUES ';
         foreach ($tagsArray as $singleTag) {
             $query .= '(\'' . $page_ID . '\', \'' . $core->in($singleTag) . '\', \'' . $core->in($core->getTrackback($singleTag)) . '\'), ';
         }
 
         $query = substr($query, 0, -2);
 
-        $db->query($query);
         if (!$db->query($query)) {
             echo 'Query error. ' . $query;
         }

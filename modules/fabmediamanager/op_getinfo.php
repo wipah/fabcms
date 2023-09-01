@@ -181,6 +181,7 @@ switch ($row['type']) {
             <div class="col">
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <button onclick="deleteFile(\'' . $row['media_ID'] . '\')" type="button" class="btn btn-outline-warning">Delete</button>
+                    <button onclick="setFeaturedVideo(\'' . $row['media_ID'] . '\')" type="button" class="btn btn-outline-warning">Featured</button>
                     <button onclick="updateInfo()" type="button" class="btn btn-outline-primary">Update</button>
                 </div>    
             </div>    
@@ -460,7 +461,7 @@ echo '
             </div>
         </form>
 
-<script type="text/javascript">
+<script>
 function renameFile(ID, oldFile) {
     var newName = prompt ("Please, enter a new file", oldFile);
 
@@ -508,6 +509,11 @@ function sendFileToEditor(type, path, filename, ID, provider_ID = null) {
             tinyMCE.execCommand("mceInsertContent", false,"<a data-ID=" + ID + "  href=" + path + ">" + filename + "</a>");
             break;
     }
+}
+
+function setFeaturedVideo(media_ID)
+{
+    $("#featured_video_ID").val(media_ID);
 }
 
 function updateInfo() {

@@ -48,8 +48,7 @@ $content = $core->in($_POST['content']);
 $notes = $core->in($_POST['notes']);
 $image = $core->in($_POST['image']);
 $image_ID = (int) ($_POST['image_ID']);
-$featuredVideoCode = $core->in($_POST['featuredVideoCode']);
-$featuredVideoUrl = $core->in($_POST['featuredVideoUrl']);
+$featuredVideo_ID =  (int) $_POST['featuredVideo_ID'];
 $additionalData = $core->in($_POST['additionalData']);
 $seoKeywords = $core->in($_POST['seoKeywords']);
 
@@ -143,8 +142,7 @@ if (($_POST['crudType']) === 'update') {
     no_similar_pages        =   \'' . $no_similar_pages . '\',
     image                   =   \'' . $image . '\',
     image_ID                =   \'' . $image_ID . '\',
-    featured_video_code     =   \'' . $featuredVideoCode . '\',
-    featured_video_url     =   \'' . $featuredVideoUrl . '\',
+    featured_video_ID       =   \'' . $featuredVideo_ID . '\',
     latest_update_user_ID   =   ' . $user->ID . ',
     cache_expiration        =   \'' . date('y-m-d') . ' 00:01\',
     revision                =   IFNULL(revision, 0) + 1
@@ -227,8 +225,7 @@ if (($_POST['crudType']) === 'update') {
                                                no_title,
                                                image,
                                                image_ID,
-                                               featured_video_code,
-                                               featured_video_url,
+                                               featured_video_ID,
                                                visible,
                                                revision
                                                )
@@ -267,8 +264,7 @@ if (($_POST['crudType']) === 'update') {
     \'' . $no_title . '\',
     \'' . $image . '\',
     \'' . $image_ID . '\',
-    \'' . $featuredVideoCode . '\',
-    \'' . $featuredVideoUrl . '\',
+    \'' . $featuredVideo_ID . '\',
     \'' . $visible . '\',
     1
     );

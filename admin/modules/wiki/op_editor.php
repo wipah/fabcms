@@ -121,8 +121,7 @@ if (isset($_GET['ID'])) {
                     P.service_page,
                     P.image,
                     P.image_ID,
-                    P.featured_video_code,
-                    P.featured_video_url,
+                    P.featured_video_ID,
                     P.notes,
                     M.ID AS master_ID,
                     L.ID AS license_ID,
@@ -461,34 +460,29 @@ echo '
                   <div class="form-group">
                       <div class="row">  
                             <label class="control-label col-sm-1" for="title">Title</label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-4">
                               <input type="text" class="form-control form-control-sm triggerModify" id="title" onkeyup="checkTitle();" placeholder="title" value="' . $row['title'] . '">
                             </div>
                             
-                            <div class="col-md-1">
-                                <button type="button" onclick="jumpToPage();" class="btn btn-default" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-export" aria-hidden="true"></span> 
-                                </button>
-                            </div>
+
+                            
                             <label class="control-label col-sm-1" for="title">Language</label>
                             <div class="col-sm-1">
                               ' . $languageSelect . '
                             </div>
                 
                             <label class="control-label col-sm-1" for="internalRedirect">Redirect</label>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <input type="text" class="form-control form-control-sm triggerModify" id="internalRedirect" placeholder="Internal redirect" value="' . $row['internal_redirect'] . '">
                             </div>
-                            <div class="col-sm-1">
-                                ' . $categorySelect  . '
-                            </div>    
+                             
                             <div class="col-sm-2" id="masterStatus">
                                 
                             </div>
                         </div>
                   </div>
-                  
-                  <div class="form-group">
+                  <hr/>
+                  <div class="form-group mt-4">
                     <div class="row">
                         <label class="control-label col-sm-1" for="tags">Tags</label>
                         <div class="col-sm-2">
@@ -501,7 +495,7 @@ echo '
                         </div>
                         
                         <label class="control-label col-sm-1" for="keywords">Keywords</label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-4">
                           <input type="text" class="form-control form-control-sm triggerModify" id="keywords" placeholder="keywords" value="' .$keywords. '">
                         </div>
                         <!--
@@ -528,7 +522,7 @@ echo '
                      </div>
                   </div>
                   
-                  <div class="row">
+                  <div class="row mt-4">
                     <div class="col-md-4">       
                           <div class="form-check">
                             <input type="checkbox" class="form-check-input triggerModify"  onpress="highlightVisibility();" id="visible" value="true" ' . ( (int) $row['visible'] === 1 ? 'checked="checked"' : '' ) . 'value="">
@@ -561,6 +555,14 @@ echo '
                     </div>
                   </div>
                   
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col">
+                                <button type="button" onclick="jumpToPage();" class="btn btn-default float-end" >
+                                <i style="font-size: 1.5em" class="bi bi-eye"></i>
+                                </button>
+                    </div>
                   </div> 
                   
                   <ul class="nav nav-tabs" id="FabWiki" role="tablist">
@@ -584,13 +586,15 @@ echo '
                               <div class="form-group">            
                               <small>Short description</small>
                                 <div class="col-sm-12" id="contentWrapper">
-                                 <textarea class="form-control form-control-sm" id="short_description" rows="2" style="height:50px;">' . $row['short_description'] . '</textarea>              
+                                 <textarea class="form-control form-control-sm" id="short_description" rows="4" style="height:120px;">' . $row['short_description'] . '</textarea>              
                                 </div>
                               </div>
                             </div>
                             <div class="col-md-3">
-                                YouTube ID: <input id="featured_video_code" class="form-control form-control-sm" value="' . $row['featured_video_code'] . '" type="text"> <br/>
-                                Featured video: <input id="featured_video_url" class="form-control form-control-sm" value="' . $row['featured_video_url'] . '" type="text">
+                                <div>
+                                    Featured video: <input disabled id="featured_video_ID" class="form-control form-control-sm" value="' . $row['featured_video_ID'] . '" type="text">
+                                </div>
+                                <div style="max-height: 220px" id="featuredVideoSnippet"></div>
                             </div>
                           </div>
                          <small>Article</small>
@@ -635,10 +639,16 @@ echo '
                 </div>
                           
                   <div class="row">
-                    <div class="col-sm-9" id="crudStatus"></div>
+                    <div class="col-sm-6" id="crudStatus"></div>
                     <div class="col-sm-3">
-                      <input type="checkbox" id="minorUpdate" value="1" class=""/> Minor update
-                      <button onclick="save();" type="button" class="btn btn-default float-right">Submit</button>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" value="1" type="checkbox" id="minorUpdate">
+                            <label class="form-check-label" for="minorUpdate">Minor update</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                      
+                      <button onclick="save();" type="button" class="btn btn-primary">Update</button>
                     </div>
                   </div>
             </form>
@@ -736,7 +746,8 @@ function seoStatus()
     );
 }
 
-function FabMedia() {
+function FabMedia()
+{
     $.ajax({
         type: "POST",
         url: "' . $URI->getBaseUri() . 'fabmediamanager/init/wiki/",
@@ -830,7 +841,7 @@ $( function() {
       );
   }
   
-  function save() {  
+function save() {  
     if (typeof stopSave !== "undefined") {
         if (stopSave === true){
             alert ("Please check your date.");
@@ -857,8 +868,7 @@ $( function() {
     var metaDataDescription = $("#metaDataDescription").val();
     var image = $("#articleImage").val();
     var image_ID = $("#articleImageID").val();
-    var featuredVideoCode = $("#featured_video_code").val();
-    var featuredVideoUrl = $("#featured_video_url").val();
+    var featuredVideo_ID = $("#featured_video_ID").val();
     
     var notes = tinyMCE.get("notes").getContent();
     var shortDescription = tinyMCE.get("short_description").getContent();
@@ -925,8 +935,8 @@ $( function() {
                                                    full_page        : full_page,
                                                    image            : image,
                                                    image_ID         : image_ID,
-                                                   featuredVideoCode: featuredVideoCode,
-                                                   featuredVideoUrl : featuredVideoUrl,
+                                                   featuredVideo_ID : featuredVideo_ID,
+                                          
                                                    notes            : notes,
                                                    additionalData   : additionalData })
       .done(function( data ) {
@@ -958,7 +968,8 @@ $( function() {
      );
   }
   
-function setAsPageImage(ID, imageUrl){
+function setAsPageImage(ID, imageUrl)
+{
     basePath = "' . $URI->getBaseUri(true) . '";
     imagePath = basePath + imageUrl;
     
@@ -967,8 +978,8 @@ function setAsPageImage(ID, imageUrl){
     $("#articleImage").val(imageUrl);    
 } 
 
-function getOutGoingLinks(){
-    
+function getOutGoingLinks()
+{
     if (noEditor === false) {
         var content = tinyMCE.get("content").getContent();
     } else {
@@ -995,7 +1006,7 @@ console.log("Activating short descr editor");
 
 tinymce.init({
           selector: \'#short_description, #notes\',
-          height: 120,
+          height: 250,
           menubar: false,
        	 
           plugins: \'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table contextmenu code help\',
@@ -1071,7 +1082,8 @@ function initEditor() {
                    
 }
 
-function switchEditor() {
+function switchEditor()
+{
     
     if (noEditor === true) {
         console.log("Activating main editor");
@@ -1115,13 +1127,15 @@ function checkTitle(){
      
     console.log("Fired checktitle");
     
-    if (title.length == 0){
+    if (title.length == 0) {
         console.log("Title has zero lenght. Aborting.");
         stopSave = true;
-        $("#title").addClass("alert alert-warning");    
+        $("#title").addClass("FabCMS-alert");    
         return;
     } else {
         console.log("Title is: " + title);
+        console.log("Title has more than one character. Good.");
+        $("#title").removeClass("FabCMS-alert");
     }
     
     $.post( "admin.php?module=wiki&op=getUnlinkedPages", {title:  title, language: language})

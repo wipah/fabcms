@@ -35,6 +35,10 @@ html{
     color: white;
 }
 
+.FabCMS-alert {
+    border: 1px solid red;
+    background-color: #eacccc;
+}
 .fabTemplateModuleSectionSubHead {
     background-color: var(--FABCMS-admin-primary);
     padding: 4px;
