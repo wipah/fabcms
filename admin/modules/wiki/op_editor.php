@@ -559,8 +559,13 @@ echo '
                   
                   <div class="row">
                     <div class="col">
-                                <button type="button" onclick="jumpToPage();" class="btn btn-default float-end" >
+                                <button type="button" onclick="jumpToPage(0);" class="btn btn-default float-end" >
                                 <i style="font-size: 1.5em" class="bi bi-eye"></i>
+                                </button>
+                    </div>
+                    <div class="col">
+                                <button type="button" onclick="jumpToPage(1);" class="btn btn-default float-end" >
+                                <i style="font-size: 1.5em" class="bi bi-printer"></i>
                                 </button>
                     </div>
                   </div> 
@@ -779,17 +784,24 @@ function fabMediaInit(){
 	});
 }
 
-function jumpToPage() {
+function jumpToPage(type) {
     title = $("#title").val();
     language = $("#language").val();
     
     if (title.length == 0)
         return;
     
+    if (type === 1){
+        $params = "?printable=true&renderType=1"
+    } else {
+        $params = "";
+    }
+    
+        
     $.post( "admin.php?module=wiki&op=getTrackback", { title:  title, language: language})
         .done(function( data ) {
              var url = data;
-             window.open(url, \'_blank\');
+             window.open(url + $params, \'_blank\');
         }  
     );    
 }
@@ -1008,7 +1020,7 @@ tinymce.init({
           selector: \'#short_description, #notes\',
           height: 250,
           menubar: false,
-       	 
+       	  
           plugins: \'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table contextmenu code help\',
           toolbar: \'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help\',
           content_css: [
@@ -1062,6 +1074,7 @@ function initEditor() {
       
       relative_urls : false,
       selector: \'.richText\',
+      element_format: \'xhtml\',
       height: 450,
       theme: \'silver\' ,
       skin: \'oxide\', 

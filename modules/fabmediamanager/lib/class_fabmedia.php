@@ -645,6 +645,30 @@ class FabMedia
         }
     }
 
+    function getBrightness( object $image) : int {
+        global $relog;
+
+        $totalBrightness = 0;
+
+        $width  = imagesx($image);
+        $height = imagesy($image);
+
+        for ($x = 0; $x < $width; $x++) {
+            for ($y = 0; $y < $height; $y++) {
+                $rgb = imagecolorat($image, $x, $y);
+                $r = ($rgb >> 16) & 0xFF;
+                $g = ($rgb >> 8) & 0xFF;
+                $b = $rgb & 0xFF;
+                $totalBrightness += ($r + $g + $b) / 3;
+            }
+        }
+
+        // Calcola la luminosità media dell'immagine
+        $averageBrightness = $totalBrightness / ($width * $height);
+
+        return (int) $averageBrightness;
+    }
+
     function processAudio($type, $audioPath, $extension)
     {
         global $core;
@@ -918,6 +942,8 @@ class FabMedia
                        'details'   => 'Image pushed to DB ',
         ]);
 
+        // Get brightness
+        $brightness = $this->getBrightness($source_image);
 
         // Build the query
         $query = '
@@ -997,6 +1023,7 @@ class FabMedia
                 file_ID,
                 width,
                 height,
+                brightness,
                 GPS
             )
             VALUES
@@ -1004,6 +1031,7 @@ class FabMedia
                 \'' . $latestRow . '\',
                 \'' . $core->in($width) . '\',
                 \'' . $core->in($height) . '\',
+                \'' . $brightness . '\',
                 \'' . $core->in($location) . '\'
             );';
 

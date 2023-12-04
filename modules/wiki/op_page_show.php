@@ -177,6 +177,12 @@ $fabwiki->title                 =   $row['title'] . ( !empty($row['title_alterna
 $fabwiki->trackback             =   $row['trackback'];
 $fabwiki->cacheExpired         =   (int) $row['cache_expired'];
 
+/* Check if a $_GET directive of "renderType" has been passed */
+if (isset($_GET['renderType'])) {
+    $fabwiki->parserNoLink = true;
+    $fabwiki->renderType = (int) $_GET['renderType'];
+}
+
 /* Open graph tags */
 $this->addMeta('og:url', $URI->getBaseUri() . $this->routed . '/' . $trackback . '/');
 $this->addMeta('og:locale', $row['language'] . '-' . strtoupper($row['language']));
@@ -200,7 +206,7 @@ if (strlen($row['featured_video_url']) > 8 ) {
 
 /*
  * ************************************
- * * Check if exists a featured video *
+ * * Check if exists a featured image *
  * ************************************
 */
 if (isset($row['article_image_filename'])) {
@@ -223,6 +229,35 @@ if (isset($row['article_image_filename'])) {
     $this->addMeta('og:image:width', $row['article_image_width']);
     $this->addMeta('og:image:height', $row['article_image_height']);
 
+    $header = '
+    <style>
+
+    div.articleHeader {
+        position:relative;
+    }
+    div.cover {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        background-size: cover !important; 
+        height: 50vh; 
+        background: url(' . $imageFinalMQPath_destination . ');
+        
+    }
+    div..top-text,
+    div.bottom-text {
+            color: white;
+    }
+
+    </style>
+    <div class="articleHeader">
+        <div class="cover">
+            <div class="top-text">' .  $titleTag . '</div>
+                <!-- Immagine di copertina con titolo, autore e data -->
+            <div class="bottom-text">Info in fondo</div>
+        </div>
+    </div>';
 }
 
 /*
@@ -327,8 +362,6 @@ if ($numNavBarPieces > 1) {
  * * Lateral info block *
  * **********************
  */
-
-
 if (  (int) $row['full_page'] !== 1) {
 
 
@@ -614,6 +647,7 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
 
 <!--FabCMS-hook:wikiBeforeArticle-tag-' . $tags_array[0] . '-->
 <!--FabCMS-hook:wikiBeforeArticle-->
+' . $header . '
 <div class="row">
     <div class="col-md-9">
     <article>

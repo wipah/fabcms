@@ -32,6 +32,8 @@ class wiki
 
     private $_hooks;
 
+    public $renderType = 0;
+
     function __construct()
     {
         $this->initParsers();
