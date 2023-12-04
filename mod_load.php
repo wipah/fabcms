@@ -96,9 +96,8 @@ $core = new CrisaSoft\FabCMS\core();
 $debug->write('info', 'Core object loaded');
 $core->loaded = true;
 
-require_once './lib/mysql/class_mysqli.php';
-
-$db = new CrisaSoft\FabCMS\dbi ($conf['db']['host'], $conf['db']['user'], $conf['db']['password'], $conf['db']['dbname']);
+require_once './lib/db/class_db.php';
+$db = new db($conf['db']['host'], $conf['db']['user'], $conf['db']['password'], $conf['db']['dbname']);
 $db->prefix = $conf['db']['prefix'];
 
 if ($db->connect_errno) {
