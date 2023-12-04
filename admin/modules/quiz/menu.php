@@ -24,7 +24,7 @@ if (!$core->adminLoaded) {
 
 $out .= '
       <li class="nav-item dropdown">
-        <a href="admin.php?module=wiki" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a href="admin.php?module=wiki" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Quiz
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">

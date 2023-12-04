@@ -127,7 +127,7 @@ function plugin_check($data)
         $user->isAdmin === TRUE ? $adminLink = '. <span style=\"background-color:#FAA;\">Go to the <a href=\"' . $URI->getBaseUri(TRUE) . 'admin/admin.php\">admin area</a></span>' : $adminLink = '';
         $theReturn = '
                     <li class="dropdown">
-                    <a href="/user/" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="/user/" class="dropdown-toggle" data-bs-toggle="dropdown">
                         User control (' . $user->username . ')
                     </a>
                     <ul class="dropdown-menu">

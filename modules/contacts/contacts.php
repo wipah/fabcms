@@ -175,7 +175,7 @@ if ( $useRecaptcha) {
 echo '
         <div class="form-group">
           <div class="col-md-offset-2 col-md-8">
-            <button type="submit" class="btn btn-default">' . $language->get('contacts', 'send') . '</button>
+            <button type="submit" class="btn btn-primary">' . $language->get('contacts', 'send') . '</button>
           </div>
         </div>
     </form>

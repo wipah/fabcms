@@ -212,7 +212,7 @@ class templateBase implements iFabTemplate
         $out = '
         <nav class="navbar navbar-static-top navbar-expand-lg navbar-light bg-light bg-faded">
           <a class="navbar-brand" href="' . $URI->getBaseUri() . '">' . $logoBrand . '<!--FabCMS:siteName--></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -289,7 +289,7 @@ class templateBase implements iFabTemplate
                 if ( (int) $row['childs'] > 0 )
                     $out .= '<li class="dropdown-submenu">
                              
-                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink-' . $row['ID'] . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink-' . $row['ID'] . '" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 ' . $row['name'] . '
                              </a>
                              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-' . $row['ID'] .'">' . $this->iterateMenu($row['ID'], true, true) . '</ul>';
@@ -556,7 +556,7 @@ class templateBase implements iFabTemplate
             <li class="nav-item">
                 <a ' . ($i === $activeTab ? 'class="nav-link active" aria-selected="true"' : 'class="nav-link" aria-selected="false"') . ' href="#' . $core->getTrackback($singleTab) . '" 
                  id="home-tab-' . $core->getTrackback($singleTab) . '" 
-                 data-toggle="tab"
+                 data-bs-toggle="tab"
                  role="tab" aria-controls="' . $core->getTrackback($singleTab) . '">' .
                 $singleTab . '
                 </a>
