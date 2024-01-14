@@ -83,6 +83,7 @@ SELECT
   ' . $db->prefix . 'wiki_pages.title,
   ' . $db->prefix . 'wiki_pages.title_alternative,
   ' . $db->prefix . 'wiki_pages.trackback,
+  ' . $db->prefix . 'wiki_pages.short_description,
   ' . $db->prefix . 'wiki_pages.metadata_description,
   ' . $db->prefix . 'wiki_pages.ID,
   ' . $db->prefix . 'wiki_pages.master_ID,
@@ -98,6 +99,10 @@ SELECT
   ' . $db->prefix . 'wiki_pages.latest_update_user_ID,
   ' . $db->prefix . 'wiki_pages.visible,
   ' . $db->prefix . 'wiki_pages.featured_video_ID,
+                     VIDEO.user_ID featured_video_user_ID,
+                     VIDEO.filename featured_video_filename,
+                     VIDEO.description featured_video_description,
+                     VIDEO.title featured_video_title,
   ' . $db->prefix . 'wiki_pages.no_index,
   ' . $db->prefix . 'wiki_pages.service_page,
   ' . $db->prefix . 'wiki_pages.full_page,
@@ -131,7 +136,8 @@ FROM
   LEFT JOIN ' . $db->prefix . 'fabmedia ON (' . $db->prefix . 'wiki_pages.image_ID = ' . $db->prefix . 'fabmedia.ID)
   LEFT JOIN ' . $db->prefix . 'fabmedia_masters ON (' . $db->prefix . 'fabmedia.master_ID = ' . $db->prefix . 'fabmedia_masters.ID)
   LEFT JOIN ' . $db->prefix . 'fabmedia_images ON (' . $db->prefix . 'wiki_pages.image_ID = ' . $db->prefix . 'fabmedia_images.file_ID)
-
+  LEFT JOIN ' . $db->prefix . 'fabmedia VIDEO ON (' . $db->prefix . 'wiki_pages.featured_video_ID = VIDEO.ID)
+  
   WHERE ' . $db->prefix . 'wiki_pages.trackback = \'' . $trackback . '\' AND language = \'' . $core->shortCodeLang . '\'
   LIMIT 1;';
 
@@ -167,6 +173,7 @@ if (!$db->affected_rows) {
 
 $row = mysqli_fetch_assoc($result);
 
+
 $fabwiki->publishedID[]         =   $row['ID'];
 $fabwiki->creationDate          =   $row['creation_date'];
 $fabwiki->updateDate            =   $row['last_update'];
@@ -192,16 +199,32 @@ $this->addMeta('og:article:published_time', $row['creation_date']);
 $this->addMeta('og:article:modified_time', $row['last_update']);
 $this->addMeta('og:article:tag', $row['tag']);
 
-if (strlen($row['featured_video_url']) > 8 ) {
-    $this->addMeta('og:video', $row['featured_video_url']);
+if (!empty(
+    $row['featured_video_ID'])) {
+    $this->addMeta('og:video', $row['featured_video_ID']);
 
-    $contentFeaturedVideo = '
-        <div id="featuredVideo" class="section d-flex justify-content-center embed-responsive embed-responsive-16by9">
-            <video class="embed-responsive-item" controls autoplay loop muted>
-                <source src="' . $row['featured_video_url'] . '" type="video/mp4">
-                Il tuo browser non supporta la visualizzazione dei video.
-            </video>
-        </div>';
+$contentFeaturedVideo = '<div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="video-card">
+                    <div class="row" id="videoRow">
+                       
+                        <div class="col-12 col-lg-8 video-section" id="videoColumn">
+                            <video controls id="featuredVideo">
+                                <source src="' . $URI->getBaseUri() . 'fabmedia/' . $row['featured_video_user_ID'] . '/' . $row['featured_video_filename'] . '" type="video/mp4">
+                                Il tuo browser non supporta il tag video.
+                            </video>
+                        </div>
+                        <div class="col-12 col-lg-4 info-section" id="infoColumn">
+                            <h3>' . $row['featured_video_title'] . '</h3>
+                            <p>'. $row['featured_video_description'] . '</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>';
+
 }
 
 /*
@@ -229,36 +252,14 @@ if (isset($row['article_image_filename'])) {
     $this->addMeta('og:image:width', $row['article_image_width']);
     $this->addMeta('og:image:height', $row['article_image_height']);
 
-    $header = '
-    <style>
-
-    div.articleHeader {
-        position:relative;
-    }
-    div.cover {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        background-size: cover !important; 
-        height: 50vh; 
-        background: url(' . $imageFinalMQPath_destination . ');
-        
-    }
-    div..top-text,
-    div.bottom-text {
-            color: white;
-    }
-
-    </style>
-    <div class="articleHeader">
-        <div class="cover">
-            <div class="top-text">' .  $titleTag . '</div>
-                <!-- Immagine di copertina con titolo, autore e data -->
-            <div class="bottom-text">Info in fondo</div>
-        </div>
-    </div>';
 }
+
+/*
+ * **********************************
+ * * Check if the page is fullpage *
+ * **********************************
+*/
+$fabwiki->fullPage = (int) $row['full_page'] === 1;
 
 /*
  * **********************************
@@ -325,6 +326,74 @@ $keywords_array = $fabwiki->getKeywordsFromPageID($page_ID);
  * ********************
  */
 
+
+/*
+* ********************
+* * Similar contents *
+* ********************
+*/
+
+if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
+
+    if ($conf['memcache']['enabled']  === true && $fabwiki->cacheExpired === 0)
+        $similarPages = $memcache->get('wikiPageSimilarPages-' . $page_ID);
+
+    if (empty($similarPages)) {
+        $similarPages = '';
+
+        $query = '
+        SELECT DISTINCT(P.ID), 
+               P.title,
+               P.image,
+               P.image_ID,
+               P.trackback,
+               COUNT(K.keyword) AS no_keywords,               
+               group_concat(K.keyword SEPARATOR \', \') AS keyword
+        FROM ' . $db->prefix . 'wiki_pages AS P
+        LEFT JOIN ' . $db->prefix . 'wiki_pages_keywords AS K
+        ON K.page_ID = P.ID
+        WHERE P.visible = 1 
+            AND P.service_page != 1
+            AND P.ID != \'' . $page_ID . '\'
+            AND P.language = \'' . $core->shortCodeLang . '\' 
+            AND (';
+
+        foreach ($keywords_array AS $singleKeyword) {
+            $query .= 'K.keyword = \'' . $core->in($singleKeyword) . '\' OR ';
+        }
+        $query = substr($query, 0, -3) . ')';
+
+        $query .= 'GROUP BY P.ID ORDER BY no_keywords DESC LIMIT 6';
+
+        if (!$resultSimilarPages = $db->query($query)) {
+
+            $relog->write(['type'      => '4',
+                'module'    => 'WIKI',
+                'operation' => 'wiki_page_similar_contents_error',
+                'details'   => 'Cannot select the similar pages. Query error. ' . "\r\n" . $db->lastError . "\r\n" .$query,
+            ]);
+
+            $similarPages = 'Query error.';
+        } else {
+
+            if (!$db->affected_rows) {
+                $similarPages .= '<p>
+                                    ' . $language->get('wiki', 'showPageNoSimilarPage') . '
+                                  </p>';
+            } else {
+                while ($rowSimilar = mysqli_fetch_assoc($resultSimilarPages)) {
+                    $trackback = $URI->getBaseUri() . $this->routed . '/' . $rowSimilar['trackback'] . '/';
+                    $similarPages .= '<a href="' . $trackback . '">' .  $rowSimilar['title']  . '</a><br/>';
+                }
+            }
+        }
+
+        if ($conf['memcache']['enabled']  === true && $fabwiki->cacheExpired === 0)
+            $memcache->set('wikiPageSimilarPages-' . $page_ID, $similarPages, 604800);
+    }
+}
+
+
 // $template->navBarAddItem([(isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki')], $URI->getBaseUri() . $this->routed);
 $template->navBarAddItem( (isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki'), $URI->getBaseUri() . $this->routed . '/');
 
@@ -357,32 +426,6 @@ if ($numNavBarPieces > 1) {
     $template->navBarAddItem( $row['title'] . (!empty($row['title_alternative']) ? ' - ' . $row['title_alternative'] : ''));
 }
 
-/*
- * **********************
- * * Lateral info block *
- * **********************
- */
-if (  (int) $row['full_page'] !== 1) {
-
-
-    $template->sidebar .= '<!--FabCMS-hook:wikiSideBarTop-->
-                            <!--FabCMS-hook:wikiTag-sideBarTop-' . $core->getTrackback($tags_array[0]) . '-->';
-
-    if ((int)$fabwiki->config['showSearchBox'] === 1 && (int)$row['no_search'] !== 1) {
-        $template->sidebar .= $template->simpleBlock($language->get('wiki', 'showSearchBoxSearch'), '
-        <form class="clearfix" action="' . $URI->getBaseUri() . 'search/simple/' . '" method="post">
-            <div class="row">
-                <div class="col-sm-9">
-                    <input name="search" class="form-control">
-                </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-outline-primary btn-outline-primary-search float-right" type="submit">Ricerca</button>    
-                </div>
-            </div>
-            
-        </form>
-        ');
-    }
 
     if ( (int) $row['no_info'] !== 1) {
 
@@ -393,49 +436,29 @@ if (  (int) $row['full_page'] !== 1) {
                 break;
             case '2':
                 $fabwiki->authorUsername = $row['article_signature'];
-                $authorName = $language->get('wiki', 'showPageWrittenBy') . '<span itemprop="author">' . $row['article_signature'] . '</span><br/>';
+                $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/null.jpg';
+                $authorName =  '<span itemprop="author">' . $row['article_signature'] . '</span>';
                 break;
             case '3':
                 $fabwiki->authorUsername = $row['article_signature'];
 
                 // Check if photo exists
                 $hash = md5($row['creation_user_ID'] . $conf['security']['siteKey']);
-
                 $filePath = $conf['path']['baseDir'] . 'cache/users/profile/' . $hash . '.jpeg';
                 if (file_exists($filePath))
                     $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/' . $hash . '.jpeg';
-
 
                 $filePath = $conf['path']['baseDir'] . 'cache/users/profile/' . $hash . '.jpg';
                 if (file_exists($filePath))
                     $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/' . $hash . '.jpg';
 
-
                 $filePath = $conf['path']['baseDir'] . 'cache/users/profile/' . $hash . '.png';
                 if (file_exists($filePath))
                     $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/' . $hash . '.png';
 
-                if (!empty($authorImage)) {
-                    $authorImage = '
-                    <div class="float-left">
-                        <a href="' . $URI->getBaseUri() . 'user/showuser/' . $row['creation_user_ID'] . '/">
-                            <img class="lazy img-fluid" 
-                                 alt="Author pic" 
-                                 style="max-width: 135px; max-height: 135px;" 
-                                 data-src="' . $authorImage . '" />
-                        </a>
-                    </div> ';
-
-
-                }
-
-                $authorName = $language->get('wiki', 'showPageWrittenBy') . '<span class="fabCMS-Wiki-PageShowAuthor" onclick="toggleAuthorBox();">' . $row['article_signature'] . '</span>';
-                /* $authorName = $language->get('wiki', 'showPageWrittenBy') . '<a href="' . $URI->getBaseUri() . 'user/showuser/' . $row['creation_user_ID'] . '/">
- ' . $row['article_signature'] . '</a>'; */
+                $authorName =  '<spanit emprop="author">' . $row['article_signature'] . '</span>';
                 break;
         }
-
-
     }
 
     $fabwiki->creationDate =  $row['creation_date'];
@@ -473,20 +496,9 @@ if (  (int) $row['full_page'] !== 1) {
 
     $core->jsVar['fabcms_isFullPage'] = 0;
 
-} else { // Item is in full page
-    $template->fullPage = true;
-    $core->jsVar['fabcms_isFullPage'] = 1;
-}
-
-
 if (!empty($row['title_alternative']))
     $title_alternative = ' - ' . $row['title_alternative'];
 
-// Check if we have to pass the first tag to Google Tag Manager (analytics)
-if ((int)$fabwiki->config['googleTagsManager'] === 1) {
-    $this->addScript('var dimensionValue = \'' . htmlentities($tags_array[0]) . '\';
-                      ga(\'set\', \'dimension1\', dimensionValue);');
-}
 
 // Check if a custom rule matches
 $query = 'SELECT * 
@@ -610,7 +622,7 @@ if (isset($_GET['printable'])) {
     <!--FabCMS-hook:wikiBeforeArticle-tag-' . $tags_array[0] . '-->
     <!--FabCMS-hook:wikiBeforeArticle-->
     <article>
-       <h1>' . $titleTag . '</h1>
+       
         <!--FabCMS-hook:wikiInsideArticleTop-tag-' . $tags_array[0] . '-->
         <!--FabCMS-hook:wikiInsideArticleTop-->
         
@@ -649,27 +661,29 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
 <!--FabCMS-hook:wikiBeforeArticle-->
 ' . $header . '
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-' . ($fabwiki->fullPage === true ? 12 : 9) . '">
     <article>
-        <div class="row">
-        
-            <div class="col-12 col-sm-12 col-md-' . ( (int) $row['no_info'] === 1 ? '12' : '8') . '">
-                '. ( (int) $row['no_title'] === 1 ? '' : '<h1>' . $titleTag . '</h1>' ) . '
-            </div>';
+        <div class="row">';
 
         if ( (int) $row['no_info'] !== 1 ) {
-            echo '        <div class="col-md-4 d-none d-lg-block fabCMS-Wiki-PageInfoBox">
-                <i class="fas fa-user"></i> ' . $authorName . '.<br/>
-                <i class="fas fa-calendar"></i> ' .
-                $language->get('wiki', 'wikiShowPagePublishedOn') . ' ' . $core->getDate($fabwiki->creationDate) . ' 
-                ' . (empty($fabwiki->updateDate) ? '' : $language->get('wiki', 'wikiShowPageLastUpdate')) .  ' ' . $core->getDate($fabwiki->updateDate) . '
-                ' . ($user->isAdmin === true ?  '<br/><i class="fas fa-edit"></i><a href="' . $URI->getBaseUri(true) . 'admin/admin.php?module=wiki&op=editor&ID=' . $row['ID'] . '">Edit</a>' : '' ) . '
-                <div id="wikiAuthorBox" class="fabCMS-Wiki-PageAuthorBox">
-                    ' . $authorImage .'
-                    <div class="fabCMS-Wiki-wikiAuthorBoxName">'.   $row['article_signature'] .'</div>
-                    <div class="FabCMS-Wiki-pageAuthorBoxShortBio mt-2">' . $row['short_biography'] . '</div>
-                </div>
-            </div>';
+
+            $datetime_str = $row['last_update'];
+            $timestamp = strtotime($datetime_str);
+            $date_formatted = date('m-d-Y', $timestamp);
+
+            echo '<div class="article-card">
+        <div class="article-content">
+            '. ( (int) $row['no_title'] === 1 ? '' : '<h1 class="">' . $titleTag . '</h1>' ) . '
+            <div class="article-description">
+                <p>' .  $row['short_description']. ' </p>
+            </div>
+        </div>
+        <div class="article-meta">
+            <img src="' . $authorImage . '" alt="Nome Autore">
+            <h3>' . $authorName . '</h3>
+            <p>Revisionato il: ' . $date_formatted . '</p>
+        </div>
+    </div>';
         }
 
         echo '
@@ -688,32 +702,42 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
         <!--FabCMS-hook:wikiInsideArticleBottom-tag-' . $tags_array[0] . '-->
         <!--FabCMS-hook:wikiInsideArticleBottom-->
     </article>
-    </div>
-    <div id="wikiSidebar" class="col-md-3 wikiSidebar" style="background-color: var(--fabCMS-tertiary);">
-    
-          <!--FabCMS-hook:wikiSideBarFirstSpot-->
-          <!--FabCMS-hook:wikiSideBarFirstSpot-tag-' . $tags_array[0] . '-->
-          <form class="clearfix" action="' . $URI->getBaseUri() . 'search/simple/' . '" method="post">
-            <div class="row">
-                <div class="col-md" style="background-color: var(--fabCMS-primary); color: white; padding: 12px; font-size: x-large">
-                    RICERCA
-                </div>
+    </div>';
+
+        if ($fabwiki->fullPage === false ) {
+            echo '
+            <div id="wikiSidebar" class="col-md-3 wikiSidebar sidebar">
+              <!--FabCMS-hook:wikiSideBarFirstSpot-->
+              <!--FabCMS-hook:wikiSideBarFirstSpot-tag-' . $tags_array[0] . '-->
+              <div class="sidebar-block">
+                <h3>CERCA</h3>
+                <p>
+                    <form class="clearfix" action="' . $URI->getBaseUri() . 'search/simple/' . '" method="post">
+                        <div class="col-sm-9">
+                            <input name="search" class="form-control">
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-dark  float-right" type="submit">Ricerca</button>    
+                        </div>
+                    </form>
+                </p>
+              </div>
+              
+              <div class="sidebar-block">
+                <h3>Pagine simili</h3>
+                <p>
+                    ' . $similarPages . '
+                </p>
             </div>
-            <div class="row" style="padding: 12px; background-color: var(--fabCMS-secondary)">
-                <div class="col-sm-9">
-                    <input name="search" class="form-control">
+          
+           
+          <!--FabCMS-hook:wikiSideBarLastSpot-tag-' . $tags_array[0] . '-->
+          <!--FabCMS-hook:wikiSideBarLastSpot-->
+    </div>';
+        }
+
+        echo '
                 </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-dark  float-right" type="submit">Ricerca</button>    
-                </div>
-            </div>
-            
-            
-            <!--FabCMS-hook:wikiSideBarLastSpot-tag-' . $tags_array[0] . '-->
-            <!--FabCMS-hook:wikiSideBarLastSpot-->
-          </form>
-    </div>
-</div>
 ' . ( (int) $fabwiki->config['showPageLicense'] === 1
             ? '<div class="fabCms-Wiki-CopyrightNotice"><i class="far fa-copyright"></i> &nbsp;' .
             sprintf($language->get('wiki','showPageCopyrightNotice' ),
@@ -728,125 +752,7 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
 
 
 }
-/*
-* ********************
-* * Similar contents *
-* ********************
-*/
 
-if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
-
-    if ($conf['memcache']['enabled']  === true && $fabwiki->cacheExpired === 0)
-        $similarPages = $memcache->get('wikiPageSimilarPages-' . $page_ID);
-
-    if (empty($similarPages)) {
-        $similarPages = '<section class="fabCMS-Wiki-SimilarPage mt-4">
-                        <h2 class="fabCMS-Wiki-SimilarPageDescription">' . $language->get('wiki', 'showPageSimilarPages') . '</h2>' . PHP_EOL;
-
-        $query = '
-        SELECT DISTINCT(P.ID), 
-               P.title,
-               P.image,
-               P.image_ID,
-               P.trackback,
-               COUNT(K.keyword) AS no_keywords,               
-               group_concat(K.keyword SEPARATOR \', \') AS keyword
-        FROM ' . $db->prefix . 'wiki_pages AS P
-        LEFT JOIN ' . $db->prefix . 'wiki_pages_keywords AS K
-        ON K.page_ID = P.ID
-        WHERE P.visible = 1 
-            AND P.service_page != 1
-            AND P.ID != \'' . $page_ID . '\'
-            AND P.language = \'' . $core->shortCodeLang . '\' 
-            AND (';
-
-        foreach ($keywords_array AS $singleKeyword) {
-            $query .= 'K.keyword = \'' . $core->in($singleKeyword) . '\' OR ';
-        }
-        $query = substr($query, 0, -3) . ')';
-
-        $query .= 'GROUP BY P.ID ORDER BY no_keywords DESC LIMIT 6';
-
-        if (!$resultSimilarPages = $db->query($query)) {
-
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
-                'operation' => 'wiki_page_similar_contents_error',
-                'details'   => 'Cannot select the similar pages. Query error. ' . "\r\n" . $db->lastError . "\r\n" .$query,
-            ]);
-
-            $similarPages = 'Query error.';
-        } else {
-
-            if (!$db->affected_rows) {
-                $similarPages .= '<div class="row">
-                                <div class="col-lg-12"> ' . $language->get('wiki', 'showPageNoSimilarPage') . '</div>';
-            } else {
-
-                $i = 0;
-                $gridSize = 4;
-                $colSize = 12 / $gridSize;
-
-                $similarPages .= '<div class="row"> <!-- Start of similar pages-->' . PHP_EOL;
-
-                while ($row = mysqli_fetch_assoc($resultSimilarPages)) {
-                    $i++;
-
-                    $similarPages .= PHP_EOL . '<div class="col-lg-' . $colSize . '">' . PHP_EOL;
-                    $imagePath = $conf['path']['baseDir'] . $row['image'];
-
-                    $trackback = $URI->getBaseUri() . $this->routed . '/' . $row['trackback'] . '/';
-
-                    $similarPages .= '<a href="' . $trackback . '">';
-                    if (file_exists($imagePath) && !is_dir($imagePath)) {
-
-                        $imageInfo = (pathinfo($row['image']));
-                        $extension = $imageInfo['extension'];
-
-                        $pos = strrpos($row['image'], '.' . $extension);
-
-                        $imagePath = substr_replace($row['image'], '_thumb.' . $extension, $pos, strlen('.' . $extension));
-
-                        $similarPages .= PHP_EOL . '
-                                    <img style="max-width:150px;" 
-                                         data-src="' . $URI->getBaseUri(true) . $imagePath . '" 
-                                         class="lazy img-fluid" 
-                                         alt="' . $row['title'] . '" />
-                                ';
-                    } else {
-                        $similarPages .= '<img 
-                                        style="max-width:150px;" 
-                                        data-src="' . $URI->getBaseUri(true) . 'modules/wiki/res/noimage.png" class="lazy img-fluid" alt="No image placeholder" />';
-                    }
-
-                    $similarPages .= '</a>
-                                  <br/>
-                                  <a href="' . $trackback . '">' . $row['title'] . '</a>
-                                  </div>' . PHP_EOL;
-
-                    if ($i === $gridSize) {
-                        $i = 0;
-                        $similarPages .= PHP_EOL . '</div> <!-- end row-->
-                        <div class="row"> <!-- Start new row -->';
-                    }
-                }
-
-
-                for ($x = 0; $x < ($gridSize - $i); $x++) {
-                    $similarPages .= '<div class="col-lg-' . $colSize . '"><!--empty--></div>';
-                }
-
-            }
-        }
-
-        $similarPages .= '</div></section> <!-- End similar pages-->';
-
-        if ($conf['memcache']['enabled']  === true && $fabwiki->cacheExpired === 0)
-            $memcache->set('wikiPageSimilarPages-' . $page_ID, $similarPages, 604800);
-    }
-
-    echo $similarPages;
-}
 
 if ( (int) $row['no_comment'] !== 1) {
     // Get all the comments for the page

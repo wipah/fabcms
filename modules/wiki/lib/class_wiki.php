@@ -32,6 +32,7 @@ class wiki
 
     private $_hooks;
 
+    public $fullPage = false;
     public $renderType = 0;
 
     function __construct()

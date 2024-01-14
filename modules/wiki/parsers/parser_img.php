@@ -102,7 +102,7 @@ $content = preg_replace_callback($theRegex,
         switch ($this->renderType) {
             case 0:
             default:
-                $src = 'data-src="' . $imgSrc . '"';
+                $src = 'src="' . $imgSrc . '"';
                 break;
             case 1:
                 $src = 'src="' . $imgSrc . '"';
@@ -115,10 +115,10 @@ $content = preg_replace_callback($theRegex,
             if ($this->renderType === 1)
                 $description = '<br/>' . $imgDescription;
 
-            return "<img $src $imgClass $imgStyle $imgAlt $imgTitle>$description";
+            return "<img loading='lazy' $src $imgClass $imgStyle $imgAlt $imgTitle>$description";
         } else {
             $fragment = "<div class='FabCMS-imageContainer $imgAlign'>
-                        <img $src $imgClass $imgStyle $imgAlt $imgTitle>
+                        <img loading='lazy' $src $imgClass $imgStyle $imgAlt $imgTitle>
                         $imgDescription
                     </div>";
 
