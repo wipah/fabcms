@@ -27,6 +27,7 @@ if (!isset($_POST['title'])) {
 
 $title              =   $core->in($_POST['title'], true);
 $title_alternative  =   $core->in($_POST['title_alternative'], true);
+$use_file           =   $core->in($_POST['use_file']);
 $trackback          =   $core->getTrackback($core->in($_POST['title']));
 $category           =   (int) $_POST['category'];
 
@@ -113,6 +114,7 @@ if (($_POST['crudType']) === 'update') {
     title                   =   \'' . $title . '\',
     category_ID             =   \'' . $category . '\',
     title_alternative       =   \'' . $title_alternative . '\',
+    use_file                =   \'' . $use_file . '\',
     status_ID               =   \'' . $status . '\',
     license_ID               =   \'' . $license . '\',
     type_ID                 =   \'' . $type_ID . '\',
@@ -202,6 +204,7 @@ if (($_POST['crudType']) === 'update') {
                                                category_ID, 
                                                title, 
                                                title_alternative, 
+                                               use_file, 
                                                trackback,
                                                short_description,
                                                metadata_description,
@@ -241,6 +244,7 @@ if (($_POST['crudType']) === 'update') {
     \'' . $category . '\',
     \'' . $title . '\',
     \'' . $title_alternative . '\',
+    \'' . $use_file . '\',
     \'' . $trackback . '\',
     \'' . $shortDescription . '\',
     \'' . $metaDataDescription . '\',

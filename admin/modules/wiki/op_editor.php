@@ -96,6 +96,7 @@ if (isset($_GET['ID'])) {
                     P.category_ID,
                     P.status_ID,
                     P.title_alternative,
+                    P.use_file,
                     P.language,
                     P.content,
                     P.keywords,
@@ -282,7 +283,7 @@ if (!$db->affected_rows){
     return;
 }
 
-$licenseSelect = '<select class="form-control form-control-sm" id="license">';
+$licenseSelect = '<select class="form-select" id="license">';
 while ($rowSelect = mysqli_fetch_array($resultLicenses)){
     $licenseSelect .= '<option ' . ($rowSelect['ID'] === $row['license_ID'] ? 'selected="selected"' : '')  . '  value="' . $rowSelect['ID'] . '">' . $rowSelect['name'] . '</option>';
 }
@@ -321,13 +322,13 @@ if (!$db->affected_rows){
     return;
 }
 
-$categorySelect = '<select class="form-control form-control-sm" id="category">';
+$categorySelect = '<select class="form-select" id="category">';
 while ($rowCategory = mysqli_fetch_array($resultCategory)){
     $categorySelect .= '<option ' . ( (int) $rowCategory['ID'] === (int) $row['category_ID'] ? 'selected="selected"' : '')  . '  value="' . $rowCategory['ID'] . '">' . $rowCategory['name'] . '</option>';
 }
 $categorySelect .= '</select>';
 
-$languageSelect = '<select class="form-control form-control-sm" onchange="checkTitle();" id="language">';
+$languageSelect = '<select class="form-select" onchange="checkTitle();" id="language">';
 
 foreach ($conf['langAllowed'] as $language){
     $languageSelect .= '<option value="' . $language . '" ' . ($language === $row['language'] ? 'selected="selected"' : '') . '>' . $language . '</option>';
@@ -349,7 +350,7 @@ if (!$db->affected_rows){
     echo 'No rows on status';
     return;
 }
-$statusSelect = '<select class="form-control form-control-sm" id="status">';
+$statusSelect = '<select class="form-select" id="status">';
 while ( $rowStatus = mysqli_fetch_assoc($resultStatus) ) {
     $statusSelect .= '<option value="' . $rowStatus['ID'] . '" ' . ( (int) $row['status_ID'] === (int) $rowStatus['ID'] ? ' selected ' : '' ) . '>' . $rowStatus['status'] . '</option>';
 }
@@ -614,27 +615,82 @@ echo '
                     
                     <div class="tab-pane fade" id="contentAdvanced" role="tabpanel" aria-labelledby="contentAdvanced-tab">
                         <h3>Additional data</h3>
-                        <p>               
-                          Title alternative: <input class="triggerModify" id="title_alternative" type="text" value="' . $row['title_alternative'] . '"> <br/>
-                          <input class="triggerModify" id="no_index" type="checkbox" value="true" ' . ( (int) $row['no_index'] == 1 ? 'checked="ckecked"' : '' ) . '>No index<br/>  
-                          <input class="triggerModify" id="no_editor" onchange="switchEditor();" type="checkbox" value="true" ' . ( (int) $row['no_editor'] == 1 ? 'checked="ckecked"' : '' ) . '>No Editor <br/>
-                          <input class="triggerModify" id="service_page" type="checkbox" value="true" ' . ( (int) $row['service_page'] == 1 ? 'checked="ckecked"' : '' ) . '>Service page <br/>
-                          <input class="triggerModify" id="no_search" type="checkbox" value="true" ' . ( (int) $row['no_index'] == 1 ? 'checked="ckecked"' : '' ) . '>No Search<br/>
-                          <input class="triggerModify" id="full_page" type="checkbox" value="true" ' . ( (int) $row['full_page'] == 1 ? 'checked="ckecked"' : '' ) . '>Full page<br/>
-                          <input class="triggerModify" id="no_banner" type="checkbox" value="true" ' . ( (int) $row['no_banner'] == 1 ? 'checked="checked"' : '' ) . '>No banner<br/>
-                          <input class="triggerModify" id="no_info" type="checkbox" value="true" ' . ( (int) $row['no_info'] == 1 ? 'checked="checked"' : '' ) . '>No info<br/>
-                          <input class="triggerModify" id="no_linking_pages" type="checkbox" value="true" ' . ( (int) $row['no_linking_pages'] == 1 ? 'checked="checked"' : '' ) . '>No Linking pages<br/>
-                          <input class="triggerModify" id="no_comment" type="checkbox" value="true" ' . ( (int) $row['no_comment'] == 1 ? 'checked="checked"' : '' ) . '>No Comment<br/>
-                          <input class="triggerModify" id="no_toc" type="checkbox" value="true" ' . ( (int) $row['no_toc'] == 1 ? 'checked="checked"' : '' ) . '>No TOC<br/>
-                          <input class="triggerModify" id="no_similar_pages" type="checkbox" value="true" ' . ( (int) $row['no_similar_pages'] == 1 ? 'checked="checked"' : '' ) . '>No similar pages<br/>
-                          <input class="triggerModify" id="no_title" type="checkbox" value="true" ' . ( (int) $row['no_title'] == 1 ? 'checked="checked"' : '' ) . '>No title<br/>
-                          
-                          <div class="form-group">            
-                            <div class="col-sm-12">
-                             <textarea class="form-control triggerModify" id="additionalData" rows="4">' . $row['additional_data'] . '</textarea>              
-                            </div>
-                          </div>
-                        </p>
+<p>               
+  Title alternative: 
+  <input type="text" class="form-control triggerModify" id="title_alternative" value="' . $row['title_alternative'] . '">
+</p>
+
+<p>               
+  Use file: 
+  <input type="text" class="form-control triggerModify" id="use_file" value="' . $row['use_file'] . '">
+</p>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_index" value="true" ' . ( (int) $row['no_index'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_index">No index</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_editor" value="true" ' . ( (int) $row['no_editor'] == 1 ? 'checked="checked"' : '' ) . ' onchange="switchEditor();">
+  <label class="form-check-label" for="no_editor">No Editor</label>
+</div>
+
+<!-- Ripeti questo blocco per ogni checkbox -->
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="service_page" value="true" ' . ( (int) $row['service_page'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="service_page">Service page</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_search" value="true" ' . ( (int) $row['no_search'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_search">No Search</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="full_page" value="true" ' . ( (int) $row['full_page'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="full_page">Full page</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_banner" value="true" ' . ( (int) $row['no_banner'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_banner">No banner</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_info" value="true" ' . ( (int) $row['no_info'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_info">No info</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_linking_pages" value="true" ' . ( (int) $row['no_linking_pages'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_linking_pages">No Linking pages</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_comment" value="true" ' . ( (int) $row['no_comment'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_comment">No Comment</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_toc" value="true" ' . ( (int) $row['no_toc'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_toc">No TOC</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_similar_pages" value="true" ' . ( (int) $row['no_similar_pages'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_similar_pages">No similar pages</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_title" value="true" ' . ( (int) $row['no_title'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_title">No title</label>
+</div>
+
+<div class="form-group">            
+  <div class="col-sm-12">
+    <textarea class="form-control triggerModify" id="additionalData" rows="4">' . $row['additional_data'] . '</textarea>              
+  </div>
+</div>
                     </div>
         
                     <div class="tab-pane fade" id="contentNotes" role="tabpanel" aria-labelledby="contentAdvanced-tab">
@@ -864,6 +920,7 @@ function save() {
     $("#crudStatus").html("<div class=\"alert alert-info\"><strong>Updating!</strong> Page is being update.</div>");
     
     var title       =   $("#title").val();
+    var use_file    =   $("#use_file").val();
     var status      =   $("#status").val();
     var license     =   $("#license").val();
     
@@ -921,6 +978,7 @@ function save() {
                                                    status           : status,
                                                    license          : license,
                                                    title_alternative: title_alternative,
+                                                   use_file         : use_file,
                                                    language         : language,
                                                    internalRedirect: internalRedirect, 
                                                    tags             : tags, 

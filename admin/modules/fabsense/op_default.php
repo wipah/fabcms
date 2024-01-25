@@ -17,17 +17,11 @@ if (!$result = $db->query($query)){
     return;
 }
 
-if (!$db->affected_rows){
-    echo 'No hooks';
-    return;
-}
-
 $template->navBarAddItem('FabSense', 'admin.php?module=fabsense');
 $template->navBarAddItem('Homepage');
 
 echo '
 <h2>FabSense homepage</h2>
-
 <table class="table table-bordered table-sm table-hover">
     <thead class="">
       <tr>
@@ -50,7 +44,7 @@ while ($row = mysqli_fetch_array($result)){
                 <a href="admin.php?module=fabsense&op=hooks&command=edit&ID=' . $row['ID'] . '">Edit</a> -
                 <a href="admin.php?module=fabsense&op=banner&command=new&hook_ID=' . $row['ID'] . '">Create banner</a>
             </td>
-            
+
          </tr>';
 }
 

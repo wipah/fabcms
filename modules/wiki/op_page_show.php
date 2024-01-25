@@ -82,6 +82,7 @@ $query = '
 SELECT 
   ' . $db->prefix . 'wiki_pages.title,
   ' . $db->prefix . 'wiki_pages.title_alternative,
+  ' . $db->prefix . 'wiki_pages.use_file,
   ' . $db->prefix . 'wiki_pages.trackback,
   ' . $db->prefix . 'wiki_pages.short_description,
   ' . $db->prefix . 'wiki_pages.metadata_description,
@@ -545,7 +546,14 @@ if ($conf['memcache']['enabled'] === true && $fabwiki->cacheExpired === 0)
 
 if (empty($content)) {
     $debug->write('info','Content was not on memacache', 'wiki');
-    $content = $fabwiki->parseContent($row['content']);
+
+    if (!empty($row['use_file']) && file_exists(__DIR__ . '/pagefiles/' . $row['use_file'])) {
+        ob_start();
+        require_once (__DIR__ . '/pagefiles/' . $row['use_file']);
+        $content =  $fabwiki->parseContent(ob_get_clean());
+    } else {
+        $content = $fabwiki->parseContent($row['content']);
+    }
 
     if ($conf['memcache']['enabled'] === true) {
         $memcache->set('wikiPage-' . $trackback, $content, 604800);
@@ -643,6 +651,7 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
     $parserFile = __DIR__ . '/parser/' . str_replace('.', '', $row['parser']) . '.php';
     require_once $parserFile;
 } else {
+
     echo '
 <style>
     .FabCMS-imageContainer {
