@@ -28,19 +28,19 @@ if (!isset($path[2])) {
 }
 
 // Check if a malformed uri has been passed
-$lastPath = strtolower($path[ count($path) - 1]);
+$lastPath = strtolower($path[count($path) - 1]);
 
 if ($lastPath == 'www.google.it' || $lastPath == 'index.html' || $lastPath == 'index.htm') {
-    header('Location:' . $URI->getBaseUri() . $this->routed . '/' . $path[2] . '/' );
+    header('Location:' . $URI->getBaseUri() . $this->routed . '/' . $path[2] . '/');
     return;
 }
 
 // check if final slash has been passed
-if ($charPos = strpos($_SERVER['REQUEST_URI'], '?')){
-    $char = substr($_SERVER['REQUEST_URI'], $charPos -1, 1);
+if ($charPos = strpos($_SERVER['REQUEST_URI'], '?')) {
+    $char = substr($_SERVER['REQUEST_URI'], $charPos - 1, 1);
 
-    if ($char !== '/'){
-        $lastPath = substr($lastPath, 0, strpos($lastPath,'?'));
+    if ($char !== '/') {
+        $lastPath = substr($lastPath, 0, strpos($lastPath, '?'));
         $queryString = substr($_SERVER['REQUEST_URI'], $charPos);
 
         header('Location:' . $URI->getBaseUri() . $this->routed . '/' . $lastPath . '/' . $queryString);
@@ -49,7 +49,7 @@ if ($charPos = strpos($_SERVER['REQUEST_URI'], '?')){
 } else {
     $lastChar = (substr($_SERVER['REQUEST_URI'], -1));
 
-    if ($lastChar !== '/'){
+    if ($lastChar !== '/') {
         header('Location:' . $URI->getBaseUri() . $this->routed . '/' . $path[2] . '/');
         return;
     }
@@ -57,8 +57,7 @@ if ($charPos = strpos($_SERVER['REQUEST_URI'], '?')){
 
 echo '<style>' . $fabwiki->config['customCSS'] . '</style>';
 
-
-if ( (int) $core->getConfig( 'core', 'recaptchaEnabled') === 1) {
+if ((int)$core->getConfig('core', 'recaptchaEnabled') === 1) {
     /*
     $this->scripts .= '<script>
                         $( document ).ready(function() {
@@ -144,10 +143,10 @@ FROM
 
 if (!$result = $db->query($query)) {
 
-    $relog->write(['type'      => '4',
-                   'module'    => 'WIKI',
-                   'operation' => 'wiki_page_show_query_error',
-                   'details'   => 'Cannot select the page. Query error. ' . $query,
+    $relog->write(['type' => '4',
+        'module' => 'WIKI',
+        'operation' => 'wiki_page_show_query_error',
+        'details' => 'Cannot select the page. Query error. ' . $query,
     ]);
 
     echo 'Query error! <pre>' . $query . '</pre>';
@@ -157,10 +156,10 @@ if (!$result = $db->query($query)) {
 // Fire a 404 error
 if (!$db->affected_rows) {
 
-    $relog->write(['type'      => '2',
-        'module'    => 'WIKI',
+    $relog->write(['type' => '2',
+        'module' => 'WIKI',
         'operation' => 'wiki_page_not_found',
-        'details'   => 'Page not found. ' . $query,
+        'details' => 'Page not found. ' . $query,
     ]);
 
     header("HTTP/1.0 404 Not Found");
@@ -175,20 +174,20 @@ if (!$db->affected_rows) {
 $row = mysqli_fetch_assoc($result);
 
 
-$fabwiki->publishedID[]         =   $row['ID'];
-$fabwiki->creationDate          =   $row['creation_date'];
-$fabwiki->updateDate            =   $row['last_update'];
-$fabwiki->authorUsername        =   $row['username'];
-$fabwiki->authorSignature       =   $row['article_signature'];
-$fabwiki->metaDataDescription   =   $row['metadata_description'];
-$fabwiki->title                 =   $row['title'] . ( !empty($row['title_alternative']) ? ' - ' . $row['title_alternative'] : '');
-$fabwiki->trackback             =   $row['trackback'];
-$fabwiki->cacheExpired         =   (int) $row['cache_expired'];
+$fabwiki->publishedID[] = $row['ID'];
+$fabwiki->creationDate = $row['creation_date'];
+$fabwiki->updateDate = $row['last_update'];
+$fabwiki->authorUsername = $row['username'];
+$fabwiki->authorSignature = $row['article_signature'];
+$fabwiki->metaDataDescription = $row['metadata_description'];
+$fabwiki->title = $row['title'] . (!empty($row['title_alternative']) ? ' - ' . $row['title_alternative'] : '');
+$fabwiki->trackback = $row['trackback'];
+$fabwiki->cacheExpired = (int)$row['cache_expired'];
 
 /* Check if a $_GET directive of "renderType" has been passed */
 if (isset($_GET['renderType'])) {
     $fabwiki->parserNoLink = true;
-    $fabwiki->renderType = (int) $_GET['renderType'];
+    $fabwiki->renderType = (int)$_GET['renderType'];
 }
 
 /* Open graph tags */
@@ -201,10 +200,10 @@ $this->addMeta('og:article:modified_time', $row['last_update']);
 $this->addMeta('og:article:tag', $row['tag']);
 
 if (!empty(
-    $row['featured_video_ID'])) {
+$row['featured_video_ID'])) {
     $this->addMeta('og:video', $row['featured_video_ID']);
 
-$contentFeaturedVideo = '<div class="container mt-4">
+    $contentFeaturedVideo = '<div class="container mt-4">
         <div class="row">
             <div class="col-md-12">
                 <div class="video-card">
@@ -218,7 +217,7 @@ $contentFeaturedVideo = '<div class="container mt-4">
                         </div>
                         <div class="col-12 col-lg-4 info-section" id="infoColumn">
                             <h3>' . $row['featured_video_title'] . '</h3>
-                            <p>'. $row['featured_video_description'] . '</p>
+                            <p>' . $row['featured_video_description'] . '</p>
                         </div>
                     </div>
                 </div>
@@ -235,11 +234,11 @@ $contentFeaturedVideo = '<div class="container mt-4">
 */
 if (isset($row['article_image_filename'])) {
 
-    $imagePath =  $row['article_image_filename'];
+    $imagePath = $row['article_image_filename'];
     $extension = $row['article_image_extension'];
     $pos = strrpos($imagePath, '.' . $extension);
 
-    $imageFinalMQPath_destination = $URI->getBaseUri(true) . 'fabmedia/' . $row['article_image_user_ID'] . '/' .substr_replace($imagePath, '_mq.' . $extension, $pos, strlen('.' . $extension));
+    $imageFinalMQPath_destination = $URI->getBaseUri(true) . 'fabmedia/' . $row['article_image_user_ID'] . '/' . substr_replace($imagePath, '_mq.' . $extension, $pos, strlen('.' . $extension));
 
     if ($conf['uri']['useHTTPS']) {
         $this->addMeta('og:image', $imageFinalMQPath_destination);
@@ -260,14 +259,14 @@ if (isset($row['article_image_filename'])) {
  * * Check if the page is fullpage *
  * **********************************
 */
-$fabwiki->fullPage = (int) $row['full_page'] === 1;
+$fabwiki->fullPage = (int)$row['full_page'] === 1;
 
 /*
  * **********************************
  * * Check if the page is indexable *
  * **********************************
 */
-if ( (int) $row['noindex'] === 1) {
+if ((int)$row['noindex'] === 1) {
     $this->addMetaData('robots', 'noindex');
 }
 
@@ -277,7 +276,7 @@ if ( (int) $row['noindex'] === 1) {
  * ***************************************
 */
 
-if ( (int) $row['service_page'] === 1) {
+if ((int)$row['service_page'] === 1) {
     $this->addMetaData('robots', 'noindex');
 
     echo '<h2>' . $conf['site']['name'] . '</h2>' . $language->get('wiki', 'showPageServicePage');
@@ -295,7 +294,7 @@ if (!$user->isAdmin && !$fabwiki->isBetweenDate($row['visible_from_date'], $row[
     return;
 }
 
-if ( (int) $row['visible'] !== 1 && !$user->isAdmin) {
+if ((int)$row['visible'] !== 1 && !$user->isAdmin) {
     echo $language->get('wiki', 'showPageContentIsNotAvaliable');
     return;
 }
@@ -336,7 +335,7 @@ $keywords_array = $fabwiki->getKeywordsFromPageID($page_ID);
 
 if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
 
-    if ($conf['memcache']['enabled']  === true && $fabwiki->cacheExpired === 0)
+    if ($conf['memcache']['enabled'] === true && $fabwiki->cacheExpired === 0)
         $similarPages = $memcache->get('wikiPageSimilarPages-' . $page_ID);
 
     if (empty($similarPages)) {
@@ -359,7 +358,7 @@ if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
             AND P.language = \'' . $core->shortCodeLang . '\' 
             AND (';
 
-        foreach ($keywords_array AS $singleKeyword) {
+        foreach ($keywords_array as $singleKeyword) {
             $query .= 'K.keyword = \'' . $core->in($singleKeyword) . '\' OR ';
         }
         $query = substr($query, 0, -3) . ')';
@@ -368,10 +367,10 @@ if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
 
         if (!$resultSimilarPages = $db->query($query)) {
 
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
                 'operation' => 'wiki_page_similar_contents_error',
-                'details'   => 'Cannot select the similar pages. Query error. ' . "\r\n" . $db->lastError . "\r\n" .$query,
+                'details' => 'Cannot select the similar pages. Query error. ' . "\r\n" . $db->lastError . "\r\n" . $query,
             ]);
 
             $similarPages = 'Query error.';
@@ -384,19 +383,19 @@ if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
             } else {
                 while ($rowSimilar = mysqli_fetch_assoc($resultSimilarPages)) {
                     $trackback = $URI->getBaseUri() . $this->routed . '/' . $rowSimilar['trackback'] . '/';
-                    $similarPages .= '<a href="' . $trackback . '">' .  $rowSimilar['title']  . '</a><br/>';
+                    $similarPages .= '<a href="' . $trackback . '">' . $rowSimilar['title'] . '</a><br/>';
                 }
             }
         }
 
-        if ($conf['memcache']['enabled']  === true && $fabwiki->cacheExpired === 0)
+        if ($conf['memcache']['enabled'] === true && $fabwiki->cacheExpired === 0)
             $memcache->set('wikiPageSimilarPages-' . $page_ID, $similarPages, 604800);
     }
 }
 
 
 // $template->navBarAddItem([(isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki')], $URI->getBaseUri() . $this->routed);
-$template->navBarAddItem( (isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki'), $URI->getBaseUri() . $this->routed . '/');
+$template->navBarAddItem((isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki'), $URI->getBaseUri() . $this->routed . '/');
 
 isset ($fabwiki->config['nameSpaceSeparator']) ? $nameSpaceSeparator = $fabwiki->config['nameSpaceSeparator'] : $nameSpaceSeparator = ':';
 
@@ -416,7 +415,7 @@ if ($numNavBarPieces > 1) {
     foreach ($navBarPieces as $singlePiece) {
         if ($i !== $numNavBarPieces) {
             $past .= $core->getTrackback($singlePiece) . ':main-page/';
-            $template->navBarAddItem($singlePiece, $URI->getBaseUri() . $this->routed . '/' . $past );
+            $template->navBarAddItem($singlePiece, $URI->getBaseUri() . $this->routed . '/' . $past);
         } else {
             $past .= $core->getTrackback($singlePiece) . '/';
             $template->navBarAddItem($singlePiece);
@@ -424,78 +423,44 @@ if ($numNavBarPieces > 1) {
         $i++;
     }
 } else {
-    $template->navBarAddItem( $row['title'] . (!empty($row['title_alternative']) ? ' - ' . $row['title_alternative'] : ''));
+    $template->navBarAddItem($row['title'] . (!empty($row['title_alternative']) ? ' - ' . $row['title_alternative'] : ''));
 }
 
 
-    if ( (int) $row['no_info'] !== 1) {
+$fabwiki->creationDate = $row['creation_date'];
+$fabwiki->updateDate = $row['last_update'];
 
-        switch ( (int) $fabwiki->config['authorAttribution']) {
+// If author attribution is set then post the OpenGraph tag to the header
+if ((int)$fabwiki->config['authorAttribution'] > 1)
+    $this->addMeta('og:author', $row['article_signature']);
 
-            case '1':
-                $fabwiki->authorUsername = $language->get('wiki', 'pageShowInternalAuthor', null);
-                break;
-            case '2':
-                $fabwiki->authorUsername = $row['article_signature'];
-                $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/null.jpg';
-                $authorName =  '<span itemprop="author">' . $row['article_signature'] . '</span>';
-                break;
-            case '3':
-                $fabwiki->authorUsername = $row['article_signature'];
+if ($conf['multilang'] === true) {
+    $internalPages = $fabwiki->getTranslatedPage($master_ID);
 
-                // Check if photo exists
-                $hash = md5($row['creation_user_ID'] . $conf['security']['siteKey']);
-                $filePath = $conf['path']['baseDir'] . 'cache/users/profile/' . $hash . '.jpeg';
-                if (file_exists($filePath))
-                    $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/' . $hash . '.jpeg';
+    if ($internalPages) {
+        $internalPagesBody = '';
 
-                $filePath = $conf['path']['baseDir'] . 'cache/users/profile/' . $hash . '.jpg';
-                if (file_exists($filePath))
-                    $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/' . $hash . '.jpg';
+        foreach ($internalPages as $singlePage) {
+            $tempPage = explode('|||', $singlePage);
+            if (count($internalPages) > 1) {
+                $this->head .= '<link rel="alternate" hreflang="' . $tempPage[0] . '" href="' . $URI->getBaseUri(true) . $tempPage[0] . '/' . $this->routed . '/' . $tempPage[1] . '/" />' . PHP_EOL;
 
-                $filePath = $conf['path']['baseDir'] . 'cache/users/profile/' . $hash . '.png';
-                if (file_exists($filePath))
-                    $authorImage = $URI->getBaseUri(true) . 'cache/users/profile/' . $hash . '.png';
-
-                $authorName =  '<spanit emprop="author">' . $row['article_signature'] . '</span>';
-                break;
-        }
-    }
-
-    $fabwiki->creationDate =  $row['creation_date'];
-    $fabwiki->updateDate   =  $row['last_update'];
-
-    // If author attribution is set then post the OpenGraph tag to the header
-    if ((int) $fabwiki->config['authorAttribution'] > 1)
-        $this->addMeta('og:author', $row['article_signature']);
-
-    if ($conf['multilang'] === true) {
-        $internalPages = $fabwiki->getTranslatedPage($master_ID);
-
-        if ($internalPages) {
-            $internalPagesBody = '';
-
-            foreach ($internalPages as $singlePage) {
-                $tempPage = explode('|||', $singlePage);
-                if (count($internalPages) > 1) {
-                    $this->head .= '<link rel="alternate" hreflang="' . $tempPage[0] . '" href="' . $URI->getBaseUri(true) . $tempPage[0] . '/' . $this->routed . '/' . $tempPage[1] . '/" />' . PHP_EOL;
-
-                    if ($tempPage[0] != $core->shortCodeLang)
-                        $internalPagesBody .= '<a href="' . $URI->getBaseUri(true) . $tempPage[0] . '/' . $this->routed . '/' . $tempPage[1] . '/">' . $tempPage[2] . '</a><br/>';
-                }
-
+                if ($tempPage[0] != $core->shortCodeLang)
+                    $internalPagesBody .= '<a href="' . $URI->getBaseUri(true) . $tempPage[0] . '/' . $this->routed . '/' . $tempPage[1] . '/">' . $tempPage[2] . '</a><br/>';
             }
 
-            if (!empty($internalPagesBody))
-                $template->sidebar .= $template->simpleBlock('In other language', $internalPagesBody);
         }
 
+        if (!empty($internalPagesBody))
+            $template->sidebar .= $template->simpleBlock('In other language', $internalPagesBody);
     }
 
+}
 
-    $this->addMetaData('description', $row['metadata_description']);
 
-    $core->jsVar['fabcms_isFullPage'] = 0;
+$this->addMetaData('description', $row['metadata_description']);
+
+$core->jsVar['fabcms_isFullPage'] = 0;
 
 if (!empty($row['title_alternative']))
     $title_alternative = ' - ' . $row['title_alternative'];
@@ -545,13 +510,15 @@ if ($conf['memcache']['enabled'] === true && $fabwiki->cacheExpired === 0)
     $content = $memcache->get('wikiPage-' . $trackback);
 
 if (empty($content)) {
-    $debug->write('info','Content was not on memacache', 'wiki');
+    $debug->write('info', 'Content was not on memacache', 'wiki');
 
     if (!empty($row['use_file']) && file_exists(__DIR__ . '/pagefiles/' . $row['use_file'])) {
+        $debug->write('info', 'Content was taken directly from the file', 'wiki');
         ob_start();
-        require_once (__DIR__ . '/pagefiles/' . $row['use_file']);
-        $content =  $fabwiki->parseContent(ob_get_clean());
+        require_once(__DIR__ . '/pagefiles/' . $row['use_file']);
+        $content = $fabwiki->parseContent(ob_get_clean());
     } else {
+        $debug->write('info', 'Content was taken from database', 'wiki');
         $content = $fabwiki->parseContent($row['content']);
     }
 
@@ -559,20 +526,20 @@ if (empty($content)) {
         $memcache->set('wikiPage-' . $trackback, $content, 604800);
     }
 } else {
-    $debug->write('info','Content was taken from memacache', 'wiki');
+    $debug->write('info', 'Content was taken from memacache', 'wiki');
 }
 
-if (isset($_GET['printable'])){
+if (isset($_GET['printable'])) {
     $currentUrl = $URI->getBaseUri() . 'wiki/' . $trackback . '/';
-    echo '<p> ' . sprintf($language->get('wiki','pageShowPrintableHeader'), date('m-d-Y'), $currentUrl, $currentUrl) . '</p>';
+    echo '<p> ' . sprintf($language->get('wiki', 'pageShowPrintableHeader'), date('m-d-Y'), $currentUrl, $currentUrl) . '</p>';
 }
 
 // Check if the page has no banner
-if ( (int) $row['no_banner'] != 1 && !isset($_GET['printable']) && !$user->isBot)
+if ((int)$row['no_banner'] != 1 && !isset($_GET['printable']) && !$user->isBot)
     $content = $fabwiki->parseBanner($content);
 
 // Check if FabCMS should build a TOC
-if ((int)$fabwiki->config['useToc'] === 1 && (int) $row['no_toc'] === 0)
+if ((int)$fabwiki->config['useToc'] === 1 && (int)$row['no_toc'] === 0)
     $content = $fabwiki->parseToc($content);
 
 // Check if a featured_video_exists
@@ -605,7 +572,7 @@ if (strlen($row['featured_video_code']) > 1) {
 
 }
 
-if ((int) $row['no_title'] !== 1 )
+if ((int)$row['no_title'] !== 1)
     $template->pageTitle = $row['title'];
 
 if (isset($_GET['printable'])) {
@@ -636,7 +603,7 @@ if (isset($_GET['printable'])) {
         
         ' . $content . '
         <p>
-            <em>Copyright ' . date('Y')  . ' - ' . $conf['organization'] .'</em>
+            <em>Copyright ' . date('Y') . ' - ' . $conf['organization'] . '</em>
         </p>
         <!--FabCMS-hook:wikiInsideArticleBottom-tag-' . $tags_array[0] . '-->
         <!--FabCMS-hook:wikiInsideArticleBottom-->
@@ -647,24 +614,24 @@ if (isset($_GET['printable'])) {
     return;
 } else {
 
-if ( isset($row['parser']) && strlen($row['parser']) > 1){
-    $parserFile = __DIR__ . '/parser/' . str_replace('.', '', $row['parser']) . '.php';
-    require_once $parserFile;
-} else {
+    if (isset($row['parser']) && strlen($row['parser']) > 1) {
+        $parserFile = __DIR__ . '/parser/' . str_replace('.', '', $row['parser']) . '.php';
+        require_once $parserFile;
+    } else {
 
-    echo '
-<style>
-    .FabCMS-imageContainer {
-        padding:12px;
-        background-color: #EFEFEF;
-        margin: 0 auto;
-        text-align: -webkit-center;
-    }
-    
-    .hopt-url {
-         display: none;
-    }
-</style>
+        echo '
+                <style>
+                    .FabCMS-imageContainer {
+                        padding:12px;
+                        background-color: #EFEFEF;
+                        margin: 0 auto;
+                        text-align: -webkit-center;
+                    }
+                    
+                    .hopt-url {
+                         display: none;
+                    }
+                </style>
 
 <!--FabCMS-hook:wikiBeforeArticle-tag-' . $tags_array[0] . '-->
 <!--FabCMS-hook:wikiBeforeArticle-->
@@ -674,46 +641,69 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
     <article>
         <div class="row">';
 
-        if ( (int) $row['no_info'] !== 1 ) {
 
+        if ( $row['no_info'] != 1) {
             $datetime_str = $row['last_update'];
             $timestamp = strtotime($datetime_str);
             $date_formatted = date('m-d-Y', $timestamp);
 
             echo '<div class="article-card">
-        <div class="article-content">
-            '. ( (int) $row['no_title'] === 1 ? '' : '<h1 class="">' . $titleTag . '</h1>' ) . '
-            <div class="article-description">
-                <p>' .  $row['short_description']. ' </p>
-            </div>
-        </div>
-        <div class="article-meta">
-            <img src="' . $authorImage . '" alt="Nome Autore">
-            <h3>' . $authorName . '</h3>
-            <p>Revisionato il: ' . $date_formatted . '</p>
-        </div>
-    </div>';
+                    <div class="article-content">
+                        ' . ((int)$row['no_title'] === 1 ? '' : '<h1>' . $titleTag . '</h1>') . '
+                        <div class="article-description">
+                            <p>' . $row['short_description'] . ' </p>
+                        </div>
+                    </div>
+                    <div class="article-meta">
+                        <img src="' . $authorImage . '" alt="Nome Autore">
+                        <h3>' . $authorName . '</h3>
+                        <p>Revisionato il: ' . $date_formatted . '</p>
+                    </div>
+                 </div>';
         }
 
-        echo '
-            
-        </div>
+        echo '</div>
         
         <script > 
             function toggleAuthorBox() {
                  $("#wikiAuthorBox").toggle();
             }
         </script>
+        <div class="wikiArticle">
         <!--FabCMS-hook:wikiInsideArticleTop-tag-' . $tags_array[0] . '-->
         <!--FabCMS-hook:wikiInsideArticleTop-->
         ' . $contentFeaturedVideo . '
         ' . $content . '
         <!--FabCMS-hook:wikiInsideArticleBottom-tag-' . $tags_array[0] . '-->
         <!--FabCMS-hook:wikiInsideArticleBottom-->
+        </div>
     </article>
     </div>';
 
-        if ($fabwiki->fullPage === false ) {
+
+        $keywords = $fabwiki->getSeoKeywords($page_ID);
+        require_once ($conf['path']['baseDir'] . 'lib/seo/class_seo.php');
+        $seo = new SeoScoreCalculator($content, $keywords);
+        $resultSeo = $seo->calculateScore();
+
+        $seoBlock = '<div class=""><h2>SEO</h2>';
+        foreach ($resultSeo as $keyword  => $scoreInfo) {
+            $seoBlock .= "Keyword: " . $keyword . "<br/>";
+            $seoBlock .= "Total Score: " . $scoreInfo['totalScore'] . "<br/>";
+            $seoBlock .= "Details:<br/>";
+
+            // Itera sull'array dei dettagli per mostrare i punteggi individuali e le penalizzazioni
+            foreach ($scoreInfo['details'] as $metric => $value) {
+                $seoBlock .= "  " . ucfirst($metric) . ": " . $value . "<br/>";
+            }
+
+            $seoBlock .= "<br/>"; // Aggiunge una riga vuota per separare i risultati delle diverse keyword
+        }
+        $seoBlock .= '</div>';
+
+
+
+        if ($fabwiki->fullPage === false) {
             echo '
             <div id="wikiSidebar" class="col-md-3 wikiSidebar sidebar">
               <!--FabCMS-hook:wikiSideBarFirstSpot-->
@@ -737,9 +727,15 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
                 <p>
                     ' . $similarPages . '
                 </p>
-            </div>
-          
-           
+            </div>';
+
+            if ($user->isAdmin) {
+                echo '<div class="sidebar-block">
+                        ' . $seoBlock . '
+                     </div>';
+            }
+
+          echo '
           <!--FabCMS-hook:wikiSideBarLastSpot-tag-' . $tags_array[0] . '-->
           <!--FabCMS-hook:wikiSideBarLastSpot-->
     </div>';
@@ -747,23 +743,21 @@ if ( isset($row['parser']) && strlen($row['parser']) > 1){
 
         echo '
                 </div>
-' . ( (int) $fabwiki->config['showPageLicense'] === 1
-            ? '<div class="fabCms-Wiki-CopyrightNotice"><i class="far fa-copyright"></i> &nbsp;' .
-            sprintf($language->get('wiki','showPageCopyrightNotice' ),
-                $URI->getBaseUri() . 'licenses/show/' . $row['license_ID'] . '/',
-                $row['license_name'] )
-            . '</div>'
-            : '' ) . '
+' . ((int)$fabwiki->config['showPageLicense'] === 1
+                ? '<div class="fabCms-Wiki-CopyrightNotice"><i class="far fa-copyright"></i> &nbsp;' .
+                sprintf($language->get('wiki', 'showPageCopyrightNotice'),
+                    $URI->getBaseUri() . 'licenses/show/' . $row['license_ID'] . '/',
+                    $row['license_name'])
+                . '</div>'
+                : '') . '
 <!--FabCMS-hook:wikiSideBarAfterArticle-->
 <!--FabCMS-hook:wikiSideBarAfterArticle-tag-' . $tags_array[0] . '-->';
 
+    }
 }
 
 
-}
-
-
-if ( (int) $row['no_comment'] !== 1) {
+if ((int)$row['no_comment'] !== 1) {
     // Get all the comments for the page
 
     $query = '
@@ -780,10 +774,10 @@ WHERE C.page_ID = ' . $page_ID . '
 
     if (!$result = $db->query($query)) {
 
-        $relog->write(['type'      => '4',
-                       'module'    => 'WIKI',
-                       'operation' => 'wiki_page_show_select_comments_error',
-                       'details'   => 'Cannot show comments. Query error. ' . $query,
+        $relog->write(['type' => '4',
+            'module' => 'WIKI',
+            'operation' => 'wiki_page_show_select_comments_error',
+            'details' => 'Cannot show comments. Query error. ' . $query,
         ]);
 
         $comments = 'Query error while selecting comments';
@@ -975,7 +969,7 @@ if (file_exists($conf['path']['baseDir'] . 'templates/logo.jpeg')) {
     $logoBrand = $URI->getBaseUri(true) . 'templates/logo.jpeg';
 }
 
-echo PHP_EOL .'<script type="application/ld+json">
+echo PHP_EOL . '<script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type"           :   "Article",
@@ -1001,7 +995,7 @@ echo PHP_EOL .'<script type="application/ld+json">
 if ($fabwiki->cacheExpired === 1) {
     $query = 'UPDATE ' . $db->prefix . 'wiki_pages 
               SET cache_expiration = DATE_ADD( NOW(), INTERVAL 7 DAY)
-              WHERE ID = ' . $page_ID .' 
+              WHERE ID = ' . $page_ID . ' 
               LIMIT 1 ';
 
     $db->query($query);

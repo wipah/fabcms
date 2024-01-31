@@ -805,9 +805,6 @@ class wiki
             }
 
         }
-
-
-
         return $content;
     }
 
@@ -1361,6 +1358,22 @@ class wiki
         // echo 'Done updating. Result rowset is  ' . $db->affected_rows. PHP_EOL;
     }
 
+    public function getSeoKeywords( int $page_ID) :array
+    {
+        global $db;
+
+        $query = 'SELECT * 
+                  FROM ' . $db->prefix . 'wiki_pages_seo 
+                  WHERE page_ID = ' . $page_ID;
+
+        $resultSeo = $db->query($query);
+        $keywords = [];
+        while ($rowSeo = mysqli_fetch_assoc($resultSeo)) {
+            $keywords[] = $rowSeo['keyword'];
+        }
+
+        return $keywords;
+    }
     public function computeSeo($page_ID, $keyword)
     {
         global $db;
