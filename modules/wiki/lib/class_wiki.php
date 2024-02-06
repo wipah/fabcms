@@ -1270,12 +1270,6 @@ class wiki
                 return;
             }
 
-            $result = '';
-            // Itera sull'array dei dettagli per mostrare i punteggi individuali e le penalizzazioni
-            foreach ($scoreInfo['details'] as $metric => $value) {
-                $result .= "  " . ucfirst($metric) . ": " . $value . "<br/>";
-            }
-
             $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . $scoreInfo['totalScore'] .',' .  $scoreInfo['potentialScore'] . ', \'' .  json_encode($scoreInfo['details']) . '\' ,' .$i . '), ';
             $i++;
         }

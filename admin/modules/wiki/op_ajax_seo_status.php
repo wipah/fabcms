@@ -33,18 +33,21 @@ if (!$db->affected_rows) {
 
 while ($row = mysqli_fetch_assoc($result)) {
 
+    $data = json_decode($row['results'], true);
 
-    $row['results'] = preg_replace('/\-\-(.*)?\r/im', '<div style="border-left: 4px solid #f52039;background-color: #fabbbb; padding: 8px;">$1</div>', $row['results']);
-    $row['results'] = preg_replace('/\=\=(.*)?\r/im', '<div style="border-left: 4px solid #ec9414; background-color: #f5c781; padding: 8px;">$1</div>', $row['results']);
-    $row['results'] = preg_replace('/\+\+(.*)?\r/im', '<div style="border-left: 4px solid #0AA; background-color: #6cff7e; padding: 8px;">$1</div>', $row['results']);
-
+    $div = '';
+    foreach ($data as $single => $value){
+        $div .= '<strong>' . $single . '</strong> - ' . $value . ' <br/>';
+    }
     echo '
        <div class="row">
-        <div class="col-md-9" style="border-bottom: 1px solid gray; font-size: x-large">' . $row['keyword'] . '</div>
-        <div class="col-md-3" style="border-bottom: 1px solid gray; background-color: #444; padding: 12px!important; color:white"><strong>Score: ' . $row['score'] . '</strong></div>
+            <div class="col-md-9" style="font-size: x-large">' . $row['keyword'] . '</div>
+            <div class="col-md-3" style="font-size: xx-large; border-bottom: 1px solid gray; background-color: #444; padding: 8px !important;  color:white">
+                <strong>' . $row['score'] . '</strong>
+           </div>
        </div>
         
-       <div style="margin-top: 24px;">
-       '. $row['results'] . '
+       <div style="margin-top: 24px; border-bottom: 1px solid gray; ">
+       '. $div. '
        </div>';
 }
