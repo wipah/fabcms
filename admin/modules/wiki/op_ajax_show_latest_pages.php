@@ -108,43 +108,46 @@ if (isset($_POST['lastUpdateFrom']) && strlen($_POST['lastUpdateFrom']) > 1) {
 }
 
 $query = '
-SELECT M.ID AS master_ID,
-       P.ID, 
-       P.title, 
-       P.title_alternative, 
-       P.visible,
-       P.creation_date,
-       P.last_update,
-       P.seo_score,
-       P.metadata_description,
-       C.name AS category_name,
-       C.lang AS category_lang,
-       S.status,
-       ST.words, 
-       T.tag,
-       P.trackback,
-       P.language,
-       SUM(DAILY.hits) AS hits,
-       GROUP_CONCAT(DISTINCT T.tag SEPARATOR \', \') AS tag,
-       GROUP_CONCAT(DISTINCT K.keyword SEPARATOR \', \') AS keywords
-FROM ' . $db->prefix . 'wiki_pages AS P
-LEFT JOIN ' . $db->prefix . 'wiki_masters AS M
-    ON P.master_ID = M.ID
-LEFT JOIN ' . $db->prefix . 'wiki_categories_details AS C
-    ON P.category_ID = C.ID
-LEFT JOIN ' . $db->prefix . 'wiki_pages_status AS S
-    ON P.status_ID = S.ID
-LEFT JOIN ' . $db->prefix . 'wiki_pages_tags AS T
-    ON T.page_ID = P.ID
-LEFT JOIN ' . $db->prefix . 'wiki_pages_keywords AS K
-    ON K.page_ID = P.ID
-LEFT JOIN ' . $db->prefix . 'stats_daily AS DAILY
-    ON P.ID = DAILY.IDX
-    AND DAILY.module = \'wiki\'
-    AND DAILY.submodule = \'pageView\' 
-    AND DAILY.date >= DATE_SUB( NOW(), INTERVAL 1 WEEK)
-LEFT JOIN ' . $db->prefix . 'wiki_pages_statistics AS ST
-    ON ST.page_ID = P.ID
+SELECT
+    M.ID AS master_ID,
+    P.ID,
+    P.title,
+    P.title_alternative,
+    P.visible,
+    P.creation_date,
+    P.last_update,
+    P.seo_score,
+    P.metadata_description,
+    C.name AS category_name,
+    C.lang AS category_lang,
+    S.status,
+    ST.words,
+    P.trackback,
+    P.language,
+    SUM(DAILY.hits) AS hits,
+    GROUP_CONCAT(DISTINCT T.tag ORDER BY T.tag SEPARATOR \', \') AS tag,
+    GROUP_CONCAT(DISTINCT K.keyword ORDER BY K.keyword SEPARATOR \', \') AS keywords
+FROM
+    fabcms_wiki_pages AS P
+LEFT JOIN
+    fabcms_wiki_masters AS M ON P.master_ID = M.ID
+LEFT JOIN
+    fabcms_wiki_categories_details AS C ON P.category_ID = C.ID
+LEFT JOIN
+    fabcms_wiki_pages_status AS S ON P.status_ID = S.ID
+LEFT JOIN
+    fabcms_wiki_pages_tags AS T ON T.page_ID = P.ID
+LEFT JOIN
+    fabcms_wiki_pages_keywords AS K ON K.page_ID = P.ID
+LEFT JOIN
+    (SELECT IDX, SUM(hits) AS hits
+     FROM fabcms_stats_daily
+     WHERE module = \'wiki\'
+       AND submodule = \'pageView\'
+       AND date >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
+     GROUP BY IDX) AS DAILY ON P.ID = DAILY.IDX
+LEFT JOIN
+    fabcms_wiki_pages_statistics AS ST ON ST.page_ID = P.ID
 '. ($where === true ? ' WHERE ' : ' ' ) .
 $titleFilter .
 $tagFilter .
@@ -156,7 +159,6 @@ $categoryFilter .
 $statusFilter . ' 
 GROUP BY P.ID 
 ORDER BY P.ID DESC';
-
 
 if (!$result = $db->query($query)) {
     echo 'Query error. ' . $query;

@@ -1265,12 +1265,14 @@ class wiki
         $resultSeo = $seo->calculateScore();
 
         $i = 0;
+
         foreach (json_decode($resultSeo, true) as $keyword  => $scoreInfo) {
             if (!is_array($scoreInfo)) {
-                return;
+                $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . 0 .',' .  0 . ', \'' .  json_encode(['message' => 'Keyword not provided']) . '\' ,' .$i . '), ';
+            } else {
+                $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . $scoreInfo['totalScore'] .',' .  $scoreInfo['potentialScore'] . ', \'' .  json_encode($scoreInfo['details']) . '\' ,' .$i . '), ';
             }
 
-            $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . $scoreInfo['totalScore'] .',' .  $scoreInfo['potentialScore'] . ', \'' .  json_encode($scoreInfo['details']) . '\' ,' .$i . '), ';
             $i++;
         }
 

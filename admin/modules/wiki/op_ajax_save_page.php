@@ -11,6 +11,7 @@ if (!$core->adminBootCheck())
 $this->noTemplateParse = true;
 
 require_once($conf['path']['baseDir'] . '/modules/wiki/lib/class_wiki.php');
+require_once ($conf['path']['baseDir'] . 'lib/seo/class_seo.php');
 $fabwiki = new wiki();
 
 if (!isset($_POST['crudType'])) {
@@ -25,7 +26,7 @@ if (!isset($_POST['title'])) {
     return;
 }
 
-require_once ($conf['path']['baseDir'] . 'lib/seo/class_seo.php');
+
 
 $title              =   $core->in($_POST['title'], true);
 $title_alternative  =   $core->in($_POST['title_alternative'], true);

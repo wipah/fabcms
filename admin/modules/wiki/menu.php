@@ -19,6 +19,8 @@ $out .= '
               <a class="dropdown-item" href="admin.php?module=wiki&op=checkout">Checkout</a>
               <a class="dropdown-item" href="admin.php?module=wiki&op=planner">Planner</a>
               <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="admin.php?module=wiki&op=maintenance">Manutenzione</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="admin.php?module=wiki&op=config">Config</a>
             </div>
         </li>';
