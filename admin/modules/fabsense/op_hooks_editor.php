@@ -231,7 +231,11 @@ if ($_GET['command'] === 'edit') {
         <td>' . $row['probability_progression_end'] . '</td>
         <td>' . $row['probability'] . '</td>
         <td>' . $row['hits'] . '</td>
-        <td><a href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $row['ID'] . '">Edit</a> - Delete</td>
+        <td>
+            <a href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $row['ID'] . '">Edit</a> |
+            <a href="admin.php?module=fabsense&op=banner&command=delete&ID=' . $row['ID'] . '">Delete</a>
+        
+        </td>
       </tr>';
     }
 

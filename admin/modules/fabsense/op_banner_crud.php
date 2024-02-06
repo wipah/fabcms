@@ -127,13 +127,37 @@ if ($_GET['command'] === 'edit') {
                       <div class="card-body">
                         <h5 class="card-title">The banner was created</h5>
                         <p class="card-text">The banner was succesefully created.</p>
-                        <a class="btn btn-primary" href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $db->insert_id . '">Edit the banner</a></div>
+                        <a class="btn btn-primary" href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $db->insert_id . '">Edit the banner</a>
                         <a class="btn btn-primary" href="admin.php?module=fabsense&op=banner&command=new&hook_ID=' . $hook_ID. '">Create new banner</a></div>
                       </div>
                     </div>';
         }
     }
 
+} elseif ($_GET['command'] === 'delete') {
+
+  if (!isset($_GET['ID'])){
+        echo 'ID is missing';
+        return;
+  }
+
+  $ID = (int) $_GET['ID'];
+
+  $template->navBarAddItem('FabSense','admin.php?module=fabsense');
+  $template->navBarAddItem('Deletingf banner (ID: ' . $ID . ')','admin.php?module=fabsense&op=banner&command=edit&ID=' . $ID);
+
+  if (!isset($_GET['confirm'])) {
+    echo '<a href="admin.php?module=fabsense&op=banner&command=delete&ID=' . $ID . '&confirm">Confirm delete?</a>';
+    return;
+  } else {
+
+
+      $query = 'DELETE FROM ' . $db->prefix . 'sense_banner WHERE ID = ' . $ID .';';
+      $db->query($query);
+
+      echo 'Banner deleted';
+      return;
+  }
 } else {
     echo 'Direct call detected';
     return;

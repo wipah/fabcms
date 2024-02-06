@@ -12,6 +12,7 @@ if (!$core->adminBootCheck())
 switch ($_GET['command']){
     case 'new':
     case 'edit':
+    case 'delete':
         require_once 'op_banner_crud.php';
         return;
     default:
