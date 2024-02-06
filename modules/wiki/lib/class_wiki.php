@@ -1233,18 +1233,20 @@ class wiki
         }
     }
 
-    public function updateSeoKeywords($page_ID, $keywords){
+    public function updateSeoKeywords($page_ID, $content, $description, $keywords){
         global $core;
         global $db;
         global $relog;
 
         $page_ID = (int) $page_ID;
 
+        if (count($keywords) === 0)
+            return;
+
         // Delete old references
         $query = 'DELETE 
                   FROM ' . $db->prefix . 'wiki_pages_seo 
                   WHERE page_ID = ' . $page_ID;
-
 
         if (!$db->query($query)) {
             $relog->write(['type'      => '4',
@@ -1256,17 +1258,28 @@ class wiki
             return;
         }
 
-        $keywordsArray = explode(', ', $keywords);
+        $query = 'INSERT INTO ' . $db->prefix . 'wiki_pages_seo (page_ID, keyword, score, potential_score, results, `order`) 
+                  VALUES ';
 
-        $query = 'INSERT INTO ' . $db->prefix . 'wiki_pages_seo 
-                  (page_ID, keyword, `order`) 
-                  VALUES';
+        $seo = new SeoScoreCalculator($content, $keywords, $description);
+        $resultSeo = $seo->calculateScore();
 
         $i = 0;
-        foreach ($keywordsArray as $singleKeyword) {
-            $query .= '(\'' . $page_ID . '\', \'' . $core->in($singleKeyword, true) . '\', ' . $i . '), ';
+        foreach (json_decode($resultSeo, true) as $keyword  => $scoreInfo) {
+            if (!is_array($scoreInfo)) {
+                return;
+            }
+
+            $result = '';
+            // Itera sull'array dei dettagli per mostrare i punteggi individuali e le penalizzazioni
+            foreach ($scoreInfo['details'] as $metric => $value) {
+                $result .= "  " . ucfirst($metric) . ": " . $value . "<br/>";
+            }
+
+            $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . $scoreInfo['totalScore'] .',' .  $scoreInfo['potentialScore'] . ', \'' .  json_encode($scoreInfo['details']) . '\' ,' .$i . '), ';
             $i++;
         }
+
 
         $query = substr($query, 0, -2);
 
@@ -1277,10 +1290,6 @@ class wiki
                 'details'   => 'Cannot update keywords. Query error. ' . $query,
             ]);
 
-        }
-
-        foreach ($keywordsArray as $singleKeyword) {
-            $this->updateSeo($page_ID, $singleKeyword);
         }
 
         $this->updateSeoFirsKeyword($page_ID);
@@ -1332,7 +1341,7 @@ class wiki
         global $core;
         global $relog;
 
-        $keyword = ($core->in(htmlentities($keyword)));
+        $keyword = $core->in(htmlentities($keyword));
         $score = $this->computeSeo($page_ID, $keyword);
 
         // echo '---|--> Updating keyword ID:' . $page_ID . ', ' . $keyword . ', score ' . $score['score'] . PHP_EOL;
@@ -1412,93 +1421,8 @@ class wiki
 
         $row = mysqli_fetch_assoc($result);
 
-        $score = 0;
-        $analysis = '';
+        $seo = new SeoScoreCalculator($row['content'], implode(' ,' ,$_POST['keywords']), $_POST['metaDataDescription']);
 
-        // Keyword density @todo: check if we need some other kind of stats here, like linear regression.
-        if (!empty($keyword)) {
-            $density = (substr_count($row['content'], $keyword) * 100) / strlen(strip_tags($row['content']));
-            if ($density < 0.5 ) {
-                $analysis .= '--Keyword density is less than 0.5%.' . PHP_EOL;
-            } elseif ($density >= 0.5 && $density < 1) {
-                $analysis .= '==Keyword density is between 0.5% and 1%' . PHP_EOL;
-            } elseif ($density >=1 && $density < 2) {
-                $analysis .= '++Keyword density is between 1% and 2%' . PHP_EOL;
-                $score += 10; // Maximum
-            } elseif ($density >= 2) {
-                $analysis .= '--Keyword density is more than 2%' . PHP_EOL;
-            }
-            $analysis .= '<br/>';
-        }
-
-        // Total words
-        $words = (int) $row['words'];
-        if ( $words < 100) {
-            $analysis .= '--Less than 100 words.' .PHP_EOL;
-            $score += 5;
-        } elseif ( $words >= 100 && $words < 300) {
-            $analysis .= '--Less than 300 words.' .PHP_EOL;
-            $score += 15;
-        } elseif ($words >= 300 && $words <= 600) {
-            $analysis .= '==Less than 600 words.' .PHP_EOL;
-            $score += 35;
-        } elseif ($words > 600) {
-            $analysis .= '++More than 600 words.' .PHP_EOL;
-            $score += 50; // Maximum
-        }
-        $analysis .= '<br/>';
-
-        // Headings
-        $headings = (int) $row['headings'];
-        if ($headings < 1) {
-            $analysis .= '--Less than one heading.' .PHP_EOL;
-            $score += 0;
-        } elseif ($headings >= 1 && $headings < 2) {
-            $analysis .= '--Less than 2 headings.' .PHP_EOL;
-            $score +=5;
-        } elseif ($headings >= 3 && $headings < 5) {
-            $analysis .= '==Less than 5 headings.' .PHP_EOL;
-            $score +=10;
-        } elseif ($headings >= 6) {
-            $analysis .= '++More than 5 headings.' .PHP_EOL;
-            $score += 15; // Maximum
-        }
-        $analysis .= '<br/>';
-
-        // img with keyword in alt
-        // $regex = '/<img(.*)?alt="(.*' . $keyword .'.*)?">/i';
-        $regex = '/\[\$img src="(.*)?"\|(.*)?|alt==(.*?' . $keyword . '.*?)\|\|/i';
-
-        preg_match($regex, $row['content'], $matches, PREG_OFFSET_CAPTURE, 0);
-        if (is_array($matches[1])) {
-            $analysis .= '++At least one img (n= ' . count($matches) . ') has the alt with the keyword.' . PHP_EOL;
-            $score += 5; // Maximum
-        } else {
-            $analysis .= '--No img has the alt with the keyword.' .PHP_EOL;
-        }
-        $analysis .= '<br/>';
-
-        // Keyword in metadata description
-        if (false !== stripos($row['metadata_description'], $keyword)) {
-            $analysis .= '++Keyword is in the metadata description.' .PHP_EOL;
-            $score += 10; // Maximum
-        } else {
-            $analysis .= '--Keyword is not the metadata description.' .PHP_EOL;
-        }
-        $analysis .= '<br/>';
-
-        // Keyword in title
-
-        if (false !== stripos($row['title'], $keyword)) {
-            $analysis .= '++Keyword is in the title.' .PHP_EOL;
-            $score += 10; // Maximum
-        } else {
-            $analysis .= '--Keyword is not in the title.' .PHP_EOL;
-        }
-        $analysis .= '<br/>';
-
-        // echo 'Returning score: ' . $score . PHP_EOL;
-        return ['score' => $score, 'analysis' => $analysis];
 
 }
 

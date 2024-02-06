@@ -683,14 +683,19 @@ if (isset($_GET['printable'])) {
 
         $keywords = $fabwiki->getSeoKeywords($page_ID);
         require_once ($conf['path']['baseDir'] . 'lib/seo/class_seo.php');
-        $seo = new SeoScoreCalculator($content, $keywords);
+        $seo = new SeoScoreCalculator($content, $keywords, $row['metadata_description']);
         $resultSeo = $seo->calculateScore();
 
         $seoBlock = '<div class=""><h2>SEO</h2>';
-        foreach ($resultSeo as $keyword  => $scoreInfo) {
-            $seoBlock .= "Keyword: " . $keyword . "<br/>";
+
+        foreach (json_decode($resultSeo, true) as $keyword  => $scoreInfo) {
+            if (!is_array($scoreInfo))
+                continue;
+
+            $seoBlock .= "<strong>Keyword: " . $keyword . "</strong><br/>";
             $seoBlock .= "Total Score: " . $scoreInfo['totalScore'] . "<br/>";
-            $seoBlock .= "Details:<br/>";
+            $seoBlock .= "Potential score: " . $scoreInfo['potentialScore'] . "<br/>";
+            $seoBlock .= "Details:<br/>" ;
 
             // Itera sull'array dei dettagli per mostrare i punteggi individuali e le penalizzazioni
             foreach ($scoreInfo['details'] as $metric => $value) {
@@ -699,9 +704,8 @@ if (isset($_GET['printable'])) {
 
             $seoBlock .= "<br/>"; // Aggiunge una riga vuota per separare i risultati delle diverse keyword
         }
+
         $seoBlock .= '</div>';
-
-
 
         if ($fabwiki->fullPage === false) {
             echo '

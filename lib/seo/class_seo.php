@@ -3,26 +3,43 @@
 class SeoScoreCalculator {
     private $html;
     private $keywords;
+    private $metaDescription;
 
-    public function __construct($html, $keywords) {
+    public function __construct($html, $keywords, $metaDescription = '') {
         $this->html = $html;
         $this->keywords = is_array($keywords) ? $keywords : [$keywords];
+        $this->metaDescription = $metaDescription;
     }
 
     public function calculateScore() {
         $scores = [];
 
-        foreach ($this->keywords as $keyword) {
-            $details = [];
+        if (empty($this->keywords) || (count($this->keywords) === 1 && empty($this->keywords[0]))) {
+            return json_encode(['error' => 'No keywords provided for SEO score calculation.'], JSON_PRETTY_PRINT);
+        }
 
-            // Calcolo lunghezza testo in parole
+        foreach ($this->keywords as $keyword) {
+
+            $details = [];
+            $potentialScore = 100; // Inizia con il punteggio massimo per la potenzialità
+
+            // Calcolo lunghezza testo in parole e relative penalizzazioni o bonus
             $wordCount = $this->getWordCount();
             $details['textLength'] = $wordCount >= 800 ? 20 : 0;
+            if ($wordCount < 800) {
+                if ($wordCount < 100) {
+                    $potentialScore -= 90;
+                } else {
+                    $missingWords = 800 - $wordCount;
+                    $potentialScore -= ($missingWords / 700) * 80;
+                }
+            }
 
-            // Calcolo densità keyword
+            // Calcolo densità keyword e penalizzazioni
             $keywordDensity = $this->getKeywordDensity($keyword);
             if ($keywordDensity > 2.5) {
-                $details['keywordDensity'] = -30; // Forte penalizzazione per densità eccessiva
+                $details['keywordDensity'] = -30;
+                $potentialScore -= 30; // Forte penalizzazione per densità delle keyword eccessiva
             } elseif ($keywordDensity >= 1 && $keywordDensity <= 2.5) {
                 $details['keywordDensity'] = 30;
             } elseif ($keywordDensity > 0) {
@@ -31,25 +48,24 @@ class SeoScoreCalculator {
                 $details['keywordDensity'] = 0;
             }
 
-            // Calcolo presenza immagini, attributi alt e keyword in alt
-            $imagesScore = $this->getImagesScore($keyword);
-            $details['images'] = $imagesScore > 0 ? $imagesScore : -20; // Forte penalizzazione se non ci sono immagini
+            // Valutazione della meta description
+            $metaDescriptionScore = $this->evaluateMetaDescription($keyword);
+            $details['metaDescription'] = $metaDescriptionScore;
+            if ($metaDescriptionScore < 0) {
+                $potentialScore -= 10; // Penalizzazione per mancanza o problemi con la meta description
+            }
 
-            // Verifica presenza intestazioni H2 ogni 250 parole
-            $details['h2Tags'] = $this->getH2Score($wordCount);
-
-            // Verifica contenuto adeguato dopo intestazioni H2, H3, H4
-            $details['headersContent'] = $this->checkHeadersContent();
-
-            // Calcola il punteggio totale e lo normalizza su 100
+            // Calcolo del punteggio totale e aggiunta dello score di potenzialità
             $totalScore = array_sum($details);
             $scores[$keyword] = [
-                'totalScore' => max(0, min(100, $totalScore)), // Assicura che il punteggio sia tra 0 e 100
-                'details' => $details
+                'totalScore' => max(0, min(100, $totalScore)),
+                'details' => $details,
+                'potentialScore' => max(0, $potentialScore) // Assicura che il punteggio sia almeno 0
             ];
         }
 
-        return $scores;
+        // Restituisce i risultati in formato JSON
+        return json_encode($scores, JSON_PRETTY_PRINT);
     }
 
     private function getWordCount() {
@@ -102,7 +118,7 @@ class SeoScoreCalculator {
             foreach ($headers as $header) {
                 $followingText = $this->getFollowingTextContent($header);
                 if (str_word_count($followingText) < 100) {
-                    $penalty -= 5; // Lieve penalizzazione per ogni header seguito da meno di 100 parole
+                    $penalty -= 5; // Penalizzazione per ogni intestazione seguita da meno di 100 parole
                 }
             }
         }
@@ -122,4 +138,24 @@ class SeoScoreCalculator {
         }
         return $textContent;
     }
+
+    private function evaluateMetaDescription($keyword) {
+        $score = 0;
+        $descriptionLength = strlen($this->metaDescription);
+
+        if (empty($this->metaDescription)) {
+            $score = -40; // Pesante penalizzazione se non c'è una meta description
+        } elseif ($descriptionLength >= 100 && $descriptionLength <= 160) {
+            $score = 10; // Lunghezza ottimale
+            // Controlla se la keyword è presente nella meta description
+            if (stripos($this->metaDescription, $keyword) !== false) {
+                $score += 5; // Aumenta lo score se la keyword è presente
+            }
+        } elseif ($descriptionLength > 160) {
+            $score = 5; // Presente ma troppo lunga
+        }
+
+        return $score;
+    }
+
 }

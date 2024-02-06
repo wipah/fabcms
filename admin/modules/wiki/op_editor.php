@@ -1078,12 +1078,34 @@ tinymce.init({
           selector: \'#short_description, #notes\',
           height: 250,
           menubar: false,
-       	  
+       	  external_plugins: \'visualizzaImg.js\',
           plugins: \'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table contextmenu code help\',
           toolbar: \'insert | undo redo |  styleselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help\',
           content_css: [
             \'//fonts.googleapis.com/css?family=Lato:300,300i,400,400i\',
             \'//www.tinymce.com/css/codepen.min.css\']
+});
+
+
+tinymce.PluginManager.add(\'visualizzaImg\', function(editor) {
+    // Funzione per convertire lo snippet in un\'immagine visualizzata
+    function visualizzaSnippet(content) {
+        return content.replace(/\[\$img src="(.*?)"\|alt==(.*?)\|\|copyright==(.*?)\|\|description==(.*?)\|\|class=(.*?)\$\]/g, function(match, src, alt, copyright, description, cssClass) {
+            return \'<img src="\' + src + \'" alt="\' + alt + \'" class="\' + cssClass + \'" data-mce-placeholder="1" />\';
+        });
+    }
+
+    // Converti gli snippet in immagini visualizzate all\'inizio
+    editor.on(\'BeforeSetContent\', function(e) {
+        e.content = visualizzaSnippet(e.content);
+    });
+
+    // Assicurati che lo snippet originale venga ripristinato quando si ottiene il contenuto
+    editor.on(\'GetContent\', function(e) {
+        e.content = e.content.replace(/<img src="(.*?)" alt="(.*?)" class="(.*?)" data-mce-placeholder="1" \/>/g, function(match, src, alt, cssClass) {
+            return \'[$img src="\' + src + \'"|alt==\' + alt + \'||copyright==FabCMS||description==this is a simple description||class=\' + cssClass + \'$]\';
+        });
+    });
 });
 
 function initEditor() {

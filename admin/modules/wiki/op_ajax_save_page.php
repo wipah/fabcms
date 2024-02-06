@@ -25,6 +25,8 @@ if (!isset($_POST['title'])) {
     return;
 }
 
+require_once ($conf['path']['baseDir'] . 'lib/seo/class_seo.php');
+
 $title              =   $core->in($_POST['title'], true);
 $title_alternative  =   $core->in($_POST['title_alternative'], true);
 $use_file           =   $core->in($_POST['use_file']);
@@ -66,6 +68,7 @@ $_POST['no_similar_pages']  === 'true' ? $no_similar_pages = 1 : $no_similar_pag
 $_POST['no_info']           === 'true' ? $no_info = 1 : $no_info = 0;
 $_POST['no_linking_pages']  === 'true' ? $no_linking_pages = 1 : $no_linking_pages = 0;
 $_POST['no_title']          === 'true' ? $no_title = 1 : $no_title = 0;
+
 
 if (($_POST['crudType']) === 'update') {
     if (!isset($_POST['ID'])) {
@@ -171,7 +174,7 @@ if (($_POST['crudType']) === 'update') {
     $fabwiki->updateFiles($ID);
     $fabwiki->updateStats($ID);
 
-    $fabwiki->updateSeoKeywords($ID, $_POST['seoKeywords']);
+    $fabwiki->updateSeoKeywords($page_ID, $_POST['content'], $_POST['metaDataDescription'],explode(', ',$_POST['seoKeywords']));
     echo '{"status": 200,  "ID": ' . $ID . ',  "description": "Ok."}';
 
     return;
@@ -289,6 +292,6 @@ if (($_POST['crudType']) === 'update') {
     $fabwiki->updateFiles($page_ID);
     $fabwiki->updateStats($page_ID);
 
-    $fabwiki->updateSeoKeywords($page_ID, $_POST['seoKeywords']);
+    $fabwiki->updateSeoKeywords($page_ID, $content, $metaDataDescription,$_POST['seoKeywords']);
     echo '{"status": 200, "description": "Ok.", "master_ID": ' . $master_ID . ',"ID": ' . $page_ID . '}';
 }
