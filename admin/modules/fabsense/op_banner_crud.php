@@ -105,9 +105,10 @@ if ($_GET['command'] === 'edit') {
             ' . $hook_ID . ',
             ' . $probability_start . ',        
             ' . $probability_end . ',        
-            ' . $probability . ',        
-            \'' . $code. '\',
-            0        
+            ' . $probability . ', 
+            0       
+            , \'' . $code. '\'
+            
         )
         ';
 
@@ -120,12 +121,16 @@ if ($_GET['command'] === 'edit') {
                   </div>';
 
         } else {
-            echo '<div class="panel panel-success">
-                    <div class="panel-heading">Banner was created</div>
-                    <div class="panel-body">The banner was created. <br/> 
-                        &bull; <a href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $db->insert_id . '">Edit the banner</a></div>
-                        &bull; <a href="admin.php?module=fabsense&op=banner&command=new&hook_ID=' . $hook_ID. '">Create new banner</a></div>
-                  </div>';
+            echo '
+                    <div class="card">
+                      <h5 class="card-header">Banner created</h5>
+                      <div class="card-body">
+                        <h5 class="card-title">The banner was created</h5>
+                        <p class="card-text">The banner was succesefully created.</p>
+                        <a class="btn btn-primary" href="admin.php?module=fabsense&op=banner&command=edit&ID=' . $db->insert_id . '">Edit the banner</a></div>
+                        <a class="btn btn-primary" href="admin.php?module=fabsense&op=banner&command=new&hook_ID=' . $hook_ID. '">Create new banner</a></div>
+                      </div>
+                    </div>';
         }
     }
 

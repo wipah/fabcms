@@ -42,18 +42,13 @@ if ( $_GET['command'] === 'new' )
                 </div>';
         } else {
             echo '
-                <div class="alert alert-warning">
+                <div class="alert alert-success">
                     <strong>Success!</strong> Hook was inserted. <a href="admin.php?module=fabsense&op=hooks&command=edit&ID=' . $db->insert_id . '">Click here</a> to edit.
                 </div>';
             return;
         }
     }
 } elseif ($_GET['command'] == 'edit') {
-    if (!isset($_GET['ID'])){
-        echo 'ID was not passed';
-        return;
-    }
-
     if (!isset($_GET['ID'])) {
         echo '
         <div class="alert alert-warning">
@@ -109,6 +104,32 @@ if ( $_GET['command'] === 'new' )
     }
 
     $row = mysqli_fetch_array($result);
+} else if ($_GET['command'] === 'delete') {
+    if (!isset($_GET['ID'])) {
+        echo '
+        <div class="alert alert-warning">
+            <strong>Error!</strong> ID was not passed.
+        </div>';
+        return;
+    }
+    $ID = (int) $_GET['ID'];
+    if (!isset($_GET['confirm'])) {
+        echo '<a href="admin.php?module=fabsense&op=hooks&command=delete&ID=' . $ID .'&confirm">Delete the hook</a>?';
+    } else {
+
+
+        $query = 'DELETE FROM ' . $db->prefix . 'sense_banner WHERE hook_ID = ' . $ID . ';';
+        $db->query($query);
+
+        $query = 'DELETE FROM ' . $db->prefix . 'sense_hooks WHERE ID = ' . $ID . ';';
+        $db->query($query);
+
+        echo '
+            <div class="alert alert-success">
+                <strong>Error!</strong> Hooks and banner were deleted.
+            </div>';
+    }
+    return;
 } else {
     echo 'No handler';
     return;
@@ -166,7 +187,7 @@ echo '
           <label class="col-md-4 control-label" for="button1id">Actions</label>
           <div class="col-md-8">
             <button id="button1id" name="button1id" type="submit" class="btn btn-success">' . $buttonAction . '</button>
-            <button id="button2id" name="button2id" class="btn btn-danger">Delete hook</button>
+            <a id="button2id" href="admin.php?module=fabsense&op=hooks&command=delete&ID=' . $ID .'" class="btn btn-danger">Delete hook</a>
           </div>
       </div>
     </div>

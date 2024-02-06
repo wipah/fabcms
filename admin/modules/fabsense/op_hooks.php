@@ -9,7 +9,7 @@
 if (!$core->adminBootCheck())
     die("Check not passed");
 
-if ($_GET['command'] === 'edit' || $_GET['command'] === 'new'){
+if ($_GET['command'] === 'edit' || $_GET['command'] === 'new' || $_GET['command'] === 'delete'){
     include 'op_hooks_editor.php';
     return;
 }
