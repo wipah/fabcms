@@ -199,8 +199,7 @@ $this->addMeta('og:article:published_time', $row['creation_date']);
 $this->addMeta('og:article:modified_time', $row['last_update']);
 $this->addMeta('og:article:tag', $row['tag']);
 
-if (!empty(
-$row['featured_video_ID'])) {
+if (!empty($row['featured_video_ID'])) {
     $this->addMeta('og:video', $row['featured_video_ID']);
 
     $contentFeaturedVideo = '<div class="container mt-4">
@@ -575,6 +574,9 @@ if (strlen($row['featured_video_code']) > 1) {
 if ((int)$row['no_title'] !== 1)
     $template->pageTitle = $row['title'];
 
+if ($user->isAdmin === true) {
+    $content = '<div class="wikiEditArticle"><a href="' . $URI->getBaseUri(true) . '/admin/admin.php?module=wiki&op=editor&ID=' . $page_ID . '">Article edit</a></div>' . $content;
+}
 if (isset($_GET['printable'])) {
 
     $this->noTemplateParse = true;
