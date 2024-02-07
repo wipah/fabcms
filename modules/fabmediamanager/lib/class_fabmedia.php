@@ -608,6 +608,9 @@ class FabMedia
                 'details'   => 'Query error while inserting into DB ' . $query,
             ]);
         } else {
+
+            $fabmedia_ID = $db->insert_id;
+
             $relog->write(['type'      => '1',
                 'module'    => 'FABMEDIAMANAGER',
                 'operation' => 'fabmedia_manager_insert_video_ok',
@@ -615,19 +618,46 @@ class FabMedia
             ]);
         }
 
-        $fabmedia_ID = $db->insert_id;
+
+
+        $cmd = "ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 $videoPath";
+        $output = shell_exec($cmd);
+
+        list($width, $height) = explode('x', trim($output));
+
+        $cmd = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $videoPath";
+        $duration = shell_exec($cmd);
+
+        $hour = floor($duration / 3600);
+        $minutes = floor(($duration - $hour * 3600) / 60);
+        $seconds = $duration - ($hour * 3600) - ($minutes * 60);
+
+        $length = sprintf('%02d:%02d:%02d', $hour, $minutes, $seconds);
+
+        $thumbnailFile = (dirname($videoPath) . '/video_' . $fabmedia_ID . '.jpg');
+        $cmd = "ffmpeg -i $videoPath -ss 00:00:06 -vframes 1 $thumbnailFile";
+        shell_exec($cmd);
+
+        $cmd = "ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 $videoFile";
+        $codec = shell_exec($cmd);
 
         $query = 'INSERT INTO ' . $db->prefix . 'fabmedia_videos                   
                   (
                      fabmedia_ID
                    , provider
                    , length                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                   , width                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                   , height                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                   , codec                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                   )
                   VALUES
                   (
                     ' .  $fabmedia_ID . ' 
                     ,  \'internal\'
-                    , ' . ( (int) $length) . '
+                    , \'' . ( $length ) . '\'
+                    , ' . ( (int) $width) . '
+                    , ' . ( (int) $height) . '
+                    , \'' . $codec . '\'
                   )';
 
         if (!$db->query($query)) {

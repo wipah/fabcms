@@ -831,7 +831,7 @@ function fabMediaInit(){
 			rename: true,
 			multiple_queues: true,
 			filters : {
-			max_file_size : \'400mb\',
+			max_file_size : \'500mb\',
 				mime_types: [
                 ' . $customFiles . ' 
 				]
