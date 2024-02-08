@@ -98,7 +98,7 @@ while ($linea = mysqli_fetch_array($result)) {
         if ($numPage !== 1){
                 echo '<table border="0" style="page-break-after:always"><tr><td></td></tr></table>';
 
-        };
+        }
 
         echo '<h1>Scheda N.' . $numPage . '</h1>';
         $progressiveQuestion = 1;

@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use CrisaSoft\FabCMS\fabInstaller;
+
 error_reporting(E_NONE);
 
 echo '<pre>' . print_r($_POST, true ) . '</pre>';
@@ -25,7 +27,7 @@ if (!isset($_POST['dummy']))
     die ('Direct call detected');
 
 require_once 'lib/class_installer.php';
-$fabInstaller = new \CrisaSoft\FabCMS\fabInstaller();
+$fabInstaller = new fabInstaller();
 
 require_once '../modules/core/lib/class_core.php';
 $core = new CrisaSoft\FabCMS\core;

@@ -312,80 +312,7 @@ echo '
         </div>
         
         <div style="margin-top:14px;font-size:14px;border:1px solid grey;padding:4px;background-color:#FFFF80" class="ui-corner-all">
-            <b>#4</b> <textarea id="ris_4" style="width:100%; height:150px;" name="ris_4">'.$lineaDomanda['risposta_4'].'</textarea>
-        </div>
-        <button id="invia" type="button" onclick="checkForm();">Salva modifiche</button>            
-    </form>
-
-<div style="display:none;font-size:12px;" id="boxCollegati">
-    <h3>Ricerca appunto</h3>
-    Termine: <input type="text" id="termineRicerca" /">
-    <button id="ricercaTermine" onclick="cercaTermineAppunti();">Ricerca</button>
-    <h3>Risultati</h3>
-    <div id="risultatiCorrelati"></div>
-</div>    
-
-<!-- TinyMCE -->
-<script type="text/javascript" src="/include/tiny_mce/tiny_mce_gzip.js"></script>
-<script type="text/javascript">
-$("#btnEliminaAppunti").button();
-
-function checkForm(){
-    document.formDomanda.submit();
-}
-
-$("#boxCollegati").dialog({autoOpen: false});
-
-function apriDialog(){
-    $("#boxCollegati").dialog("open");
-}
-
-
-function rimuoviAppunti(){
-    var counts = 0;
-    var counter = 0;
-    if (!confirm("Rimuovere gli appunti selezionati?"))
-        return;
-            
-    if(!document.formDomanda.appunti.length){
-        if (document.formDomanda.appunti.checked){
-            removeWho("div_" + document.formDomanda.appunti.value);
-        }        
-        return;
-    }
-    
-    for (counter = 0; counter < document.formDomanda.appunti.length; counter++){                        
-        if (document.formDomanda.appunti[counter].checked){
-            removeWho("div_" + document.formDomanda.appunti[counter].value);
-            counter--;
-        }
-    }
-    
-    if(!document.formDomanda.appunti.length){
-        if (document.formDomanda.appunti.checked){
-            removeWho("div_" + document.formDomanda.appunti.value);
-        }        
-        return;
-    }
-}
-
-
-function removeWho(who) {
-    if(typeof who== \'string\') who=document.getElementById(who);
-    if(who && who.parentNode)who.parentNode.removeChild(who);
-}
-
-function aggiungiAppunto(ID,titolo){
-    var divRicerca = document.getElementById("divCorrelati");
-    
-    var ck = document.createElement("input");
-    var tx = document.createElement("div");
-        
-    if (document.getElementById("input_"+ID)){
-        return;    
-    }    
-    tx.id = "div_" + ID;               
-    tx.innerHTML = "<div class=\"ui-corner-all\" style=\"border:1px solid black; padding:2px; background-color:#C0FFC0;float:left;\"><input type=\'hidden\' name=\'anarray[]\' value=\'"+ID+"\'/> <input id=\"input_"+ID+"\" type=\"checkbox\" name=\"appunti\" value=\""+ID+"\"/> "+ titolo + "</div><div style=\"clear:both;\"></div>";
+            <b>#4</b> <textarea id="ris_4" style="width:100%; height:150px;" name="ris_4">'.$lineaDomanda['risposta_4']. '/> <input id=\"input_"+ID+"\" type=\"checkbox\" name=\"appunti\" value=\""+ID+"\"/> "+ titolo + "</div><div style=\"both;\"></div>";
     
     ck.type = "checkbox";
     ck.value = ID;
@@ -421,7 +348,7 @@ function cercaTermineAppunti(){
     var parametri = "";
     parametri += "termine=" + encodeURIComponent(termine)
     
-    xmlHttp.open("POST","'.$conf['http_sito'].'/admin/includes/ajax/ajax.php?op=quizRicercaTermine",true);
+    xmlHttp.open("POST","' .$conf['http_sito'].'/admin/includes/ajax/ajax.php?op=quizRicercaTermine",true);
     xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlHttp.setRequestHeader("Length", parametri.length);
     xmlHttp.setRequestHeader("Connection", "close");

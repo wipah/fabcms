@@ -189,9 +189,9 @@ echo '<h2>User management</h2>
 
 <script type="text/javascript">
 function filterNames() {
-    nameFilter      =   $("#filterNameUsers").val(); ;
-    emailFilter     =   $("#filterEmailUsers").val(); ;
-    groupFilter     =   $("#filterGroup").val(); ;
+    nameFilter      =   $("#filterNameUsers").val(); 
+    emailFilter     =   $("#filterEmailUsers").val(); 
+    groupFilter     =   $("#filterGroup").val(); 
     tagFilter       =   $("#filterTagUser").val();
     
     $.ajax({

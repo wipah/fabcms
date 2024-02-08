@@ -30,7 +30,7 @@ $template->sidebar .= $template->simpleBlock('Statistics', '<div id="statistics"
 foreach (glob( $conf['path']['baseDir'] . '/modules/wiki/editor_plugins/*.php' ) as $filename) {
     require_once $filename;
 }
- $editorCustomButtons = '';
+$editorCustomButtons = '';
 foreach ($editorPlugins['buttons'] AS $pgName => $pgContent) {
 
     $pgToolbar .= $pgName . ' | ';
@@ -228,7 +228,7 @@ if (isset($_GET['ID'])) {
                 ORDER BY ID DESC
               LIMIT 1;';
 
-    
+
 
     if (!$resultGoogle = $db->query($query)){
         echo $query;
@@ -375,7 +375,7 @@ GROUP BY DAILY.IDX,
       YEAR(DAILY.date), 
       MONTH(DAILY.date);';
 
-    
+
 
     if (!$resultStats = $db->query($query)){
         echo 'Query error! <pre>' . $query . '</pre>';

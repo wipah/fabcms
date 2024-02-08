@@ -17,6 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+use CrisaSoft\FabCMS\module;
+use CrisaSoft\FabCMS\plugin;
+
 error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING);
 
 // The basic stuf
@@ -66,7 +69,7 @@ $URI->usePort = $conf['uri']['usePort'];
 $URI->port = $conf['uri']['port'];
 
 require $conf['path']['baseDir'] . 'lib/module/class_module.php';
-$module = new \CrisaSoft\FabCMS\module(true);
+$module = new module(true);
 
 require $conf['path']['baseDir'] . 'lib/language/class_language.php';
 $language = new language();
@@ -116,7 +119,7 @@ if (!file_exists($pathCore)) {
 } else {
     require($pathPlugin);
 }
-$plugin = new \CrisaSoft\FabCMS\plugin();
+$plugin = new plugin();
 $debug->write('info', 'Plugin object loaded');
 
 // Carica ed istanzia l'helper $user

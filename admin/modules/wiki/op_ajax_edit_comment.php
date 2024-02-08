@@ -84,7 +84,7 @@ echo '
     <div class="col-md-12" id="updateStatus"></div>
 </div>
 
-<button onclick="updateComment(' . $ID . ');">Update comment</button>
+<button onclick="updateComment(' . $ID . ')">Update comment</button>
 
 
 <script type="text/javascript">

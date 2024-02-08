@@ -16,12 +16,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+use CrisaSoft\FabCMS\fabInstaller;
+
 error_reporting(E_ALL);
 $isInstalling = true;
 
 require_once 'lib/class_installer.php';
 
-$fabInstaller = new \CrisaSoft\FabCMS\fabInstaller();
+$fabInstaller = new fabInstaller();
 
 if (file_exists('../config.php') || file_exists('../db_version')) {
     echo 'FabCMS is already installed.';

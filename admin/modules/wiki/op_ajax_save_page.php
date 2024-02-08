@@ -293,6 +293,6 @@ if (($_POST['crudType']) === 'update') {
     $fabwiki->updateFiles($page_ID);
     $fabwiki->updateStats($page_ID);
 
-    $fabwiki->updateSeoKeywords($page_ID, $content, $metaDataDescription,$_POST['seoKeywords']);
+    $fabwiki->updateSeoKeywords($page_ID, $content, $metaDataDescription,explode(',',$_POST['seoKeywords']));
     echo '{"status": 200, "description": "Ok.", "master_ID": ' . $master_ID . ',"ID": ' . $page_ID . '}';
 }

@@ -173,7 +173,8 @@ switch ($row['type']) {
         $sendToEditor = '
         <div class="row">
             <div class="col">
-                <video preload="auto" width="480" height="360" controls>
+                <video poster="'  . $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/video_' . $row['media_ID'] . '.jpg" preload="auto" width="480" height="360" controls>
+                    
                     <source src="'  . $conf['path']['baseDir'] . 'fabmedia/' . $row['user_ID'] . '/' . $row['filename'] . ' " type="video/mp4">
                 </video>
               

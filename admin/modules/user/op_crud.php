@@ -401,7 +401,7 @@ echo '
 
         $.post( "admin.php?module=user' . $postCommand . '", { username  : username, 
                                 ' . ($_GET['op'] === 'edit' ? 'ID        : ' . $ID . ',' : '') . '
-                                                               tags      : tags,
+                                                               tags,
                                                                name      : name,
                                                                surname   : surname,
                                                                email     : email,

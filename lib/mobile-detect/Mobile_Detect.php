@@ -1457,7 +1457,7 @@ class Mobile_Detect
      */
     public function match($regex, $userAgent = null)
     {
-        if (!\is_string($userAgent) && !\is_string($this->userAgent)) {
+        if (!is_string($userAgent) && !is_string($this->userAgent)) {
             return false;
         }
 
@@ -1521,7 +1521,7 @@ class Mobile_Detect
             return false;
         }
 
-        if (!\is_string($this->userAgent)) {
+        if (!is_string($this->userAgent)) {
             return false;
         }
 

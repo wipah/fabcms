@@ -2,7 +2,9 @@
 
 namespace CrisaSoft\FabCMS;
 
-class dbi extends \mysqli
+use mysqli;
+
+class dbi extends mysqli
 {
     public $username;
     public $password;
@@ -77,7 +79,7 @@ class dbi extends \mysqli
                 $this->numRows = mysqli_affected_rows($this->linkID);
                 break;
             default :
-                @$thisinsert_id = mysqli_insert_id($this->linkID);;
+                @$thisinsert_id = mysqli_insert_id($this->linkID);
                 $this->numRows = mysqli_affected_rows($this->linkID);
                 break;
         }

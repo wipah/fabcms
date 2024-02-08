@@ -21,6 +21,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 // header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
 // A lock file exists?
+use CrisaSoft\FabCMS\module;
+use CrisaSoft\FabCMS\plugin;
+use CrisaSoft\FabCMS\stats;
+
 if (file_exists('lock.lock')) {
     echo file_get_contents('lock.lock');
     return;
@@ -75,7 +79,7 @@ $URI->usePort       =   $conf['uri']['usePort'];
 $URI->port          =   $conf['uri']['port'];
 
 require $conf['path']['baseDir'] . 'lib/module/class_module.php';
-$module = new \CrisaSoft\FabCMS\module();
+$module = new module();
 
 require $conf['path']['baseDir'] . 'lib/language/class_language.php';
 $language = new language();
@@ -140,7 +144,7 @@ if (!file_exists($pathCore)) {
 } else {
     require($pathPlugin);
 }
-$plugin = new \CrisaSoft\FabCMS\plugin();
+$plugin = new plugin();
 $debug->write('info', 'Plugin object loaded');
 
 // Router
@@ -153,7 +157,7 @@ $log = new log();
 
 // Load stats class
 require($conf['path']['baseDir'] . '/lib/stats/class_stats.php');
-$stats = new \CrisaSoft\FabCMS\stats();
+$stats = new stats();
 
 // Carica ed istanzia l'helper $user
 $pathUser = $conf['path']['baseDir'] . 'modules/user/lib/class_user.php';

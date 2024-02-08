@@ -24,7 +24,6 @@ WHERE
 LIMIT 1;';
 
 
-
 if (!$result = $db->query($query)) {
     echo '
         <div class="panel panel-warning">
@@ -99,8 +98,6 @@ if ($type === 'image') {
               WHERE file_ID = \'' . $ID . '\' 
               LIMIT 1;';
 
-    
-
     if (!$db->query($query)){
         echo '
         <div class="panel panel-warning">
@@ -111,6 +108,15 @@ if ($type === 'image') {
         </div>';
         return;
     }
+} elseif ($type === 'video') {
+    $query = 'DELETE FROM ' . $db->prefix . 'fabmedia_videos
+          WHERE fabmedia_ID = \'' . $ID . '\' 
+          LIMIT 1;';
+
+    $videoPathThumb = $conf['path']['baseDir'] . 'fabmedia/' . $user->ID . '/video_' . $row['user_ID'] . '.jpg';
+    unlink($videoPathThumb);
+
+    $db->query($query);
 }
 
 echo 'Deleted.

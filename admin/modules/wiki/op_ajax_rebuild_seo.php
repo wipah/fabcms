@@ -36,11 +36,13 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     $resultKeywords = $db->query($query);
     $keywords = [];
-    while ($rowKeywords = mysqli_fetch_assoc($resultKeywords)) {
-        echo 'K:' . $rowKeywords['keyword'] . '-';
-        $keywords[] = $rowKeywords['keyword'];
+    if (!$db->numRows) {
+        $keywords[] = $core->in($row['title']);
+    } else {
+        while ($rowKeywords = mysqli_fetch_assoc($resultKeywords)) {
+            $keywords[] = $rowKeywords['keyword'];
+        }
     }
-    echo '<br/>';
 
     $fabwiki->updateSeoKeywords($ID, $row['content'], $row['metadata_description'], $keywords);
     $fabwiki->updateSeoFirsKeyword($ID);

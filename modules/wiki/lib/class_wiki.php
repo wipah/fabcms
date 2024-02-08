@@ -49,10 +49,10 @@ class wiki
 
         if (!$result = $db->query($query)) {
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_class_construct',
-                           'details'   => 'Cannot construct the class. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_class_construct',
+                'details' => 'Cannot construct the class. Query error. ' . $query,
             ]);
 
             return;
@@ -64,7 +64,8 @@ class wiki
 
     }
 
-    public function updateRevision($page_ID, $revision, $content, $user_ID){
+    public function updateRevision($page_ID, $revision, $content, $user_ID)
+    {
         global $core;
         global $db;
 
@@ -75,11 +76,11 @@ class wiki
         \'' . $revision . '\',
         \'' . $core->in($content) . '\',
         NOW(),
-        \'' . $user_ID  .'\'
+        \'' . $user_ID . '\'
         )
         ';
 
-        if (!$db->query($query)){
+        if (!$db->query($query)) {
             return false;
         } else {
             return true;
@@ -98,10 +99,10 @@ class wiki
 
         if (!$result = $db->query($query)) {
             echo '<pre>Query error while loading parsers</pre>';
-            $relog->write(['details'   => $query,
-                           'type'      => 4,
-                           'module'    => 'WIKI',
-                           'operation' => 'initParsers']);
+            $relog->write(['details' => $query,
+                'type' => 4,
+                'module' => 'WIKI',
+                'operation' => 'initParsers']);
 
             return false;
         }
@@ -110,6 +111,7 @@ class wiki
             $this->parsers[] = $row['parser'];
         }
     }
+
     public function isBetweenDate($startDate, $endDate)
     {
         return true; //Todo fix this bug
@@ -152,10 +154,10 @@ class wiki
         if (!$result = $db->query($query)) {
 
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_files',
-                           'details'   => 'Update files. Cannot select pages due to a query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_files',
+                'details' => 'Update files. Cannot select pages due to a query error. ' . $query,
             ]);
 
 
@@ -165,10 +167,10 @@ class wiki
 
         if (!$db->affected_rows) {
 
-            $relog->write(['type'      => '3',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_files_pages_not_found',
-                           'details'   => 'Pages were not found while updating files. ' . $query,
+            $relog->write(['type' => '3',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_files_pages_not_found',
+                'details' => 'Pages were not found while updating files. ' . $query,
             ]);
 
             return;
@@ -188,10 +190,10 @@ class wiki
             if (!$db->query($query)) {
 
 
-                $relog->write(['type'      => '4',
-                               'module'    => 'WIKI',
-                               'operation' => 'wiki_update_files_delete_page_error',
-                               'details'   => 'Cannot delete files. Query error. ' . $query,
+                $relog->write(['type' => '4',
+                    'module' => 'WIKI',
+                    'operation' => 'wiki_update_files_delete_page_error',
+                    'details' => 'Cannot delete files. Query error. ' . $query,
                 ]);
 
                 return;
@@ -243,10 +245,10 @@ class wiki
             if (!$db->query($query)) {
 
 
-                $relog->write(['type'      => '4',
-                               'module'    => 'WIKI',
-                               'operation' => 'wiki_update_files',
-                               'details'   => 'Cannot update the files. Query error. ' . $query,
+                $relog->write(['type' => '4',
+                    'module' => 'WIKI',
+                    'operation' => 'wiki_update_files',
+                    'details' => 'Cannot update the files. Query error. ' . $query,
                 ]);
 
                 return false;
@@ -268,10 +270,10 @@ class wiki
 
         if (!$result = $db->query($query)) {
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_load_config',
-                           'details'   => 'Cannot load config. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_load_config',
+                'details' => 'Cannot load config. Query error. ' . $query,
             ]);
 
             echo 'Query error. ';
@@ -302,10 +304,10 @@ class wiki
 
         if (!$result = $db->query($query)) {
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_get_translated_pages_query_error',
-                           'details'   => 'Cannot get the translated pages. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_get_translated_pages_query_error',
+                'details' => 'Cannot get the translated pages. Query error. ' . $query,
             ]);
 
             return false;
@@ -367,10 +369,10 @@ class wiki
         if (!$result = $db->query($query)) {
 
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_create_outbound_trackbacks_query_error',
-                           'details'   => 'Unable to select pages. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_create_outbound_trackbacks_query_error',
+                'details' => 'Unable to select pages. ' . $query,
             ]);
 
 
@@ -379,10 +381,10 @@ class wiki
 
         if (!$db->affected_rows) {
 
-            $relog->write(['type'      => '3',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_create_outbound_trackbacks_page_not_exists',
-                           'details'   => 'Cannot select the page. ' . $query,
+            $relog->write(['type' => '3',
+                'module' => 'WIKI',
+                'operation' => 'wiki_create_outbound_trackbacks_page_not_exists',
+                'details' => 'Cannot select the page. ' . $query,
             ]);
 
             return false;
@@ -445,10 +447,10 @@ class wiki
         if (!$db->query($query)) {
 
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_create_outbound_trackbacks_insert_query_error',
-                           'details'   => 'Unable to store trackbacks. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_create_outbound_trackbacks_insert_query_error',
+                'details' => 'Unable to store trackbacks. Query error. ' . $query,
             ]);
 
             return false;
@@ -477,10 +479,10 @@ class wiki
 
         if (!$result = $db->query($query)) {
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_get_inbound_trackbacks_query_error',
-                           'details'   => 'Cannot get inbound trackbacks. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_get_inbound_trackbacks_query_error',
+                'details' => 'Cannot get inbound trackbacks. Query error. ' . $query,
             ]);
             return false;
         }
@@ -496,7 +498,6 @@ class wiki
     public function parseBanner($content)
     {
         global $mobileDetect;
-
 
 
         if ($mobileDetect->isMobile()) {
@@ -665,7 +666,7 @@ class wiki
             function ($matches) {
                 global $core;
 
-                if ($this->parserNoLink === true ) {
+                if ($this->parserNoLink === true) {
                     return $matches[2];
                 } else {
                     $this->wikiLinks[] = $core->getTrackback($matches[1]);
@@ -773,7 +774,8 @@ class wiki
         return $content;
     }
 
-    public function parseToc($content){
+    public function parseToc($content)
+    {
         global $language;
         global $mobileDetect;
         global $conf;
@@ -796,7 +798,7 @@ class wiki
             );
 
             $toc = substr($toc, 0, -2) . '</div>';
-            if ($mobileDetect->isMobile() === true ) {
+            if ($mobileDetect->isMobile() === true) {
                 $pos = strpos($content, '</p>');
 
                 $content = substr($content, 0, $pos + 4) . $toc . substr($content, $pos + 4, strlen($content));
@@ -830,10 +832,10 @@ class wiki
 
         if (!$result = $db->query($query)) {
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_get_description_from_name_select_query_error',
-                           'details'   => 'Cannot get the page. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_get_description_from_name_select_query_error',
+                'details' => 'Cannot get the page. ' . $query,
             ]);
 
             return 'Query error with page selection. Name was ' . $page;
@@ -887,25 +889,25 @@ class wiki
             }
 
             // We have all the mandatoryIDs and we remove them, by checking for the ID
-            if (count($this->mandatoryIDs) > 0 ) {
-                $dom    =   new DOMDocument;
+            if (count($this->mandatoryIDs) > 0) {
+                $dom = new DOMDocument;
                 $dom->validateOnParse = false;
-                $dom->loadHTML( $content,LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
-                $xp     =   new DOMXPath( $dom );
+                $dom->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                $xp = new DOMXPath($dom);
 
                 foreach ($this->mandatoryIDs as $singleMandatory) {
 
-                    $col = $xp->query( '//*[ @id="'. $singleMandatory .'" ]' );
+                    $col = $xp->query('//*[ @id="' . $singleMandatory . '" ]');
 
-                    if( !empty( $col ) ){
-                        foreach( $col as $node ){
-                            $node->parentNode->removeChild( $node );
+                    if (!empty($col)) {
+                        foreach ($col as $node) {
+                            $node->parentNode->removeChild($node);
                         }
                     }
                 }
 
                 $content = $dom->saveHTML();
-                $dom     =   null;
+                $dom = null;
 
             }
 
@@ -965,10 +967,10 @@ class wiki
             if (file_exists($filename)) {
                 include $filename;
             } else {
-                $relog->write(['module'    => 'WIKI',
-                               'operation' => 'parsers',
-                               'details'   => $filename,
-                               'type'      => 3]
+                $relog->write(['module' => 'WIKI',
+                        'operation' => 'parsers',
+                        'details' => $filename,
+                        'type' => 3]
                 );
                 echo '<pre>' . $filename . 'doesn\' exist' . '</pre>';
             }
@@ -983,7 +985,7 @@ class wiki
         // Hooks (https://bitbucket.org/thewiper/fabcms/issue/8/sidebar-interactions && https://bitbucket.org/thewiper/fabcms/wiki/Hooks)
         $theRegex = '#\[!hook=([a-z0-9\-\_]+)!\](.*?)\[!endhook!\]#mis';
 
-       $content = preg_replace_callback($theRegex,
+        $content = preg_replace_callback($theRegex,
             function ($theFirstMatch) {
                 global $template;
                 if (!is_array($theFirstMatch[0]))
@@ -1005,7 +1007,7 @@ class wiki
 
         $page_ID = (int)$page_ID;
 
-        if ($conf['memcache']['enabled']  === true && $this->cacheExpired === 0)
+        if ($conf['memcache']['enabled'] === true && $this->cacheExpired === 0)
             $return = $memcache->get('wikiPageTags-' . $page_ID);
 
         if (empty($return)) {
@@ -1021,7 +1023,7 @@ class wiki
                 $return[] = ($case == 'case_insensitive' ? strtolower($row['tag']) : $row['tag']);
             }
 
-            if ($conf['memcache']['enabled']  === true)
+            if ($conf['memcache']['enabled'] === true)
                 $memcache->set('wikiPageTags-' . $page_ID, $return, 604800);
         }
         return $return;
@@ -1034,9 +1036,9 @@ class wiki
         global $memcache;
 
 
-        $page_ID = (int) $page_ID;
+        $page_ID = (int)$page_ID;
 
-        if ($conf['memcache']['enabled']  === true && $this->cacheExpired === 0)
+        if ($conf['memcache']['enabled'] === true && $this->cacheExpired === 0)
             $return = $memcache->get('wikiPageKeywords-' . $page_ID);
 
         if (empty($return)) {
@@ -1052,7 +1054,7 @@ class wiki
                 $return[] = $row['keyword'];
             }
 
-            if ($conf['memcache']['enabled']  === true)
+            if ($conf['memcache']['enabled'] === true)
                 $memcache->set('wikiPageKeywords-' . $page_ID, $return, 604800);
 
         }
@@ -1060,7 +1062,7 @@ class wiki
         return $return;
     }
 
-    public function updateFirstTag(int $page_ID) : bool
+    public function updateFirstTag(int $page_ID): bool
     {
         global $db;
         $query = 'SELECT ID 
@@ -1068,7 +1070,7 @@ class wiki
                   WHERE page_ID = ' . $page_ID . ' 
                   LIMIT 1';
 
-        if (!$result = $db->query($query)){
+        if (!$result = $db->query($query)) {
             echo 'Query error. ' . $query;
             return false;
         }
@@ -1085,7 +1087,7 @@ class wiki
                   WHERE ID = ' . $page_ID . '
                   LIMIT 1';
 
-        if (!$db->query($query)){
+        if (!$db->query($query)) {
             echo 'Query error ' . $query;
             return false;
         }
@@ -1093,7 +1095,7 @@ class wiki
         return true;
     }
 
-    public function updateFirstInternalTag(int $page_ID) : bool
+    public function updateFirstInternalTag(int $page_ID): bool
     {
         global $db;
         $query = 'SELECT ID 
@@ -1102,7 +1104,7 @@ class wiki
                   LIMIT 1';
 
 
-        if (!$result = $db->query($query)){
+        if (!$result = $db->query($query)) {
             echo 'Query error. ' . $query;
             return false;
         }
@@ -1119,7 +1121,7 @@ class wiki
                   WHERE ID = ' . $page_ID . '
                   LIMIT 1';
 
-        if (!$db->query($query)){
+        if (!$db->query($query)) {
             echo 'Query error ' . $query;
             return false;
         }
@@ -1132,7 +1134,7 @@ class wiki
         global $core;
         global $db;
 
-        $page_ID = (int) $page_ID;
+        $page_ID = (int)$page_ID;
 
         // Delete old references
         $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_tags 
@@ -1167,7 +1169,7 @@ class wiki
     {
         global $core;
         global $db;
-        $page_ID = (int) $page_ID;
+        $page_ID = (int)$page_ID;
 
         // Delete old references
         $query = 'DELETE FROM ' . $db->prefix . 'wiki_pages_internal_tags WHERE page_ID = ' . $page_ID;
@@ -1206,10 +1208,10 @@ class wiki
                   WHERE page_ID = ' . $page_ID;
 
         if (!$db->query($query)) {
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_keywords_delete_query_error',
-                           'details'   => 'Cannot delete while update keywords. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_keywords_delete_query_error',
+                'details' => 'Cannot delete while update keywords. Query error. ' . $query,
             ]);
 
             return;
@@ -1224,21 +1226,22 @@ class wiki
         $query = substr($query, 0, -2);
 
         if (!$db->query($query)) {
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_keywords_query_error',
-                           'details'   => 'Cannot update keywords. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_keywords_query_error',
+                'details' => 'Cannot update keywords. Query error. ' . $query,
             ]);
 
         }
     }
 
-    public function updateSeoKeywords($page_ID, $content, $description, $keywords){
+    public function updateSeoKeywords($page_ID, $content, $description, $keywords)
+    {
         global $core;
         global $db;
         global $relog;
 
-        $page_ID = (int) $page_ID;
+        $page_ID = (int)$page_ID;
 
         if (count($keywords) === 0)
             return;
@@ -1249,16 +1252,24 @@ class wiki
                   WHERE page_ID = ' . $page_ID;
 
         if (!$db->query($query)) {
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
                 'operation' => 'wiki_update_keywords_delete_query_error',
-                'details'   => 'Cannot delete while update keywords. Query error. ' . $query,
+                'details' => 'Cannot delete while update keywords. Query error. ' . $query,
             ]);
 
             return;
         }
 
-        $query = 'INSERT INTO ' . $db->prefix . 'wiki_pages_seo (page_ID, keyword, score, potential_score, results, `order`) 
+        $query = 'INSERT INTO ' . $db->prefix . 'wiki_pages_seo 
+                    ( 
+                      page_ID
+                    , keyword
+                    , score
+                    , potential_score
+                    , results
+                    , `order`
+                    ) 
                   VALUES ';
 
         $seo = new SeoScoreCalculator($content, $keywords, $description);
@@ -1266,24 +1277,22 @@ class wiki
 
         $i = 0;
 
-        foreach (json_decode($resultSeo, true) as $keyword  => $scoreInfo) {
+        foreach (json_decode($resultSeo, true) as $keyword => $scoreInfo) {
             if (!is_array($scoreInfo)) {
-                $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . 0 .',' .  0 . ', \'' .  json_encode(['message' => 'Keyword not provided']) . '\' ,' .$i . '), ';
+                $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . 0 . ',' . 0 . ', \'' . json_encode(['message' => 'Keyword not provided']) . '\' ,' . $i . '), ';
             } else {
-                $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . $scoreInfo['totalScore'] .',' .  $scoreInfo['potentialScore'] . ', \'' .  json_encode($scoreInfo['details']) . '\' ,' .$i . '), ';
+                $query .= '(\'' . $page_ID . '\', \'' . $core->in($keyword) . '\', ' . $scoreInfo['totalScore'] . ',' . $scoreInfo['potentialScore'] . ', \'' . json_encode($scoreInfo['details']) . '\' ,' . $i . '), ';
             }
-
             $i++;
         }
-
 
         $query = substr($query, 0, -2);
 
         if (!$db->query($query)) {
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
                 'operation' => 'wiki_update_keywords_query_error',
-                'details'   => 'Cannot update keywords. Query error. ' . $query,
+                'details' => 'Cannot update keywords. Query error. ' . $query,
             ]);
 
         }
@@ -1291,7 +1300,8 @@ class wiki
         $this->updateSeoFirsKeyword($page_ID);
     }
 
-    public function updateSeoFirsKeyword(int $page_ID) {
+    public function updateSeoFirsKeyword(int $page_ID)
+    {
         global $db;
         global $core;
         global $relog;
@@ -1303,10 +1313,10 @@ class wiki
                   LIMIT 1';
 
         if (!$result = $db->query($query)) {
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
                 'operation' => 'wiki_update_seo_first_keywords_query_error',
-                'details'   => 'Cannot update keywords. Query error. ' . $query,
+                'details' => 'Cannot update keywords. Query error. ' . $query,
             ]);
 
             return -3;
@@ -1323,16 +1333,18 @@ class wiki
         LIMIT 1';
 
         if (!$result = $db->query($query)) {
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
                 'operation' => 'wiki_update_seo_first_keywords_query_error',
-                'details'   => 'Cannot update keywords. Query error. ' . $query,
+                'details' => 'Cannot update keywords. Query error. ' . $query,
             ]);
         }
 
         return true;
     }
-    public function updateSeo( int $page_ID, string $keyword) {
+
+    public function updateSeo(int $page_ID, string $keyword)
+    {
         global $db;
         global $core;
         global $relog;
@@ -1343,7 +1355,7 @@ class wiki
         // echo '---|--> Updating keyword ID:' . $page_ID . ', ' . $keyword . ', score ' . $score['score'] . PHP_EOL;
 
         $query = 'UPDATE ' . $db->prefix . 'wiki_pages_seo 
-                  SET score = '   . $score['score']    .',
+                  SET score = ' . $score['score'] . ',
                       results = \'' . $score['analysis'] . '\'
                   WHERE page_ID = ' . $page_ID . ' 
                     AND keyword = \'' . $keyword . '\' 
@@ -1351,10 +1363,10 @@ class wiki
 
         if (!$db->query($query)) {
             echo 'Query error. ' . $query;
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
                 'operation' => 'wiki_update_seo_query_error',
-                'details'   => 'Cannot update stats, cannot select. Query error. ' . $query,
+                'details' => 'Cannot update stats, cannot select. Query error. ' . $query,
             ]);
 
             return -2;
@@ -1363,7 +1375,7 @@ class wiki
         // echo 'Done updating. Result rowset is  ' . $db->affected_rows. PHP_EOL;
     }
 
-    public function getSeoKeywords( int $page_ID) :array
+    public function getSeoKeywords(int $page_ID): array
     {
         global $db;
 
@@ -1379,13 +1391,13 @@ class wiki
 
         return $keywords;
     }
+
     public function computeSeo($page_ID, $keyword)
     {
         global $db;
         global $relog;
 
-
-        $page_ID = (int) $page_ID;
+        $page_ID = (int)$page_ID;
 
         // echo 'Computing SEO for page_ID: '. $page_ID;
         $query = 'SELECT PAGES.title, 
@@ -1401,10 +1413,10 @@ class wiki
 
 
         if (!$result = $db->query($query)) {
-            $relog->write(['type'      => '4',
-                'module'    => 'WIKI',
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
                 'operation' => 'wiki_compute_seo_query_error',
-                'details'   => 'Cannot update stats, cannot select. Query error. ' . $query,
+                'details' => 'Cannot update stats, cannot select. Query error. ' . $query,
             ]);
 
             return -2;
@@ -1417,10 +1429,8 @@ class wiki
 
         $row = mysqli_fetch_assoc($result);
 
-        $seo = new SeoScoreCalculator($row['content'], implode(' ,' ,$_POST['keywords']), $_POST['metaDataDescription']);
-
-
-}
+        $seo = new SeoScoreCalculator($row['content'], implode(' ,', $_POST['keywords']), $_POST['metaDataDescription']);
+    }
 
     public function updateStats($page_ID)
     {
@@ -1435,10 +1445,10 @@ class wiki
                   LIMIT 1';
 
         if (!$result = $db->query($query)) {
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_stats_select_query_error',
-                           'details'   => 'Cannot update stats, cannot select. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_stats_select_query_error',
+                'details' => 'Cannot update stats, cannot select. Query error. ' . $query,
             ]);
 
             return -2;
@@ -1456,10 +1466,10 @@ class wiki
                   WHERE page_ID = ' . $page_ID . ' LIMIT 1';
 
         if (!$db->query($query)) {
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_stats_keywords_delete_query_error',
-                           'details'   => 'Cannot delete while updating stats. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_stats_keywords_delete_query_error',
+                'details' => 'Cannot delete while updating stats. Query error. ' . $query,
             ]);
 
             return -2;
@@ -1491,10 +1501,10 @@ class wiki
 
         if (!$resultLinks = $db->query($query)) {
 
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_stats_outbounds_query_error',
-                           'details'   => 'Cannot update outbounds trackback. Query error. ' . $query,
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_stats_outbounds_query_error',
+                'details' => 'Cannot update outbounds trackback. Query error. ' . $query,
             ]);
 
             return -3;
@@ -1534,12 +1544,11 @@ class wiki
         )
         ';
 
-        if (!$db->query($query))
-        {
-            $relog->write(['type'      => '4',
-                           'module'    => 'WIKI',
-                           'operation' => 'wiki_update_stats_insert_error',
-                           'details'   => 'Cannot update stats. Query error. ' . $query,
+        if (!$db->query($query)) {
+            $relog->write(['type' => '4',
+                'module' => 'WIKI',
+                'operation' => 'wiki_update_stats_insert_error',
+                'details' => 'Cannot update stats. Query error. ' . $query,
             ]);
 
             return -4;
