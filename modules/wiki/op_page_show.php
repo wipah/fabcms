@@ -57,6 +57,9 @@ if ($charPos = strpos($_SERVER['REQUEST_URI'], '?')) {
 
 echo '<style>' . $fabwiki->config['customCSS'] . '</style>';
 
+require_once  $conf['path']['baseDir'] . 'lib/captcha/class_captcha.php';
+$captcha = new Captcha();
+
 if ((int)$core->getConfig('core', 'recaptchaEnabled') === 1) {
     /*
     $this->scripts .= '<script>
@@ -664,9 +667,131 @@ if (isset($_GET['printable'])) {
                  </div>';
         }
 
+
+        $feedback = '
+<style>
+:root {
+    --star-color: #ffd055; /* Colore delle stelle */
+    --star-size: 30px; /* Dimensione delle stelle */
+    --feedback-font: Arial, sans-serif; /* Font del feedback */
+    --feedback-primary-color: #007bff; /* Colore primario */
+    --feedback-secondary-color: #6c757d; /* Colore secondario */
+}
+
+.fabcmsWikiFeedback {
+    font-family: var(--feedback-font);
+}
+
+.star-rating {
+    display: flex;
+    cursor: pointer;
+}
+
+.star {
+    color: var(--feedback-secondary-color);
+    font-size: var(--star-size);
+    margin-right: 5px; /* Distanza tra le stelle */
+}
+
+.star.selected {
+    color: var(--star-color);
+}
+</style>
+
+    <div class="fabcmsWikiFeedback">
+    <h4>Feedback</h4>   
+    <p>Il tuo aiuto è importante. Ti chiediamo un minuto per rispondere a questo breve sondaggio</p>
+    
+    <div class="row">
+        <div class="col-md-4">Come valuteresti questo articolo?</div>
+        <div class="col-md-8">
+            <div class="star-rating">
+                
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+                
+            </div>
+            <input type="hidden" id="feedbackScore" value="1">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">Vuoi suggerirci qualcosa?</div>
+        <div class="col-md-8">
+            <textarea   class="form-control" id="fabcms-feedBackComment"></textarea>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4">Captcha</div>
+        <div class="col-md-8">
+            <img src="' . htmlspecialchars($captcha->createImageBase64()). '" alt="captcha">
+            <input class="form-control" id="fabcms-feedBackCaptcha"></input>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-5">
+        <div class="col-md-8">
+            <button id="fabcmsWikiFeedbackButton" onclick="submitFeedback();">Invia il feedback</button>
+        </div>
+    </div>
+    
+    <div class="" style="display:none;">
+        <input type="text" name="website" id="website" value="">
+    </div>
+</div>
+
+<script>
+document.addEventListener(\'DOMContentLoaded\', function() {
+    const stars = document.querySelectorAll(\'.star-rating .star\');
+
+    stars.forEach(star => {
+        star.addEventListener(\'click\', function() {
+            const value = this.getAttribute(\'data-value\');
+            document.getElementById(\'feedbackScore\').value = value;
+
+            stars.forEach(s => {
+                s.classList.remove(\'selected\');
+            });
+
+            this.classList.add(\'selected\');
+            let prevSibling = this.previousElementSibling;
+            while (prevSibling) {
+                prevSibling.classList.add(\'selected\');
+                prevSibling = prevSibling.previousElementSibling;
+            }
+        });
+    });
+});
+
+function submitFeedback() {
+    
+    const website = document.getElementById(\'website\').value;
+    
+    if (website !== \'\') 
+        return; 
+
+    page_ID   = 0 + ' . $page_ID  . ';
+    score     = document.getElementById(\'feedbackScore\').value;
+    comment   = document.getElementById(\'fabcms-feedBackComment\').value;
+    
+    $.post( "'. $URI->getBaseUri() . '/wiki/ajax-submit-feedback/", { page_ID: page_ID, score: score, comment: comment})
+        .done(function( data ) {
+        $("#fabcmsWikiFeedbackResponse").html("Il tuo feedback &egrave; stato registrato. Grazie per aver contribuito a rendere la pagina migliore.");
+        $("#fabcmsWikiFeedbackButton").disable();
+    });
+}
+</script>
+
+                     ';
+
         echo '</div>
         
-        <script > 
+        <script> 
             function toggleAuthorBox() {
                  $("#wikiAuthorBox").toggle();
             }
@@ -678,6 +803,7 @@ if (isset($_GET['printable'])) {
         ' . $content . '
         <!--FabCMS-hook:wikiInsideArticleBottom-tag-' . $tags_array[0] . '-->
         <!--FabCMS-hook:wikiInsideArticleBottom-->
+        ' . $feedback . '
         </div>
     </article>
     </div>';

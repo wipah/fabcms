@@ -30,6 +30,10 @@ if ($path[2] == 'ajax_post_comment') {
     return;
 }
 
+if ($path[2] == 'ajax-submit-feedback') {
+    require_once 'op_ajax_submit_feedback.php';
+    return;
+}
 if ($path[2] == 'ajax_search') {
     require_once 'op_ajax_search.php';
     return;
