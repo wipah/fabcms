@@ -143,7 +143,7 @@ class module
         global $stats;
         global $relog;
         global $memcache;
-
+        global $captcha;
         $module = str_replace('.', '', $module); //@todo: security check
 
         // Check if module has custom configuration file (config.php)

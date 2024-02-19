@@ -57,8 +57,7 @@ if ($charPos = strpos($_SERVER['REQUEST_URI'], '?')) {
 
 echo '<style>' . $fabwiki->config['customCSS'] . '</style>';
 
-require_once  $conf['path']['baseDir'] . 'lib/captcha/class_captcha.php';
-$captcha = new Captcha();
+
 
 if ((int)$core->getConfig('core', 'recaptchaEnabled') === 1) {
     /*
@@ -175,7 +174,6 @@ if (!$db->affected_rows) {
 }
 
 $row = mysqli_fetch_assoc($result);
-
 
 $fabwiki->publishedID[] = $row['ID'];
 $fabwiki->creationDate = $row['creation_date'];
@@ -778,11 +776,16 @@ function submitFeedback() {
     page_ID   = 0 + ' . $page_ID  . ';
     score     = document.getElementById(\'feedbackScore\').value;
     comment   = document.getElementById(\'fabcms-feedBackComment\').value;
-    
-    $.post( "'. $URI->getBaseUri() . '/wiki/ajax-submit-feedback/", { page_ID: page_ID, score: score, comment: comment})
+    captcha   = document.getElementById(\'fabcms-feedBackCaptcha\').value;
+
+    if (captcha.lenth === 0) {
+        alert("Captcha non valido");
+        return;
+    }
+    $.post( "'. $URI->getBaseUri() . '/wiki/ajax-submit-feedback/", { page_ID: page_ID, score: score, comment: comment, captcha: captcha})
         .done(function( data ) {
         $("#fabcmsWikiFeedbackResponse").html("Il tuo feedback &egrave; stato registrato. Grazie per aver contribuito a rendere la pagina migliore.");
-        $("#fabcmsWikiFeedbackButton").disable();
+        $("#fabcmsWikiFeedbackButton").prop("disabled", true);
     });
 }
 </script>
