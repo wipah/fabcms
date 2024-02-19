@@ -8,7 +8,7 @@ class Captcha
     private $font;
     private $fontSize;
 
-    public function __construct($width = 120, $height = 40, $length = 6, $font = __DIR__ . '/scorn.ttf', $fontSize = 16)
+    public function __construct($width = 240, $height = 85, $length = 3, $font = __DIR__ . '/miracode.ttf', $fontSize = 16)
     {
         $this->width = $width;
         $this->height = $height;
@@ -67,7 +67,7 @@ class Captcha
         $textColor = imagecolorallocate($image, 0, 0, 0);
         imagefilledrectangle($image, 0, 0, $this->width, $this->height, $background);
 
-// Aggiunta di distorsioni
+        // Aggiunta di distorsioni
         for ($i = 0; $i < $this->length; $i++) {
             $letter = $code[$i];
             $angle = rand(-15, 15);
@@ -92,4 +92,16 @@ class Captcha
 
         return 'data:image/jpeg;base64,' . base64_encode($contents); // Restituisce la stringa codificata in base64
     }
+
+    public function checkCaptcha($captchaProvided) {
+        if (isset($_SESSION['captcha']) && $_SESSION['captcha'] == $captchaProvided) {
+            // Il CAPTCHA fornito corrisponde a quello memorizzato nella sessione
+            unset($_SESSION['captcha']); // Rimuove il CAPTCHA dalla sessione per prevenirne il riutilizzo
+            return true; // Successo
+        } else {
+            // Il CAPTCHA fornito non corrisponde o non è presente nella sessione
+            return false; // Fallimento
+        }
+    }
+
 }

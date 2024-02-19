@@ -115,6 +115,9 @@ $relog = new CrisaSoft\FabCMS\relog();
 
 $relog->write(['module' => 'mod_load', 'operation' => 'boot', 'type' => 0]);
 
+require_once  $conf['path']['baseDir'] . 'lib/captcha/class_captcha.php';
+$captcha = new Captcha();
+
 register_shutdown_function('shutDownFunction');
 
 $db->username   = $conf['db']['user'];
