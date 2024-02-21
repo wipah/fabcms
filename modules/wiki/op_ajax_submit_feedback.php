@@ -4,8 +4,6 @@ if (!$core->loaded)
 
 $this->noTemplateParse = true;
 
-var_dump(($_POST));
-
 $page_ID    = (int) $_POST['page_ID'];
 $score      = (int) $_POST['score'];
 $comment    = $core->in($_POST['comment']);

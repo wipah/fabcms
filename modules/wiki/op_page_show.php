@@ -116,6 +116,7 @@ SELECT
   ' . $db->prefix . 'wiki_pages.no_similar_pages,
   ' . $db->prefix . 'wiki_pages.no_search,
   ' . $db->prefix . 'wiki_pages.no_title,
+  ' . $db->prefix . 'wiki_pages.no_feedback,
   ' . $db->prefix . 'wiki_pages.parser,
   ' . $db->prefix . 'wiki_pages.internal_redirect,
   IF (' . $db->prefix . 'wiki_pages.cache_expiration < NOW(), 1, 0 ) cache_expired,
@@ -666,7 +667,8 @@ if (isset($_GET['printable'])) {
         }
 
 
-        $feedback = '
+        if ( (int) $row['no_feedback'] !== 1) {
+            $feedback = '
 <style>
 :root {
     --star-color: #ffd055; /* Colore delle stelle */
@@ -789,10 +791,13 @@ function submitFeedback() {
     });
 }
 </script>
-
+</div>
                      ';
+        }
 
-        echo '</div>
+
+
+        echo '
         
         <script> 
             function toggleAuthorBox() {
@@ -817,7 +822,7 @@ function submitFeedback() {
         $seo = new SeoScoreCalculator($content, $keywords, $row['metadata_description']);
         $resultSeo = $seo->calculateScore();
 
-        $seoBlock = '<div class=""><h2>SEO</h2>';
+        $seoBlock = '<div class="content-alt"><h3>SEO</h3>';
 
         foreach (json_decode($resultSeo, true) as $keyword  => $scoreInfo) {
             if (!is_array($scoreInfo))
@@ -865,7 +870,7 @@ function submitFeedback() {
             </div>';
 
             if ($user->isAdmin) {
-                echo '<div class="sidebar-block">
+                echo '<div class="sidebar-block-alt">
                         ' . $seoBlock . '
                      </div>';
             }

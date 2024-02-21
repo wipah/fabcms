@@ -60,6 +60,7 @@ $_POST['visible']           === 'true' ? $visible = 1 : $visible = 0;
 $_POST['no_editor']         === 'true' ? $noEditor = 1 : $noEditor = 0;
 $_POST['no_index']          === 'true' ? $no_index = 1 : $no_index = 0;
 $_POST['no_search']         === 'true' ? $no_search = 1 : $no_search = 0;
+$_POST['no_feedback']       === 'true' ? $no_feedback = 1 : $no_feedback = 0;
 $_POST['service_page']      === 'true' ? $service_page = 1 : $service_page = 0;
 $_POST['full_page']         === 'true' ? $full_page = 1 : $full_page = 0;
 $_POST['no_banner']         === 'true' ? $no_banner = 1 : $no_banner = 0;
@@ -135,6 +136,7 @@ if (($_POST['crudType']) === 'update') {
     notes                   =   \'' . $notes . '\',
     additional_data         =   \'' . $additionalData . '\',
     no_editor               =   \'' . $noEditor . '\',
+    no_feedback             =   \'' . $no_feedback . '\',
     no_index                =   \'' . $no_index . '\',
     no_search               =   \'' . $no_search . '\',
     no_info                 =   \'' . $no_info . '\',
@@ -219,6 +221,7 @@ if (($_POST['crudType']) === 'update') {
                                                notes, 
                                                additional_data, 
                                                no_editor, 
+                                               no_feedbacl, 
                                                no_index, 
                                                no_search, 
                                                no_info, 
@@ -259,6 +262,7 @@ if (($_POST['crudType']) === 'update') {
     \'' . $notes . '\',
     \'' . $additionalData . '\',
     \'' . $noEditor . '\',
+    \'' . $no_feedback . '\',
     \'' . $no_index . '\',
     \'' . $no_search . '\',
     \'' . $no_info . '\',

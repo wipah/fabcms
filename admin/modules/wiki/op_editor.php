@@ -114,6 +114,7 @@ if (isset($_GET['ID'])) {
                     P.full_page,
                     P.no_banner,
                     P.no_comment,
+                    P.no_feedback,
                     P.no_toc,
                     P.no_similar_pages,
                     P.no_info,
@@ -631,6 +632,11 @@ echo '
 </div>
 
 <div class="form-check">
+  <input class="form-check-input triggerModify" type="checkbox" id="no_feedback" value="true" ' . ( (int) $row['no_feedback'] == 1 ? 'checked="checked"' : '' ) . '>
+  <label class="form-check-label" for="no_index">No feedback</label>
+</div>
+
+<div class="form-check">
   <input class="form-check-input triggerModify" type="checkbox" id="no_editor" value="true" ' . ( (int) $row['no_editor'] == 1 ? 'checked="checked"' : '' ) . ' onchange="switchEditor();">
   <label class="form-check-label" for="no_editor">No Editor</label>
 </div>
@@ -954,6 +960,7 @@ function save() {
     $("#visible").is(":checked")                ?   visible = true: visible = false;
     $("#no_editor").is(":checked")              ?   no_editor = true: no_editor = false;
     $("#no_info").is(":checked")                ?   no_info = true: no_info = false;
+    $("#no_feedback").is(":checked")            ?   no_feedback = true: no_feedback = false;
     $("#no_linking_pages").is(":checked")       ?   no_linking_pages = true: no_linking_pages = false;
     $("#no_search").is(":checked")              ?   no_search = true: no_search= false;
     $("#no_index").is(":checked")               ?   no_index = true: no_index = false;
@@ -991,6 +998,7 @@ function save() {
                                                    metaDataDescription : metaDataDescription, 
                                                    content          : content,
                                                    no_editor        : no_editor,
+                                                   no_feedback      : no_feedback,
                                                    no_search        : no_search,
                                                    no_index         : no_index,
                                                    no_info          : no_info,
