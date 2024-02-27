@@ -49,8 +49,8 @@ function createTable_from_sql_select_query($query, $title) {
     $headings = array_column($headings, 'name');
 
     $return = '<div class="table-responsive">
-                <table class="table table-responsive table-bordered table-striped">
-                    <thead>
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead >
                         <tr>';
 
     for ($x = 0; $x <= (count($headings) - 1); $x++) {

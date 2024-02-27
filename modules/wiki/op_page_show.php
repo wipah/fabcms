@@ -968,7 +968,7 @@ WHERE C.page_ID = ' . $page_ID . '
     echo '
           <div id="commentContainer" class="fabcms-Wiki-CommentContainer form-group clearfix mt-4">
                  <!--FabCMS-hook:wikiCommentsTop-->
-                 <h4 class="fabCMS-Wiki-CommentDescription">Commenti alla pagine</h4>
+                 <h4 class="fabCMS-Wiki-CommentDescription">Commenti</h4>
                  <div id="commentBox" class="fabcms-Wiki-CommentBox clearfix">
                     
                     <div class="row">
