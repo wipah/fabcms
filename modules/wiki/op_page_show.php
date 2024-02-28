@@ -517,7 +517,7 @@ if (empty($content)) {
         $debug->write('info', 'Content was taken directly from the file', 'wiki');
         ob_start();
         require_once(__DIR__ . '/pagefiles/' . $row['use_file']);
-        $content = $fabwiki->parseContent(ob_get_clean());
+        $content = ob_get_clean();
     } else {
         $debug->write('info', 'Content was taken from database', 'wiki');
         $content = $fabwiki->parseContent($row['content']);
@@ -579,6 +579,7 @@ if ((int)$row['no_title'] !== 1)
 if ($user->isAdmin === true) {
     $content = '<div class="wikiEditArticle"><a href="' . $URI->getBaseUri(true) . '/admin/admin.php?module=wiki&op=editor&ID=' . $page_ID . '">Article edit</a></div>' . $content;
 }
+
 if (isset($_GET['printable'])) {
 
     $this->noTemplateParse = true;
@@ -679,7 +680,9 @@ if (isset($_GET['printable'])) {
 }
 
 .fabcmsWikiFeedback {
-    font-family: var(--feedback-font);
+    border: 1px solid #EEE;
+    padding: 16px;
+    background-color: #EFEFEF;
 }
 
 .star-rating {
@@ -698,7 +701,7 @@ if (isset($_GET['printable'])) {
 }
 </style>
 
-    <div class="fabcmsWikiFeedback">
+    <div class="fabcmsWikiFeedback mt-4">
     <h4>Feedback</h4>   
     <p>Il tuo aiuto è importante. Ti chiediamo un minuto per rispondere a questo breve sondaggio</p>
     
@@ -791,8 +794,7 @@ function submitFeedback() {
     });
 }
 </script>
-</div>
-                     ';
+</div>';
         }
 
 
@@ -897,7 +899,7 @@ function submitFeedback() {
 }
 
 
-if ((int)$row['no_comment'] !== 1) {
+if ( (int) $row['no_comment'] !== 1) {
     // Get all the comments for the page
 
     $query = '

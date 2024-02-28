@@ -342,7 +342,6 @@ if ($module->name !== 'user')
 
 $language->loadLang($module->name); // Language and translation support for the module
 
-
 $module->routed = $core->router->getRewriteAlias($module->name);
 $module->loadModule($module->name);
 $template->loadPage();

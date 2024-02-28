@@ -633,7 +633,7 @@ echo '
 
 <div class="form-check">
   <input class="form-check-input triggerModify" type="checkbox" id="no_feedback" value="true" ' . ( (int) $row['no_feedback'] == 1 ? 'checked="checked"' : '' ) . '>
-  <label class="form-check-label" for="no_index">No feedback</label>
+  <label class="form-check-label" for="no_feedback">No feedback</label>
 </div>
 
 <div class="form-check">

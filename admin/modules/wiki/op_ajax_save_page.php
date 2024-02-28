@@ -221,7 +221,7 @@ if (($_POST['crudType']) === 'update') {
                                                notes, 
                                                additional_data, 
                                                no_editor, 
-                                               no_feedbacl, 
+                                               no_feedback, 
                                                no_index, 
                                                no_search, 
                                                no_info, 
