@@ -652,6 +652,8 @@ if (isset($_GET['printable'])) {
             $timestamp = strtotime($datetime_str);
             $date_formatted = date('m-d-Y', $timestamp);
 
+            $authorImage = $URI->getBaseUri(true) . 'fabmedia/authors/' . $row['creation_user_ID'] . '.webp';
+
             echo '<div class="article-card">
                     <div class="article-content">
                         ' . ((int)$row['no_title'] === 1 ? '' : '<h1>' . $titleTag . '</h1>') . '
@@ -660,7 +662,7 @@ if (isset($_GET['printable'])) {
                         </div>
                     </div>
                     <div class="article-meta">
-                        <img src="' . $authorImage . '" alt="Nome Autore">
+                        <img src="' . $authorImage . '" alt="Immagine autore articolo">
                         <h3>' . $authorName . '</h3>
                         <p>Revisionato il: ' . $date_formatted . '</p>
                     </div>
