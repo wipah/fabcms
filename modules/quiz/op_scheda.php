@@ -94,7 +94,7 @@ AND visibile = \''. 1 . '\'
 LIMIT 1;
 ';
 
-$db->query($query);
+$resultCategory = $db->query($query);
 if (!$db->affected_rows) {
     echo 'Errore interno in fase di selezione';
     return;
@@ -105,7 +105,7 @@ if (!$db->affected_rows){
     return;
 }
 
-$linea = $db->getResultAsArray();
+$linea = mysqli_fetch_assoc($resultCategory);
 $nome_categoria = $core->getTrackback($linea['nome']);
 $nome = $linea['nome'];
 $this->addTitleTag($linea['title']);
@@ -403,14 +403,14 @@ $this->addScript($theScript);
     ';
 
     
-    $db->query($query);
+    $resultName = $db->query($query);
 
     if (!$db->affected_rows) {
         echo 'Errore in selezione categoria';
         return;
     }
 
-    $linea = $db->getResultAsArray();
+    $linea = mysqli_fetch_assoc(    $linea = $resultName);
 
     echo '
         <span class="float-right">
