@@ -35,7 +35,7 @@ if (!isset($path[3])) {
     WHERE lang = \'' . $core->shortCodeLang . '\'
     AND visibile = \'1\';';
     
-    if (!$db->query($query)) {
+    if (!$result = $db->query($query)) {
         echo 'Errore nella query';
         return;
     }
@@ -44,7 +44,7 @@ if (!isset($path[3])) {
 
     echo '<h1>Selezione categoria di quiz</h1>';
 
-    $result = $db->getResultAsObject();
+
     $i = 0;
     while ($linea = mysqli_fetch_array($result)) {
         echo '
@@ -265,9 +265,9 @@ $this->addScript($theScript);
         }
         $query = substr($query, 0, -3);
 
-        
-        $db->query($query);
-        $risultato = $db->getResultAsObject();
+
+        $risultato = $db->query($query);
+
         while ($linea = mysqli_fetch_array($risultato)) {
 
             // Pagine
@@ -288,9 +288,9 @@ $this->addScript($theScript);
 
                 $query = substr($query, 0, -3);
 
-                
-                $db->query($query);
-                $resultpagine = $db->getResultAsObject();
+
+                $resultpagine = $db->query($query);
+
                 while ($linea2 = mysqli_fetch_array($resultpagine)) {
                     $pagine .= '<a target="_blank" href="' . $URI->getBaseUri() . $core->router->getRewriteAlias('wiki') . '/' . $linea2['trackback'] . '/">' . $linea2['title'] . '</a> - ';
                 }
@@ -341,9 +341,9 @@ $this->addScript($theScript);
         }
         $query = substr($query, 0, -3);
 
-        
-        $db->query($query);
-        $risultato = $db->getResultAsObject();
+
+        $risultato = $db->query($query);
+
 
         while ($linea = mysqli_fetch_array($risultato)) {
             // Pagine
@@ -364,9 +364,9 @@ $this->addScript($theScript);
 
                 $query = substr($query, 0, -3);
 
-                
-                $db->query($query);
-                $resultpagine = $db->getResultAsObject();
+
+                $resultpagine = $db->query($query);
+
                 while ($linea2 = mysqli_fetch_array($resultpagine)) {
                     $pagine .= ' <a target="_blank" href="' . $URI->getBaseUri() . $core->router->getRewriteAlias('wiki') . '/' . $linea2['trackback'] .'/">' . $linea2['title'] . '</a> - ';
                 }
@@ -483,7 +483,7 @@ ORDER BY RAND()
 ';
 
 
-if (!$db->query($query)) {
+if (!$result = $db->query($query)) {
     echo 'Errore nella query';
     return;
 }
@@ -505,7 +505,7 @@ echo '
     el.value = hash;
 </script>';
 $ids = '';
-while ($linea = mysqli_fetch_array($db->getResultAsObject())) {
+while ($linea = mysqli_fetch_array($result)) {
     $risposte = array();
 
     $ids .= $linea['ID'];
