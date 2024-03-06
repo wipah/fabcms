@@ -49,7 +49,7 @@ if (!$db->affected_rows){
     return;
 }
 
-$row = $db->getResultAsArray();
+$row =  mysqli_fetch_array($result);
 
 echo '<h1>Riepilogo schede di valutazione</h1>';
 
