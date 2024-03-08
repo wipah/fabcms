@@ -654,19 +654,31 @@ if (isset($_GET['printable'])) {
 
             $authorImage = $URI->getBaseUri(true) . 'fabmedia/authors/' . $row['creation_user_ID'] . '.webp';
 
-            echo '<div class="article-card">
+            echo '
+' . ((int)$row['no_title'] === 1 ? '' : '<h1>' . $titleTag . '</h1>') . '
+<div class="article-card">
+
                     <div class="article-content">
-                        ' . ((int)$row['no_title'] === 1 ? '' : '<h1>' . $titleTag . '</h1>') . '
+                        
                         <div class="article-description">
                             <p>' . $row['short_description'] . ' </p>
-                        </div>
+                            <div class="article-info" style="d-flex justify-content-between">
+                                <div>Revisionato il: ' . $date_formatted . '| Autore: ' . $fabwiki->authorUsername  . '</div>
+                                
+                            </div>
+                        
                     </div>
+                    </div>
+                    <!--
                     <div class="article-meta">
-                        <img src="' . $authorImage . '" alt="Immagine autore articolo">
-                        <h3>' . $authorName . '</h3>
-                        <p>Revisionato il: ' . $date_formatted . '</p>
+                        <img loading="lazy" src="' . $authorImage . '" alt="Immagine autore articolo" />
                     </div>
-                 </div>';
+                    
+                    -->
+                    
+  </div>
+
+                 ';
         }
 
 
