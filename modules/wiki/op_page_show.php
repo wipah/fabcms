@@ -662,7 +662,7 @@ if (isset($_GET['printable'])) {
                         </div>
                     </div>
                     <div class="article-meta">
-                        <img class="img-fluid" src="' . $authorImage . '" alt="Immagine autore articolo">
+                        <img class="img-fluid author-photo" src="' . $authorImage . '" alt="Immagine autore articolo">
                         <h3>' . $authorName . '</h3>
                         <p>Revisionato il: ' . $date_formatted . '</p>
                     </div>

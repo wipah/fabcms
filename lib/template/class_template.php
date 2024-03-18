@@ -300,7 +300,7 @@ class templateBase implements iFabTemplate
                 $out .= '
                     <li class="nav-item dropdown">
                         
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-' . $row['ID'] .'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-' . $row['ID'] .'" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             ' . $row['name'] . '
                         </a>
                         
