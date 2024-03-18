@@ -396,7 +396,7 @@ if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
 
 
 // $template->navBarAddItem([(isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki')], $URI->getBaseUri() . $this->routed);
-$template->navBarAddItem((isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki'), $URI->getBaseUri() . $this->routed . '/');
+// $template->navBarAddItem((isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki'), $URI->getBaseUri() . $this->routed . '/');
 
 isset ($fabwiki->config['nameSpaceSeparator']) ? $nameSpaceSeparator = $fabwiki->config['nameSpaceSeparator'] : $nameSpaceSeparator = ':';
 
@@ -671,7 +671,13 @@ if (isset($_GET['printable'])) {
                     </div>
                     <!--
                     <div class="article-meta">
+<<<<<<< HEAD
                         <img loading="lazy" src="' . $authorImage . '" alt="Immagine autore articolo" />
+=======
+                        <img class="img-fluid" src="' . $authorImage . '" alt="Immagine autore articolo">
+                        <h3>' . $authorName . '</h3>
+                        <p>Revisionato il: ' . $date_formatted . '</p>
+>>>>>>> c7afc37 (- Bugfixing)
                     </div>
                     
                     -->
