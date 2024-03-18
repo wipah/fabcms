@@ -396,7 +396,7 @@ if (count($keywords_array) > 0 && (int)$row['no_similar_pages'] !== 1) {
 
 
 // $template->navBarAddItem([(isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki')], $URI->getBaseUri() . $this->routed);
-$template->navBarAddItem((isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki'), $URI->getBaseUri() . $this->routed . '/');
+// $template->navBarAddItem((isset($fabwiki->config['wikiName']) ? $fabwiki->config['wikiName'] : 'Wiki'), $URI->getBaseUri() . $this->routed . '/');
 
 isset ($fabwiki->config['nameSpaceSeparator']) ? $nameSpaceSeparator = $fabwiki->config['nameSpaceSeparator'] : $nameSpaceSeparator = ':';
 
